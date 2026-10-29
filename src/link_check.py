@@ -36,6 +36,38 @@ MAX_RETRY = 2
 GONE = "gone"              # 404。URL を直す必要がある
 UNREACHABLE = "unreach"    # 到達できなかった。ブラウザでは開けることが多い
 
+# ソフト404。消費者庁は、消したページに 403 を返しながら、
+# 本文は「お探しのページが見つかりません」の案内ページを返す。
+# ステータスだけ見ていると「到達できなかった（ブラウザでは開ける）」に分類され、
+# 本当に消えたページが、見なくてよいものとして積み上がる。
+# 2026-10-29 に、これで3件のリンク切れを数か月見逃していた。
+# 403 等のときは本文を読んで、この言い回しがあれば「消えている」に入れる。
+SOFT_404_MARKERS = [
+    "お探しのページが見つかりません",
+    "お探しのページは見つかりませんでした",
+    "ページが見つかりません",
+    "Page Not Found",
+]
+
+
+def looks_soft_404(url, ctx):
+    """本文を GET して、「見つかりません」の案内ページかどうかを見る。
+
+    HEAD では本文が返らないので、ここで必ず GET をやり直す。
+    """
+    req = urllib.request.Request(url, method="GET", headers={"User-Agent": UA})
+    try:
+        urllib.request.urlopen(req, timeout=20, context=ctx)
+        return False          # 開けたなら消えていない
+    except urllib.error.HTTPError as e:
+        try:
+            text = e.read().decode("utf-8", "replace")
+        except Exception:
+            return False
+        return any(m in text for m in SOFT_404_MARKERS)
+    except Exception:
+        return False
+
 # ここに挙げたホストは、プログラムからのアクセスを拒むが、
 # ブラウザでは問題なく開ける。到達できなくても報告しない。
 # 載せるときは、実際にブラウザで開けることを確かめてから。
@@ -93,6 +125,9 @@ def check_url(url, retry=MAX_RETRY):
             # 405/406 は HEAD を受け付けないだけのことがある。GET で試し直す。
             if retry > 0:
                 return check_url(url, retry - 1)
+            # 本文がソフト404の案内ページなら、消えている。
+            if looks_soft_404(url, ctx):
+                return (GONE, "%d（本文は「見つかりません」）" % e.code, url)
             return (UNREACHABLE, str(e.code), url)
         if retry > 0:
             time.sleep(2 ** attempt + random.uniform(0, 2))

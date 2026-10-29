@@ -29,9 +29,9 @@ SRC = {
     "fukuyama_sbs": (
         "赤ちゃんを守るために知っておきたい「乳幼児揺さぶられ症候群」とは？（福山市）",
         "https://www.city.fukuyama.hiroshima.jp/site/kosodate/370395.html"),
-    "caa_button_battery": (
-        "Vol.547 ボタン電池誤飲を防ぐために! 電池を使う製品は子どもの手の届かないところに置きましょう。（消費者庁）",
-        "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20210318/"),
+    "ncac_button_battery": (
+        "子どものボタン電池の誤飲事故に気をつけましょう！─電池の放電によるアルカリで消化管が損傷します─（国民生活センター）",
+        "https://www.kokusen.go.jp/news/data/n-20240731_4.html"),
     "caa_magnet": (
         "Vol.624 体の中で、くっつく「マグネットセット」、膨らむ「吸水樹脂ボール」の危険-誤飲事故防止のため販売規制へ（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20230407/"),
@@ -107,12 +107,21 @@ SRC = {
     "keishicho_checkpoint": (
         "防犯チェックポイント（警視庁 生活安全総務課）",
         "https://www.keishicho.metro.tokyo.lg.jp/kurashi/higai/kodomo/checkpoint.html"),
-    "caa_home_accident": (
-        "家の中の事故に気を付けましょう！（消費者庁）",
-        "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_035/"),
     "mext_sodan": (
         "24時間子供SOSダイヤルなど、子供のSOSの相談窓口（文部科学省）",
         "https://www.mext.go.jp/a_menu/shotou/seitoshidou/06112216.html"),
+    "fdma_hanabi": (
+        "消防の動き 令和6年7月号「火遊び・花火による火災の防止」（総務省消防庁 予防課・PDF）",
+        "https://www.fdma.go.jp/publication/ugoki/items/rei_0607_35.pdf"),
+    "fdma_bls2025": (
+        "「救急蘇生法の指針2025（市民用）」への対応について（令和8年10月23日・消防救第385号・総務省消防庁・PDF）",
+        "https://www.fdma.go.jp/laws/tutatsu/items/20261023_kyuuki_01.pdf"),
+    "jma_uvindex": (
+        "紫外線情報（分布図）（気象庁）",
+        "https://www.data.jma.go.jp/env/uvindex/"),
+    "soumu_net_trouble": (
+        "インターネットトラブル事例集 2026年版（総務省）",
+        "https://www.soumu.go.jp/use_the_internet_wisely/trouble/"),
     "fdma_7119": (
         "救急安心センター事業（♯7119）ってナニ？（総務省消防庁）",
         "https://www.fdma.go.jp/mission/enrichment/appropriate/appropriate007.html"),
@@ -137,6 +146,9 @@ SRC = {
     "doukouhou_helmet": (
         "道路交通法 第63条の11（乗車用ヘルメットの着用）（e-Gov 法令検索）",
         "https://laws.e-gov.go.jp/law/335AC0000000105"),
+    "cao_bicycle_haku": (
+        "令和5年交通安全白書 特集「自転車の安全利用の促進について」（内閣府）",
+        "https://www8.cao.go.jp/koutu/taisaku/r05kou_haku/zenbun/genkyo/feature/feature_3_7.html"),
     "npa_child_traffic": (
         "令和7年春の全国交通安全運動 幼児・児童の交通事故分析（警察庁 交通局・PDF）",
         "https://www.npa.go.jp/news/release/2025/R7harunoundou_koutuujikobunseki.pdf"),
@@ -162,8 +174,8 @@ SRC = {
         "子どもを事故から守る！事故防止ハンドブック（消費者庁・PDF）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_002/assets/consumer_safety_cms205_230131_01.pdf"),
     "caa_bed_fall": (
-        "0〜1歳児のベッドからの転落事故に御注意ください！（消費者庁）",
-        "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_041"),
+        "0〜1歳児のベッドからの転落事故に御注意ください！─頭部を負傷する事故に加え、窒息事故も報告されており、ベビーベッドの安全基準が見直されています─（令和2年11月13日・消費者庁・PDF）",
+        "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_041/assets/consumer_safety_cms204_20201113_01.pdf"),
     "caa_bread": (
         "子ども安全メール from 消費者庁 Vol.569「パン等による子どもの窒息や誤嚥に気を付けましょう！」（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20211020/"),
@@ -261,7 +273,7 @@ SRC = {
         "消費生活用製品安全法 PSCマーク制度（経済産業省）",
         "https://www.meti.go.jp/policy/consumer/seian/shouan/index.htm"),
     "ncac_fall": (
-        "乳児の落下事故に注意─洗濯機の上や浴槽の蓋の上に寝かせないで─（国民生活センター）",
+        "入浴・沐浴に伴う乳児の落下事故に注意！─浴槽の蓋や洗濯機の上には寝かせないで─（国民生活センター）",
         "https://www.kokusen.go.jp/news/data/n-20251217_1.html"),
     "ncac_bike": (
         "子どもを抱っこして自転車に同乗させないで（国民生活センター）",
@@ -363,6 +375,9 @@ SRC = {
     "caa_cart": (
         "子ども安全メール Vol.588 ショッピングカートからの転落に注意！（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20220418/"),
+    "ncac_cutpan": (
+        "カットパンによる乳児の窒息事故が発生─小さくちぎって与え、飲み込むまで目を離さないで─（国民生活センター・PDF）",
+        "https://www.kokusen.go.jp/pdf/n-20211019_1.pdf"),
     "ia_babyfood_soy": (
         "傷害速報 No.45 大豆の誤嚥（日本小児科学会・PDF）",
         "https://www.jpeds.or.jp/uploads/files/injuryalert/0045.pdf"),
