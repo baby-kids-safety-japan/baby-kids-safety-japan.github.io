@@ -1,0 +1,1066 @@
+:root {
+  --cream:      #FFFAF2;
+  --cream-deep: #FFF2E2;
+  --ink:        #5B4A42;
+  --ink-soft:   #6E5B51;   /* #8A776D は本文・注記で4.5:1に届かなかった */
+  --peach:      #FFD3BC;
+  --peach-deep: #FF9E7A;
+  --mint:       #BFEBDA;
+  --mint-deep:  #5FC8A4;
+  --sky:        #C3E2F7;
+  --sky-deep:   #6FB6E6;
+  --lemon:      #FFEDB8;
+  --lemon-deep: #F5C84C;
+  --grape:      #E0D2F5;
+  --grape-deep: #A98BD8;
+  --grape-badge:#B7A0E3;   /* 墨文字を乗せるバッジ用。grape-deep では墨が4.34:1で届かない */
+  --pink:       #FFD5E0;
+  --pink-deep:  #F58CA8;
+  --radius:     28px;
+  --shadow:     0 10px 30px rgba(180, 140, 120, .14);
+  --shadow-sm:  0 4px 14px rgba(180, 140, 120, .12);
+}
+
+* { box-sizing: border-box; }
+
+/* ページ内リンクは JS で位置を合わせるため、CSS のスムーススクロールは使わない。
+   両方が同時に動くと、長いページで途中に止まる。 */
+html { scroll-behavior: auto; }
+
+body {
+  margin: 0;
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: #B04A2E; text-underline-offset: .2em; }   /* cream上 5.23:1 */
+a:hover { color: #8A3A20; }                          /* ホバーでさらに濃く */
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 20px 96px;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, #FFF6D9 0%, transparent 60%),
+    linear-gradient(180deg, #FFF1E4 0%, #FDF6FF 55%, var(--cream) 100%);
+  text-align: center;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: .55;
+  pointer-events: none;
+}
+.blob-a { width: 240px; height: 240px; background: var(--peach);  top: -60px;  left: -70px; }
+.blob-b { width: 200px; height: 200px; background: var(--mint);   top: 40px;   right: -60px; }
+.blob-c { width: 150px; height: 150px; background: var(--lemon);  bottom: 40px; left: 12%; }
+
+.hero-inner { position: relative; max-width: 740px; margin: 0 auto; }
+
+.hero-eyebrow {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  font-size: .86rem;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+}
+.hero-title {
+  margin: 0 0 18px;
+  font-size: clamp(2.4rem, 9vw, 4.1rem);
+  font-weight: 900;
+  letter-spacing: .02em;
+  line-height: 1.25;
+  background: linear-gradient(100deg, var(--peach-deep), var(--grape-deep) 45%, var(--sky-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-lead {
+  margin: 0 auto 26px;
+  max-width: 34em;
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: var(--ink);
+  text-align: left;
+}
+.hero-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.hero-updated {
+  margin: 18px auto 0;
+  font-size: .9rem;
+  color: var(--ink-soft);
+  text-align: center;
+}
+.hero-updated time { font-weight: 700; color: var(--ink); }
+.badge {
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.badge-mint  { background: var(--mint);  }
+.badge-peach { background: var(--peach); }
+.badge-sky   { background: var(--sky);   }
+
+.hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; line-height: 0; }
+.hero-wave svg { width: 100%; height: 64px; display: block; }
+.hero-wave path { fill: var(--cream); }
+
+/* ---------- tabs ---------- */
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 250, 242, .88);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px dotted #F0DCC9;
+}
+.tabs-inner {
+  display: flex;
+  gap: 10px;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs-inner::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex: 1 0 auto;
+  min-width: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  font-family: inherit;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, color .18s ease;
+}
+.tab:hover { transform: translateY(-2px); }
+.tab-emoji { font-size: 1.3rem; line-height: 1.2; }
+/* タブの絵。クリーム色の下地ごと丸く切り抜くので、
+   白いタブの上でも、色のついたタブの上でも落ち着く。 */
+.tab-icon {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--cream);
+}
+.tab-label { font-size: .95rem; font-weight: 700; }
+.tab-sub   { font-size: .7rem; }
+
+.tab.is-active { color: var(--ink); transform: translateY(-2px); }
+.tab[data-tab="0"].is-active { background: var(--mint);  }
+.tab[data-tab="1"].is-active { background: var(--lemon); }
+.tab[data-tab="2"].is-active { background: var(--sky);   }
+.tab[data-tab="3"].is-active { background: var(--pink);  }
+.tab[data-tab="4"].is-active { background: var(--grape); }
+.tab[data-tab="5"].is-active { background: var(--peach); }
+.tab[data-tab="6"].is-active { background: var(--cream-deep); }
+/* 背景の色がどれでも「選んでいる」が分かるよう、内側の縁も足す。
+   色だけだと、3〜5歳以降は白のままで見分けがつかなかった。 */
+.tab.is-active { box-shadow: inset 0 0 0 2px rgba(91, 74, 66, .35); }
+
+/* ---------- panels ---------- */
+main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
+
+.panel[hidden] { display: none; }
+.panel { animation: fadeUp .4s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.panel-intro { padding: 44px 6px 10px; }
+.panel-title {
+  margin: 0 0 10px;
+  font-size: clamp(1.6rem, 5.5vw, 2.2rem);
+  font-weight: 900;
+}
+.panel-title small { font-size: .55em; font-weight: 500; color: var(--ink-soft); margin-left: .5em; }
+.panel-lead { margin: 0; color: var(--ink); }
+
+/* ---------- card ---------- */
+.card {
+  position: relative;
+  margin: 28px 0;
+  padding: 30px 24px 26px;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 10px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.card-mint::before  { background: var(--mint-deep);  }
+.card-peach::before { background: var(--peach-deep); }
+.card-sky::before   { background: var(--sky-deep);   }
+.card-lemon::before { background: var(--lemon-deep); }
+.card-grape::before { background: var(--grape-deep); }
+.card-pink::before  { background: var(--pink-deep);  }
+
+.card-head h3 { margin: 10px 0 12px; font-size: clamp(1.3rem, 4.6vw, 1.7rem); font-weight: 900; }
+.card-sub { margin: 0; color: var(--ink); }
+
+.chip {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.card-mint  .chip { background: var(--mint);  }
+.card-peach .chip { background: var(--peach); }
+.card-sky   .chip { background: var(--sky);   }
+.card-lemon .chip { background: var(--lemon); }
+.card-grape .chip { background: var(--grape); }
+.card-pink  .chip { background: var(--pink);  }
+
+/* ---------- figure with reading-order badges ---------- */
+.figure { margin: 24px 0 8px; }
+.figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+  background: var(--cream-deep);
+  display: block;
+}
+.figure figcaption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+/* 2x2 reading order: numbered badges laid over each quadrant */
+.figure-grid { position: relative; }
+.figure-grid .order {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(120, 90, 70, .28);
+}
+.figure-grid .order-1 { top:  4.5%; left:  4.5%; background: var(--peach-deep); }
+.figure-grid .order-2 { top:  4.5%; left: 53.5%; background: var(--lemon-deep); }
+.figure-grid .order-3 { top: 53.5%; left:  4.5%; background: var(--mint-deep);  }
+.figure-grid .order-4 { top: 53.5%; left: 53.5%; background: var(--sky-deep);   }
+
+.figure-grid .arrow {
+  position: absolute;
+  color: var(--ink-soft);
+  font-size: 1.5rem;
+  opacity: .5;
+  line-height: 1;
+}
+.figure-grid .arrow-1 { top: 11%; left: 48.5%; }
+.figure-grid .arrow-2 { top: 48%; left: 48.5%; }
+.figure-grid .arrow-3 { top: 60%; left: 48.5%; }
+
+@media (max-width: 480px) {
+  .figure-grid .order { width: 27px; height: 27px; font-size: .82rem; }
+}
+
+/* ---------- steps ---------- */
+.steps { counter-reset: step; list-style: none; margin: 22px 0 0; padding: 0; }
+.steps li {
+  counter-increment: step;
+  position: relative;
+  margin: 0 0 14px;
+  padding: 14px 18px 14px 60px;
+  border-radius: 20px;
+  background: var(--cream-deep);
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 16px;
+  top: 15px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: .95rem;
+  font-weight: 900;
+  color: #fff;
+}
+.steps li:nth-child(1)::before { background: var(--peach-deep); }
+.steps li:nth-child(2)::before { background: var(--lemon-deep); }
+.steps li:nth-child(3)::before { background: var(--mint-deep);  }
+.steps li:nth-child(4)::before { background: var(--sky-deep);   }
+.steps h4 { margin: 0 0 4px; font-size: 1rem; font-weight: 700; }
+.steps p  { margin: 0; font-size: .94rem; }
+
+/* ---------- checklist ---------- */
+.checklist { margin: 26px 0 0; }
+.checklist h4 { margin: 0 0 12px; font-size: 1.05rem; font-weight: 900; }
+.checklist ul { list-style: none; margin: 0; padding: 0; }
+.checklist li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 18px;
+  margin-bottom: 8px;
+  background: #FFFDF8;
+  border: 2px solid #F6E8DA;
+  font-size: .94rem;
+}
+.checklist .ok, .checklist .ng {
+  flex: 0 0 auto;
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: .9rem;
+  color: #fff;
+}
+.checklist .ok { background: var(--mint-deep); }
+.checklist .ng { background: var(--pink-deep); }
+
+/* ---------- callout ---------- */
+.callout {
+  margin: 26px 0 0;
+  padding: 20px 22px;
+  border-radius: 22px;
+  background: #FFF4E8;
+  border: 2px dashed #FFC9A0;
+}
+.callout h4 { margin: 0 0 8px; font-size: 1.02rem; font-weight: 900; }
+.callout p  { margin: 0 0 10px; font-size: .94rem; }
+.callout ul { margin: 0; padding-left: 1.2em; font-size: .94rem; }
+.callout li { margin-bottom: 6px; }
+/* 資料のあいだで記述が違うとき、どちらに合わせたかを書き添える段落。
+   本文より一段下げて、本筋と読み分けられるようにする。 */
+.callout p.note {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dotted rgba(91, 74, 66, .25);
+  font-size: .86rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- sources ---------- */
+.sources {
+  margin: 24px 0 0;
+  border-radius: 20px;
+  background: #F6F3FB;
+  padding: 4px 18px;
+}
+.sources summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: .95rem;
+  color: #6E4AA8;   /* grape-deep は 2.60:1 で届かない */
+  list-style: none;
+}
+.sources summary::-webkit-details-marker { display: none; }
+.sources summary::before { content: "📎 " / ""; }
+.sources[open] summary { border-bottom: 1px dotted #D8CDE8; }
+.sources ul { margin: 12px 0 16px; padding-left: 1.2em; font-size: .9rem; }
+.sources li { margin-bottom: 12px; }
+.sources small { color: var(--ink-soft); font-size: .85em; line-height: 1.6; display: inline-block; }
+
+.wip {
+  margin: 22px 0 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--cream-deep);
+  font-size: .86rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- footer ---------- */
+.site-footer {
+  margin-top: 40px;
+  padding: 54px 20px 64px;
+  background: linear-gradient(180deg, var(--cream) 0%, #F4EEFB 100%);
+}
+.footer-inner { max-width: 760px; margin: 0 auto; }
+.site-footer h2 { margin: 0 0 14px; font-size: 1.3rem; font-weight: 900; }
+.site-footer h3 { margin: 26px 0 10px; font-size: 1.05rem; font-weight: 900; }
+.site-footer p { font-size: .92rem; }
+.disclaimer {
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.footer-sources { padding-left: 1.2em; font-size: .9rem; }
+.footer-sources li { margin-bottom: 8px; }
+
+/* ---------- 目次 ---------- */
+.toc {
+  margin: 10px 0 26px;
+  padding: 18px 22px;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.toc h3 { margin: 0 0 10px; font-size: .95rem; font-weight: 900; color: var(--ink-soft); }
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.toc li { margin: 0; }
+.toc a {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--cream-deep);
+  font-size: .86rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+.toc a:hover { background: var(--peach); color: var(--ink); }
+
+/* ---------- グループ見出し ---------- */
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 46px 0 6px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--ink-soft);
+}
+.group-title::after {
+  content: "";
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, #F0DCC9 0 8px, transparent 8px 14px);
+}
+
+/* ---------- グッズ枠 ---------- */
+.goods {
+  margin: 26px 0 0;
+  padding: 20px 22px 18px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #FFF8EC 0%, #FFF4F6 100%);
+  border: 2px solid #FFE2CC;
+}
+.goods-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.goods-head h4 { margin: 0; font-size: 1.02rem; font-weight: 900; }
+.pr {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--ink-soft);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.goods-points { margin: 0 0 14px; padding-left: 1.2em; font-size: .92rem; }
+.goods-points li { margin-bottom: 6px; }
+.goods-picks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.goods-picks a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.goods-picks a:hover { background: #FFF6EE; transform: translateY(-1px); }
+.goods-picks .go {
+  flex: 0 0 auto;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--lemon-deep);
+  color: #fff;
+  font-size: .8rem;
+  white-space: nowrap;
+}
+.goods-note { margin: 12px 0 0; font-size: .76rem; color: var(--ink-soft); line-height: 1.7; }
+
+/* ---------- 項目のサブタイトル ---------- */
+.card-tagline {
+  margin: -4px 0 14px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--cream-deep);
+  font-size: .93rem;
+  font-weight: 700;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+/* 目次をサブタイトル入りの2段組に */
+.toc ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px; }
+.toc a {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.6;
+}
+.toc .toc-title { display: block; font-weight: 700; font-size: .9rem; }
+.toc .toc-sub { display: block; font-size: .76rem; color: var(--ink-soft); }
+.toc a:hover .toc-sub { color: var(--ink); }
+
+/* ---------- 受賞バッジ ---------- */
+.goods-picks .pick-name { display: block; }
+.goods-picks .award {
+  display: block;
+  margin-top: 4px;
+  font-size: .74rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ---------- 選定方針 ---------- */
+.policy { padding-left: 1.3em; font-size: .92rem; }
+.policy li { margin-bottom: 10px; }
+
+/* ---------- 左右比較図の ×／◯ バッジ ---------- */
+.figure-compare { position: relative; }
+.figure-compare .judge {
+  position: absolute;
+  top: 5%;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(120, 90, 70, .3);
+}
+.figure-compare .judge-left  { left: 4%;  }
+.figure-compare .judge-right { left: 53%; }
+.figure-compare .judge-ng { background: var(--pink-deep); }
+.figure-compare .judge-ok { background: var(--mint-deep); }
+
+@media (max-width: 480px) {
+  .figure-compare .judge { width: 30px; height: 30px; font-size: 1rem; top: 4%; }
+}
+
+/* ---------- 項目見出しのアンカー ---------- */
+.card-head h3 a.anchor {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+}
+.card-head h3 a.anchor:hover { color: var(--peach-deep); }
+.anchor-mark {
+  margin-left: .4em;
+  font-size: .72em;
+  font-weight: 700;
+  color: var(--peach-deep);
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.card-head h3 a.anchor:hover .anchor-mark,
+.card-head h3 a.anchor:focus-visible .anchor-mark { opacity: 1; }
+
+/* スティッキーなタブ分だけ、アンカー位置を下げる */
+.card { scroll-margin-top: 132px; }   /* タブの実高120px + 余白 */
+
+/* ---------- よくある言い方と確かめ方 ---------- */
+.examples { margin: 14px 0 0; }
+.examples dt {
+  margin: 14px 0 6px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #FFE8E8;
+  font-weight: 700;
+  font-size: .94rem;
+}
+.examples dt::before { content: "💬 " / ""; }
+.examples dd {
+  margin: 0 0 0 14px;
+  padding-left: 14px;
+  border-left: 3px solid var(--mint-deep);
+  font-size: .92rem;
+}
+
+/* ---------- 危険源の一覧表 ---------- */
+.hazard { margin: 26px 0 0; }
+.hazard h4 { margin: 0 0 12px; font-size: 1.05rem; font-weight: 900; }
+.hazard table { width: 100%; border-collapse: separate; border-spacing: 0 6px; font-size: .92rem; }
+.hazard th {
+  width: 34%;
+  text-align: left;
+  vertical-align: top;
+  padding: 11px 14px;
+  border-radius: 14px 0 0 14px;
+  background: var(--cream-deep);
+  font-weight: 700;
+  line-height: 1.6;
+}
+.hazard td {
+  vertical-align: top;
+  padding: 11px 14px;
+  border-radius: 0 14px 14px 0;
+  background: #FFFDF8;
+  border: 2px solid #F6E8DA;
+  border-left: none;
+  line-height: 1.7;
+}
+@media (max-width: 560px) {
+  .hazard th, .hazard td { display: block; width: auto; border-radius: 0; }
+  .hazard th { border-radius: 14px 14px 0 0; }
+  .hazard td { border-radius: 0 0 14px 14px; border-left: 2px solid #F6E8DA; border-top: none; }
+}
+
+.footer-inner h3[id] { scroll-margin-top: 104px; }
+.goods-note a { white-space: nowrap; }
+
+/* ---------- 3列×2行の6コマ ---------- */
+.figure-grid6 { position: relative; }
+.figure-grid6 .order {
+  position: absolute;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-size: .9rem; font-weight: 900; color: #fff;
+  box-shadow: 0 3px 10px rgba(120, 90, 70, .28);
+}
+.figure-grid6 .order-1 { top: 5%;  left: 3.5%;  background: var(--peach-deep); }
+.figure-grid6 .order-2 { top: 5%;  left: 36.5%; background: var(--lemon-deep); }
+.figure-grid6 .order-3 { top: 5%;  left: 69.5%; background: var(--mint-deep); }
+.figure-grid6 .order-4 { top: 54%; left: 3.5%;  background: var(--sky-deep); }
+.figure-grid6 .order-5 { top: 54%; left: 36.5%; background: var(--grape-deep); }
+.figure-grid6 .order-6 { top: 54%; left: 69.5%; background: var(--pink-deep); }
+@media (max-width: 480px) {
+  .figure-grid6 .order { width: 22px; height: 22px; font-size: .7rem; }
+}
+.steps li:nth-child(5)::before { background: var(--grape-deep); }
+.steps li:nth-child(6)::before { background: var(--pink-deep); }
+
+/* ---------- 用語のマウスオーバー説明 ---------- */
+.term {
+  position: relative;
+  border-bottom: 2px dotted var(--grape-deep);
+  cursor: help;
+}
+.term > .term-desc {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  width: min(19rem, 76vw);
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.7;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(90, 74, 66, .3);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .15s ease;
+  z-index: 30;
+  pointer-events: none;
+}
+.term::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 3px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .15s ease;
+  z-index: 31;
+}
+.term:hover > .term-desc, .term:hover::before,
+.term:focus-visible > .term-desc, .term:focus-visible::before,
+.term.is-open > .term-desc, .term.is-open::before {
+  opacity: 1;
+  visibility: visible;
+}
+.term:focus-visible { outline: 2px solid var(--grape-deep); outline-offset: 2px; }
+
+/* ---------- 目次のグループ ---------- */
+.toc-group + .toc-group { margin-top: 16px; }
+.toc-group h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: .88rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+.toc-count {
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--cream-deep);
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+/* ---------- 横あふれを止める ----------
+   flex の子は min-width: auto が初期値なので、
+   中身の最小幅より狭くならない。日本語でも「100×100cm以上」のような
+   区切れない並びがあると、そこで箱が押し広げられ、
+   スマホでページ全体が横スクロールしてしまう。
+   実測では 390px の画面で 83.5px はみ出していた。 */
+.checklist li > *,
+.goods-head > *,
+.goods-picks a > * { min-width: 0; }
+
+/* 1語が入りきらないときだけ折る。
+   break-word ではなく anywhere にするのは、anywhere だけが
+   「最小内容幅」の計算にも効くから。break-word は見た目は折るが、
+   箱の最小幅は長い語のままなので、flex やグリッドの中では
+   箱が押し広げられてしまう。
+   日本語の通常の行分割は変わらない。効くのは
+   「（モスリンコットン、ガーゼ）」のように、
+   約物のぶら下げ規則で1つのまとまりになってしまう並びだけ。 */
+.card, .callout, .goods, .checklist, .hazard, .steps, .footer-inner {
+  overflow-wrap: anywhere;
+}
+
+/* 用語のふきだしは、画面の外に出ない幅にする。 */
+.term::after { max-width: min(78vw, 320px); }
+
+/* 念のための最後の砦。横スクロールが出たら、まず上の原因を直すこと。 */
+html, body { overflow-x: clip; }
+
+/* ---------- 印刷 ----------
+   紙に出す人は、その時期のタブを1つ持ち歩きたいはず。
+   開いているタブだけが印刷される（隠れたパネルは display:none のまま）。
+
+   いちばん大事なのは ◯ と ✕ を消さないこと。
+   ブラウザは既定で背景色を省くので、何もしないと
+   ◯（ミント）と ✕（ピンク）の丸が白く抜け、
+   記号が読めなくなる。このサイトは全項目がこの2つで成り立っているので、
+   ここだけは print-color-adjust: exact で色を強制する。 */
+@media print {
+  @page { margin: 14mm 12mm; }
+
+  html, body { background: #fff; }
+  body { font-size: 10.5pt; line-height: 1.7; }
+
+  /* タイトルはグラデーションを背景として文字の形に切り抜いている。
+     印刷時にブラウザが背景を省くと、文字が透明なまま残って
+     サイト名が丸ごと消える。紙では普通の文字色に戻す。 */
+  .hero-title {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: var(--ink);
+    color: var(--ink);
+  }
+
+  /* 画面のための飾りと、紙では押せないもの */
+  .tabs, .blob, .hero-wave, .anchor-mark, .go,
+  .hero-badges, .footer-form { display: none !important; }
+
+  .hero { padding: 0 0 10mm; }
+  .hero-title { font-size: 22pt; }
+  .hero-lead { font-size: 10pt; }
+
+  /* 影と角丸は紙では意味がないので、線で表す */
+  .card, .callout, .goods, .checklist li, .figure, .hazard {
+    box-shadow: none !important;
+  }
+  .card { border: 1px solid #D8C8BC; }
+
+  /* ◯ と ✕、比較図のバッジ、手順の番号は色を残す */
+  .ok, .ng, .judge, .order, .chip, .pr {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 項目や図が、ページの切れ目でまっぷたつにならないようにする */
+  .card, .callout, .figure, .goods, .checklist li, .hazard tr, .steps li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .group-title, .panel-title { break-after: avoid; page-break-after: avoid; }
+
+  /* 図が1ページを埋め尽くさないように、高さを抑える */
+  .figure img { max-height: 90mm; width: auto; margin: 0 auto; display: block; }
+
+  /* 紙では、リンク先が分からないと出典をたどれない。
+     本文中のリンクは数が多く読みにくくなるので、
+     出典欄と脚注だけ URL を書き出す。 */
+  .sources a[href^="http"]::after,
+  .footer-sources a[href^="http"]::after {
+    content: " 〈" attr(href) "〉";
+    font-size: 8.5pt;
+    color: #6B5A50;
+    word-break: break-all;
+  }
+
+  /* 商品名は残すが、ボタンの見た目はやめる */
+  .goods-picks a { border: 1px solid #D8C8BC; box-shadow: none; background: #fff; }
+
+  a { color: inherit; text-decoration: none; }
+  .sources a, .footer-sources a { text-decoration: underline; }
+}
+
+/* ---------- 読みやすさ・使いやすさの土台 ----------
+   丸いバッジの白文字は、どれも AA に届いていなかった。
+   ◯2.04:1、✕2.28:1、「Amazonで見る」1.59:1。
+   このサイトは全項目が ◯ と ✕ で成り立っているので、ここは譲れない。
+   パステルの背景は残したまま、文字を濃い墨にする。 */
+.checklist .ok, .checklist .ng,
+.figure-grid .order, .figure-grid6 .order,
+.figure-compare .judge,
+.steps li::before,
+.goods-picks .go { color: #3E322C; }
+
+/* 5番目だけ、背景の紫が濃くて墨文字が 4.34:1 にしかならない */
+.figure-grid .order-5, .figure-grid6 .order-5,
+.steps li:nth-child(5)::before { background: var(--grape-badge); }
+
+/* 用語に下線が引いてあることの手がかり。2.74:1 では見えない */
+.term { border-bottom-color: #8A66C4; }
+
+/* 画面では見えず、読み上げにだけ届くテキスト。
+   ◯✕ の意味や、比較図のどちらが危険かを渡すのに使う。 */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* バッジの箱を px から em にする。
+   文字サイズだけ200%にする設定では、箱が固定だと
+   ◯ や ✕ が丸からあふれ、図に重なって両方読めなくなっていた。 */
+.checklist .ok, .checklist .ng { width: 1.8em; height: 1.8em; }
+.figure-compare .judge { width: 1.6em; height: 1.6em; }
+.figure-grid .order, .figure-grid6 .order { width: 1.9em; height: 1.9em; }
+.steps li { padding-left: 3.75em; }
+.steps li::before { left: 1em; width: 1.9em; height: 1.9em; }
+@media (max-width: 480px) {
+  .figure-compare .judge { width: 1.3em; height: 1.3em; }
+  .figure-grid6 .order { width: 1.5em; height: 1.5em; }
+}
+
+/* キーボードで操作している人が、いまどこにいるか分かるように。
+   既定のアウトラインは、白いカードや丸い背景の上では埋もれる。 */
+.tab:focus-visible,
+.toc a:focus-visible,
+.goods-picks a:focus-visible,
+.sources a:focus-visible,
+.footer-sources a:focus-visible,
+.card-head h3 a.anchor:focus-visible,
+.panel:focus-visible {
+  outline: 3px solid #6E4AA8;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.panel:focus { outline: none; }
+
+/* 動きを減らす設定にしている人には、動かさない。
+   タブを切り替えるたびに30項目分がフェードインし、
+   さらにスムーススクロールが走るのは負担が大きい。 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .panel { animation: none; }
+  .tab:hover, .goods-picks a:hover { transform: none; }
+}
+
+/* 外部リンクは新しいタブで開く。見た目でも分かるようにする。
+   代替テキストを空にしているのは、読み上げ側には
+   .sr-only の「（新しいタブで開きます）」で渡しているため。 */
+.sources a[target="_blank"]::after,
+.footer-sources a[target="_blank"]::after { content: " ↗" / ""; }
+
+/* ---------- 困ったときの番号 ----------
+   番号が月齢タブに散っていて、いちばん時間が惜しい調べものが
+   「子の月齢のタブに運よく書いてあれば見つかる」状態だった。
+   タブに依存しない場所に、1つにまとめて置く。 */
+.emergency {
+  margin: 0 0 40px;
+  padding: 24px 26px;
+  border-radius: 22px;
+  background: #FFF4F6;
+  border: 2px solid var(--pink-deep);
+}
+.emergency h2 { margin: 0 0 12px; }
+.emergency-lead { margin: 0 0 14px; }
+.emergency ul { margin: 0; padding-left: 1.2em; }
+.emergency li { margin-bottom: 10px; line-height: 1.8; }
+.emergency-note { margin: 14px 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+/* ---------- 項目を横断して探す ----------
+   タブが閉じているとブラウザのページ内検索が届かないので、
+   97項目を1つの入力欄から引けるようにする。 */
+.search { position: relative; max-width: 30rem; margin: 0 auto 22px; }
+.search-input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 2px solid #F0DCC9;
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.search-input::placeholder { color: var(--ink-soft); }
+.search-input:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+.search-results {
+  position: absolute;
+  left: 0; right: 0; top: calc(100% + 8px);
+  z-index: 40;
+  margin: 0; padding: 6px;
+  list-style: none;
+  max-height: min(60vh, 24rem);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(150, 120, 100, .22);
+  text-align: left;
+}
+.search-hit {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.search-hit:hover, .search-hit:focus-visible { background: var(--cream-deep); }
+.search-hit:focus-visible { outline: 3px solid #6E4AA8; outline-offset: -3px; }
+.search-tab {
+  display: inline-block;
+  margin-bottom: 3px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--cream-deep);
+  font-size: .72rem;
+  font-weight: 700;
+}
+.search-name { display: block; font-weight: 700; font-size: .95rem; }
+.search-sub  { display: block; font-size: .8rem; color: var(--ink-soft); }
+@media print { .search { display: none !important; } }
+
+/* スマホでは次のタブが覗くようにする。
+   390px では7つ中3つしか見えず、4つ目は8pxしか出ていなかったので、
+   「まだ続く」ことに気づけなかった。 */
+@media (max-width: 480px) {
+  .tabs-inner { padding-right: 34px; }
+  .tabs-inner::after {
+    content: "";
+    position: sticky; right: 0;
+    flex: 0 0 1px; height: 1px;
+  }
+}
+
+/* タッチ端末には hover がないので、見出しの # が一度も出ない。
+   薄く常時出して、リンクをコピーできることを分かるようにする。 */
+@media (hover: none) {
+  .anchor-mark { opacity: .45; }
+}
+
+/* 目次へ戻るボタン。
+   0〜3か月タブは30項目・約129画面分あり、最後まで読むと
+   目次まで121画面分さかのぼることになる。片手では戻れない。 */
+.to-toc {
+  position: fixed;
+  right: 16px; bottom: 16px;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 18px;
+  border: 2px solid var(--peach-deep);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 700;
+  box-shadow: 0 8px 22px rgba(150, 120, 100, .28);
+  cursor: pointer;
+}
+.to-toc.is-shown { display: inline-flex; }
+.to-toc:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+@media print { .to-toc { display: none !important; } }
+
+
+/* ---------- バッジの中の記号を、丸の中心にそろえる ----------
+   place-items: center が中央にそろえるのは「行ボックス」で、
+   実際に墨が乗る範囲ではない。
+   Zen Maru Gothic はアセント17に対しディセント4という非対称な設計なので、
+   行ボックスを中央に置くとベースラインが下がりすぎ、記号が下に出る。
+   110pxの丸に拡大して実測したところ、
+   ◯ は直径の3.2%、✕ は4.8% 下にずれていた。
+   しかも2つでずれ量が違うので、◯と✕が互いにも揃っていなかった。
+
+   外側の span に transform や padding を当てても、丸ごと動くだけで
+   中の記号は動かない。記号を .mark で包み、それだけを上げる。 */
+.checklist .ok .mark,
+.checklist .ng .mark,
+.figure-compare .judge .mark,
+.figure-grid .order .mark,
+.figure-grid6 .order .mark { display: block; position: relative; }
+
+.checklist .ok .mark,
+.figure-compare .judge-ok .mark { top: -0.058em; }
+.checklist .ng .mark,
+.figure-compare .judge-ng .mark { top: -0.088em; }
+.figure-grid .order .mark,
+.figure-grid6 .order .mark      { top: -0.086em; }
