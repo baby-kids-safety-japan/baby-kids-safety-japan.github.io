@@ -183,8 +183,19 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
 main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 
 .panel[hidden] { display: none; }
-.panel { animation: fadeUp .4s ease both; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+/* fill-mode は both ではなく backwards。
+   both だと終了後も最終キーフレームが残り、transform: none と書いても
+   計算値は matrix(1,0,0,1,0,0) になる。これは包含ブロックを作るので、
+   パネルの中の position: fixed がビューポート基準にならない。
+   用語のふきだしを画面の端で止めるのに fixed が要るので、ここを直す。
+   backwards なら、開始前は最初のキーフレーム、終了後は元の値に戻る。 */
+.panel { animation: fadeUp .4s ease backwards; }
+/* transform を使わない。transform が付いているあいだ、パネルは
+   position: fixed の包含ブロックになり、中の用語のふきだしが
+   ビューポート基準で止まらなくなる。タブを切り替えるたびに
+   0.4秒のあいだ、その状態が戻ってしまう。
+   14pxのスライドは飾りなので、落として不透明度だけにする。 */
+@keyframes fadeUp { from { opacity: 0; } to { opacity: 1; } }
 
 .panel-intro { padding: 44px 6px 10px; }
 .panel-title {
@@ -1064,3 +1075,33 @@ html, body { overflow-x: clip; }
 .figure-compare .judge-ng .mark { top: -0.088em; }
 .figure-grid .order .mark,
 .figure-grid6 .order .mark      { top: -0.086em; }
+
+/* ---------- 用語のふきだしを、画面からはみ出させない ----------
+   ふきだしは用語の真上に中央ぞろえで出る。
+   用語が行の端にあると、ふきだしが画面の外にはみ出す。
+   390pxの画面で、最初のタブだけでも34個中20個がはみ出していて、
+   しかも html,body の overflow-x: clip に切られて読めなくなっていた。
+
+   狭い画面では、用語のそばに置くのをやめて、画面の下に固定する。
+   どこで開いても全文が見え、切られることがない。 */
+@media (max-width: 600px) {
+  .term > .term-desc {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    top: auto;
+    width: auto;
+    max-width: none;
+    transform: none;
+    font-size: .88rem;
+  }
+  /* 三角は、もう用語を指していないので出さない */
+  .term::before { content: none; }
+
+  /* 「目次へ」ボタンが出ているときは、その上に逃がす。
+     重なると、ふきだしの文末がボタンの下に隠れる。 */
+  body:has(.to-toc.is-shown) .term > .term-desc { bottom: 72px; }
+  /* :has() が効かない環境でも読めるよう、ボタンより手前に出す */
+  .term > .term-desc { z-index: 60; }
+}
