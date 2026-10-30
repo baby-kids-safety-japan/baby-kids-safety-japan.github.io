@@ -205,14 +205,24 @@ def item_page_prefix():
     return "../../"
 
 
-def render_item(item, color):
+def render_item(item, color, tab_id=None, page_prefix=""):
+    """tab_id を渡すと、見出しの「#」がその項目のページへのリンクになる。
+    項目ページ自身では渡さない（自分へのリンクになるため）。"""
     seen = set()
     out = ['  <article class="card card-%s" id="%s">' % (color, item["id"])]
     out.append('    <div class="card-head">')
     out.append('      <span class="chip">%s</span>' % esc(item["chip"]))
-    out.append('      <h3><a class="anchor" href="#%s">%s'
-               '<span class="anchor-mark" aria-hidden="true">#</span></a></h3>'
-               % (item["id"], esc(item["title"])))
+    if tab_id:
+        # 「#」を、その項目だけのページへのリンクにする。
+        # 見出しの文字そのものはリンクにしない。読んでいる途中に
+        # 押してしまうと、同じ内容のページへ飛ばされて戸惑うため。
+        out.append('      <h3>%s<a class="anchor-mark" href="%s%s"'
+                   ' title="この項目だけのページ"><span aria-hidden="true">#</span>'
+                   '<span class="sr-only">%s だけのページを開く</span></a></h3>'
+                   % (esc(item["title"]), page_prefix, item_url(tab_id, item["id"]),
+                      esc(item["title"])))
+    else:
+        out.append('      <h3>%s</h3>' % esc(item["title"]))
     if item.get("sub"):
         out.append('      <p class="card-tagline">%s</p>' % esc(item["sub"]))
     out.append('      <p class="card-sub">%s</p>' % annotate(item["lead"], seen))
@@ -401,7 +411,7 @@ def render_panel(i, tab):
     for g in tab["groups"]:
         out.append('  <h3 class="group-title"><span>%s</span></h3>' % esc(g["name"]))
         for item in g["items"]:
-            out.append(render_item(item, COLORS[n % len(COLORS)]))
+            out.append(render_item(item, COLORS[n % len(COLORS)], tab["id"]))
             n += 1
     out.append('</section>')
     return "\n".join(out)
@@ -547,7 +557,7 @@ def write_item_pages():
     n = 0
     for tab in TABS:
         items = [it for g in tab["groups"] for it in g["items"]]
-        for item in items:
+        for idx, item in enumerate(items):
             url = SITE_URL + item_url(tab["id"], item["id"])
             sib = []
             for other in items:
@@ -570,7 +580,7 @@ def write_item_pages():
                             else SITE_URL + "assets/og.png",
                 "jsonld": render_item_jsonld(item, tab, url),
                 # 図のパスは assets/ からの相対なので、2階層分の「../」を足す
-                "card": render_item(item, tab["id"]).replace(
+                "card": render_item(item, COLORS[idx % len(COLORS)]).replace(
                     'src="assets/', 'src="%sassets/' % root),
                 "siblings": "\n".join(sib),
                 "total": sum(len(g["items"]) for t in TABS for g in t["groups"]),
