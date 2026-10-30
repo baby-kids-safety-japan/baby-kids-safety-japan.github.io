@@ -116,6 +116,13 @@ PRODUCTS = {
     "futon_junior_kataen": ("B0D41KP131", "こどものふとん ジュニア敷き布団 90×190cm（固綿入・日本製）"),
     "futon_junior_nishikawa": ("B0FBRK9ZLY", "西川 ジュニアサイズ 合繊敷きふとん 90×180cm（抗菌加工・日本製）"),
     "futon_junior_3layer": ("B07MFTTPCF", "リビングプランニング 敷き布団 ジュニアサイズ 85×185cm（3層構造・日本製）"),
+    "cord_winder": ("B0FNR1JWB9", "ブラインドコード 巻き取り器 6個セット（ネジ付きコードフック）"),
+    "cord_clip_blind": ("B0CNVXSVT8", "ブラインド固定クリップ 8個（チェーン対策）"),
+    "carshade_seiwa": ("B0773B9JNL", "セイワ 楽らくマグネットカーテン Lサイズ Z87（遮光・磁石貼付）"),
+    "carshade_static": ("B0D41QYVJX", "車用サンシェード サイド（静電気式・UVカット）"),
+    "range_guard_takagi": ("B06XW6MV45", "高木金属 レンジガード 3面タイプ BC-K3（日本製・ガス/IH対応）"),
+    "stove_guard_iris": ("B00426MLUA", "アイリスオーヤマ ストーブガード STG-580N（幅58cm）"),
+    "heater_guard": ("B0DF1F9BSP", "永田金網 ファンヒーターガード NHG-5755FS2（石油・ガス兼用）"),
     "lifejacket_takashina": ("B0HL8MM9L1", "高階救命器具 子供用 救命胴衣 TK-210（国土交通省型式承認・桜マーク）"),
     "lifejacket_cs": ("B07SRWN5LW", "キャプテンスタッグ 子供用 救命胴衣（国土交通省型式承認・桜マーク）"),
     "window_lock_itoh": ("B0091G036K", "伊藤製作所 ワンタッチシマリ 大（窓用補助錠）"),
@@ -209,6 +216,13 @@ def award(key):
 # 検証できない性能や効果は書かない。登録名に入っている特徴と、
 # その項目の「選び方のポイント」で説明できる範囲にとどめる。
 NOTES = {
+    "cord_winder": "たるみを巻き取る。輪をなくせる",
+    "cord_clip_blind": "チェーン式のブラインドを壁に留める",
+    "carshade_seiwa": "磁石で貼る。後部座席の窓を覆える",
+    "carshade_static": "静電気で貼る。跡が残らない",
+    "range_guard_takagi": "3面で囲う。横からも手が入らない",
+    "stove_guard_iris": "定番サイズ。石油ストーブを囲える",
+    "heater_guard": "ファンヒーター用。吹き出し口の前をふさぐ",
     "lifejacket_takashina": "桜マーク。国の型式承認を受けている",
     "lifejacket_cs": "桜マーク。サイズ展開が広い",
     "window_lock_itoh": "ワンタッチ。換気の幅で止められる",
