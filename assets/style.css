@@ -555,7 +555,8 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 
 /* ---------- 受賞バッジ ---------- */
 .goods-picks .pick-name { display: block; }
-.goods-picks .award {
+.goods-picks .award,
+.goods-picks .pick-note {
   display: block;
   margin-top: 4px;
   font-size: .74rem;

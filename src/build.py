@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from content import TABS, UPDATED
 from glossary import GLOSSARY
 from products import award as product_award
+from products import note as product_note
 from products import link as product_link
 from sources import SRC
 
@@ -144,7 +145,13 @@ def render_goods(goods, kind=None, seen=None):
     for key in goods["picks"]:
         url, name = product_link(key)
         aw = product_award(key)
-        badge = ('<span class="award">🏅 %s</span>' % esc(aw[0])) if aw else ""
+        if aw:
+            badge = '<span class="award">🏅 %s</span>' % esc(aw[0])
+        else:
+            # 受賞バッジが無いと、その行だけ空きができる。
+            # 代わりに「なぜ挙げたのか」の一言を同じ位置に出す。
+            nt = product_note(key)
+            badge = ('<span class="pick-note">%s</span>' % esc(nt)) if nt else ""
         picks.append('        <li><a href="%s" target="_blank" rel="nofollow sponsored noopener">'
                      '<span class="pick-name">%s%s</span>'
                      '<span class="go">Amazonで見る →</span></a></li>'
@@ -596,7 +603,7 @@ def validate():
     errors, warnings = [], []
     errors.extend(_duplicate_keys())
     errors.extend(_duplicate_item_keys())
-    from products import AWARDS
+    from products import AWARDS, NOTES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
     errors.extend(_duplicate_source_urls())
@@ -607,8 +614,13 @@ def validate():
                 where = "%s / %s" % (t["label"], item["id"])
                 goods = item.get("goods")
                 if goods:
+                    # 下限3、上限6。3は下限であって目標ではない。
+                    # 種類ごとに1つずつ置いて3つ、という埋め方をしないこと。
                     if len(goods["picks"]) < 3:
                         errors.append("%s: グッズは3件以上にする（現在 %d 件）"
+                                      % (where, len(goods["picks"])))
+                    elif len(goods["picks"]) > 6:
+                        errors.append("%s: グッズは6件までにする（現在 %d 件）"
                                       % (where, len(goods["picks"])))
                     # 選び方のポイントが商品の件数を下回ると、
                     # 選ぶ基準の書かれていない商品が混ざる。
@@ -620,6 +632,10 @@ def validate():
                     for k in goods["picks"]:
                         if k not in PRODUCTS:
                             errors.append("%s: 未登録の商品キー %s" % (where, k))
+                        # 受賞バッジも一言も無いと、その行だけ空きができる。
+                        elif not AWARDS.get(k) and not NOTES.get(k):
+                            warnings.append("%s: 商品 %s に受賞バッジも一言も無い"
+                                            % (where, k))
 
                 # 受賞の登録が、存在しない商品を指していないか。
                 # 商品を差し替えたときに、受賞だけ残ると古い情報が出る。
