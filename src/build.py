@@ -206,23 +206,16 @@ def item_page_prefix():
 
 
 def render_item(item, color, tab_id=None, page_prefix=""):
-    """tab_id を渡すと、見出しの「#」がその項目のページへのリンクになる。
-    項目ページ自身では渡さない（自分へのリンクになるため）。"""
+    """tab_id を渡すと、カードの末尾に、その項目だけのページへのリンクが付く。
+    項目ページ自身では渡さない（自分へのリンクになるため）。
+    見出しの「#」は、どちらの場合もそのカードへのページ内リンクである。"""
     seen = set()
     out = ['  <article class="card card-%s" id="%s">' % (color, item["id"])]
     out.append('    <div class="card-head">')
     out.append('      <span class="chip">%s</span>' % esc(item["chip"]))
-    if tab_id:
-        # 「#」を、その項目だけのページへのリンクにする。
-        # 見出しの文字そのものはリンクにしない。読んでいる途中に
-        # 押してしまうと、同じ内容のページへ飛ばされて戸惑うため。
-        out.append('      <h3>%s<a class="anchor-mark" href="%s%s"'
-                   ' title="この項目だけのページ"><span aria-hidden="true">#</span>'
-                   '<span class="sr-only">%s だけのページを開く</span></a></h3>'
-                   % (esc(item["title"]), page_prefix, item_url(tab_id, item["id"]),
-                      esc(item["title"])))
-    else:
-        out.append('      <h3>%s</h3>' % esc(item["title"]))
+    out.append('      <h3><a class="anchor" href="#%s">%s'
+               '<span class="anchor-mark" aria-hidden="true">#</span></a></h3>'
+               % (item["id"], esc(item["title"])))
     if item.get("sub"):
         out.append('      <p class="card-tagline">%s</p>' % esc(item["sub"]))
     out.append('      <p class="card-sub">%s</p>' % annotate(item["lead"], seen))
@@ -281,6 +274,13 @@ def render_item(item, color, tab_id=None, page_prefix=""):
         out.append(render_goods(item["goods"], item.get("goods_kind"), seen).rstrip("\n"))
 
     out.append(render_sources(item["sources"]).rstrip("\n"))
+    if tab_id:
+        # 個別ページへの入口は、記号ではなく言葉で出す。
+        # 「#」は見出しのページ内リンクとして使っているうえ、
+        # 技術文書の慣習なので、このサイトの読者には通じない。
+        out.append('    <p class="card-permalink">'
+                   '<a href="%s%s">この項目だけを開く</a></p>'
+                   % (page_prefix, item_url(tab_id, item["id"])))
     out.append('  </article>')
     return "\n".join(out)
 
@@ -453,11 +453,15 @@ def render_jsonld():
 
 
 
+# color-scheme を only light にして、ブラウザ側の自動ダーク変換を断る。
+# イラストは119枚とも明るい背景のJPEGで、暗くできない。
+# 文字と背景だけが暗くなると、光る長方形が並ぶ紙面になる。
 ITEM_PAGE = """<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
 <title>%(title)s｜%(site)s</title>
 <meta name="description" content="%(desc)s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -871,11 +875,15 @@ def build():
     validate()
     total = sum(len(g["items"]) for t in TABS for g in t["groups"])
     panels = "\n\n".join(render_panel(i, t) for i, t in enumerate(TABS))
+    # color-scheme を only light にして、ブラウザ側の自動ダーク変換を断る。
+    # イラストは119枚とも明るい背景のJPEGで、暗くできない。
+    # 文字と背景だけが暗くなると、光る長方形が並ぶ紙面になる。
     doc = """<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
 <title>%(title)s｜%(tagline)s</title>
 <meta name="description" content="%(desc)s">
 <link rel="preconnect" href="https://fonts.googleapis.com">

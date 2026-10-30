@@ -910,6 +910,7 @@ html, body { overflow-x: clip; }
 .sources a:focus-visible,
 .footer-sources a:focus-visible,
 .card-head h3 a.anchor:focus-visible,
+.card-permalink a:focus-visible,
 .panel:focus-visible {
   outline: 3px solid #6E4AA8;
   outline-offset: 2px;
@@ -1145,3 +1146,19 @@ html, body { overflow-x: clip; }
 @media (min-width: 720px) {
   .itemnav ul { columns: 2; column-gap: 28px; }
 }
+
+/* 個別ページへの入口。カードの末尾に、控えめに置く。 */
+.card-permalink {
+  margin: 1.1rem 0 0;
+  text-align: right;
+  font-size: .92rem;
+}
+.card-permalink a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding: .35rem .1rem;
+}
+.card-permalink a::after { content: " →"; }
+.card-permalink a:hover { color: var(--peach-deep); }
+.itemmain .card-permalink { display: none; }
