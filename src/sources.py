@@ -185,6 +185,12 @@ SRC = {
     "kids_design": (
         "キッズデザイン賞（特定非営利活動法人 キッズデザイン協議会）",
         "https://kidsdesignaward.jp/"),
+    "good_design": (
+        "グッドデザイン賞（公益財団法人 日本デザイン振興会）",
+        "https://www.g-mark.org/"),
+    "caa_special_use": (
+        "特別用途食品（消費者庁）",
+        "https://www.caa.go.jp/policies/policy/food_labeling/foods_for_special_dietary_uses/"),
     "caa_handbook": (
         "子どもを事故から守る！事故防止ハンドブック（消費者庁・PDF）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_002/assets/consumer_safety_cms205_230131_01.pdf"),

@@ -259,7 +259,30 @@ AWARDS = {
                       "https://www.best-mother.jp/selection/mothers_selection17/"),
     "crib_tomoneru": ("第18回キッズデザイン賞（すくすや トモネル ベビーベッド コンパクト）",
                       _src("kids_design_18")),
+    # 商品そのものが受賞したもの
+    "food_scissors":  ("第9回キッズデザイン賞 審査委員長特別賞",
+                       "https://kidsdesignaward.jp/search/detail_150245"),
+    "chairbelt_carifree": ("第17回キッズデザイン賞",
+                       "https://kidsdesignaward.jp/search/detail_230330"),
+    "sleeper_organic": ("第19回キッズデザイン賞",
+                       "https://kidsdesignaward.jp/search/detail_250039"),
+    "helmet_ides":    ("2020年度グッドデザイン賞（幼児用ヘルメット キャッピープチ）",
+                       "https://www.g-mark.org/gallery/winners/9e21aa74-803d-11ed-af7e-0242ac130002"),
     # 受賞したのは同じシリーズの別の型番。どの型番が受賞したのかをかっこの中に書く。
+    "chairbelt_holdplus": ("第17回キッズデザイン賞（同シリーズ キャリフリー チェアベルト ホールド）",
+                       "https://kidsdesignaward.jp/search/detail_230330"),
+    "babyrack_combi": ("第18回キッズデザイン賞（同シリーズ ネムリラ コードレス AUTO SWING BEDi Long SS EG＋）",
+                       "https://kidsdesignaward.jp/search/detail_240127"),
+    "babyrack_bedi":  ("第18回キッズデザイン賞（同シリーズ ネムリラ コードレス AUTO SWING BEDi Long SS EG＋）",
+                       "https://kidsdesignaward.jp/search/detail_240127"),
+    "babyrack_nemurira_auto": ("第18回キッズデザイン賞（同シリーズ ネムリラ コードレス AUTO SWING BEDi Long SS EG＋）",
+                       "https://kidsdesignaward.jp/search/detail_240127"),
+    "bouncer_bjorn":  ("第8回キッズデザイン賞（同シリーズ ベビービョルン バウンサーバランスソフト）",
+                       "https://kidsdesignaward.jp/search/detail_140025"),
+    "juniorseat_combi": ("第16回キッズデザイン賞（同シリーズ ジョイトリップ アドバンス）",
+                       "https://kidsdesignaward.jp/search/detail_220264"),
+    "milk_pot_tiger": ("第11回キッズデザイン賞（同シリーズ 蒸気レスとく子さん PIS-A型、PIP-A型）",
+                       "https://kidsdesignaward.jp/search/detail_170954"),
     "sensor_med":    ("第16回キッズデザイン賞 奨励賞（Sense-Uベビービデオカメラと体動センサ3）",
                       "https://kidsdesignaward.jp/search/detail_220416"),
     "sensor_mat":    ("第18回キッズデザイン賞（同シリーズ 乳児用体動センサ ベビーアラーム E-202）",
@@ -274,7 +297,42 @@ AWARDS = {
 CREDS = {
     "sensor_babysense": ("病院・産後施設・保育施設で導入",
                          "https://www.babysense.jp/"),
+    "ors":               ("消費者庁許可 個別評価型病者用食品（第2020002号）",
+                          _src("caa_special_use")),
 }
+
+
+# 賞も導入実績も無いが、長く売られている定番であることを示すバッジ。
+# 「発売年」「累計販売数」のように、検証できて時間が経っても古くならない事実だけを書く。
+# メーカーの「ロングセラー」「大人気」といった主観的な形容は書かない。
+# 累計の数量には、メーカーが公表した時点を添える（時点を書かないと古くなる）。
+# 受賞バッジ・導入実績バッジと同じ位置に出るので、表示されるのは1つだけ。
+STAPLES = {
+    "toothbrush":     ("1976年発売。累計約3500万本（2006年時点）",
+                       "https://www.pigeon.co.jp/news/detail/book06_07_27.html"),
+    "neckcooler":     ("2005年発売。累計800万本以上",
+                       "https://magicool.jp/neck-cooler/index.html"),
+    "furniture_pole": ("突っ張り棒を1975年から、家具固定用を1994年から作るメーカー",
+                       "https://www.heianshindo.co.jp/company/profile"),
+    "carrier_bjorn":  ("1973年から抱っこひもを作るブランド",
+                       "https://www.babybjorn.jp/our-history"),
+    "carrier_mini":   ("1973年から抱っこひもを作るブランド",
+                       "https://www.babybjorn.jp/our-history"),
+    "thermometer":    ("1983年から続く「けんおんくん」",
+                       "https://www.healthcare.omron.co.jp/corp/companyhistory/trivia/03.html"),
+    "thermometer_terumo": ("1983年から予測式体温計を作るメーカー",
+                       "https://www.terumo.co.jp/about/history"),
+    "thermohygro":    ("1980年から温湿度計を作るメーカー",
+                       "https://www.tanita.co.jp/company/history/"),
+    "milk_pot_zojirushi": ("1980年から電気ポットを作るメーカー",
+                       "https://www.zojirushi.co.jp/corp/history/index.html"),
+    "jointmat":       ("年間20万セット以上（2025年・メーカー発表）",
+                       "https://prtimes.jp/main/html/rd/p/000000287.000039747.html"),
+}
+
+
+def staple(key):
+    return STAPLES.get(key)
 
 
 def cred(key):

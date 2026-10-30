@@ -17,6 +17,7 @@ from glossary import GLOSSARY
 from products import award as product_award
 from products import note as product_note
 from products import cred as product_cred
+from products import staple as product_staple
 from products import link as product_link
 from sources import SRC
 
@@ -147,11 +148,15 @@ def render_goods(goods, kind=None, seen=None):
         url, name = product_link(key)
         aw = product_award(key)
         cr = product_cred(key)
+        st = product_staple(key)
         if aw:
             badge = '<span class="award">🏅 %s</span>' % esc(aw[0])
         elif cr:
-            # 賞ではなく、第三者が使っている実績で選んだもの。賞と混ぜない。
+            # 賞ではなく、現場で使われている実績や国の許可で選んだもの。賞と混ぜない。
             badge = '<span class="cred">🏥 %s</span>' % esc(cr[0])
+        elif st:
+            # 賞も実績も無いが、長く売られている定番であることを示す。
+            badge = '<span class="staple">📌 %s</span>' % esc(st[0])
         else:
             # 受賞バッジが無いと、その行だけ空きができる。
             # 代わりに「なぜ挙げたのか」の一言を同じ位置に出す。
@@ -608,7 +613,7 @@ def validate():
     errors, warnings = [], []
     errors.extend(_duplicate_keys())
     errors.extend(_duplicate_item_keys())
-    from products import AWARDS, CREDS, NOTES
+    from products import AWARDS, CREDS, NOTES, STAPLES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
     errors.extend(_duplicate_source_urls())
@@ -646,7 +651,8 @@ def validate():
                         if k not in PRODUCTS:
                             errors.append("%s: 未登録の商品キー %s" % (where, k))
                         # 受賞バッジも導入実績バッジも一言も無いと、その行だけ空きができる。
-                        elif not AWARDS.get(k) and not CREDS.get(k) and not NOTES.get(k):
+                        elif not (AWARDS.get(k) or CREDS.get(k)
+                                  or STAPLES.get(k) or NOTES.get(k)):
                             warnings.append("%s: 商品 %s にバッジも一言も無い"
                                             % (where, k))
 
@@ -679,6 +685,7 @@ def validate():
     used_src = set(k for t in TABS for g in t["groups"] for i in g["items"]
                    for k, _ in i.get("sources", []))
     FOOTER_SRC = {"mothers_selection", "tamahiyo_award", "kids_design",
+                  "good_design", "caa_special_use",
                   "kids_design_18"}
     for k in sorted(set(SRC) - used_src - FOOTER_SRC):
         warnings.append("出典 %s がどこからも参照されていない" % k)
@@ -873,12 +880,15 @@ def build():
       <li><strong>第三者の評価があること。</strong>
         <a href="%(mothers_selection)s" target="_blank" rel="noopener">マザーズセレクション大賞</a>、
         <a href="%(tamahiyo_award)s" target="_blank" rel="noopener">たまひよ赤ちゃんグッズ大賞</a>、
-        <a href="%(kids_design)s" target="_blank" rel="noopener">キッズデザイン賞</a>を参照しています。
+        <a href="%(kids_design)s" target="_blank" rel="noopener">キッズデザイン賞</a>、
+        <a href="%(good_design)s" target="_blank" rel="noopener">グッドデザイン賞</a>を参照しています。
         商品そのもの、または同じシリーズの別の型番が受賞したと確認できたものだけ、
         商品名の下に受賞を書いています。別の型番が受賞した場合は、その型番をかっこの中に書いています。
         メーカー別の集計で上位だったものは、紹介している商品と受賞対象が一致しないため書いていません。<br>
-        賞ではなく、<strong>医療機関や保育施設で使われている実績</strong>で選んだものには、
-        🏥 のバッジを付けています。賞とは性質が違うので、分けて表示しています。</li>
+        賞ではなく、<strong>医療機関や保育施設で使われている実績</strong>や
+        <strong>国の許可</strong>で選んだものには 🏥 のバッジを、
+        <strong>長く売られている定番</strong>であるものには 📌 のバッジを付けています。
+        定番のバッジには、メーカーが公表している発売年や累計販売数だけを書いています。</li>
     </ol>
     <h3 id="ads">広告について</h3>
     <p>
@@ -1029,6 +1039,7 @@ def build():
        "mothers_selection": SRC["mothers_selection"][1],
        "tamahiyo_award": SRC["tamahiyo_award"][1],
        "kids_design": SRC["kids_design"][1],
+       "good_design": SRC["good_design"][1],
        "caa_psc_start": SRC["caa_psc_start"][1],
        "css": asset("assets/style.css"), "js": asset("assets/app.js"),
        "favicon_svg": asset("assets/favicon.svg"),
