@@ -173,9 +173,6 @@ SRC = {
     "caa_handbook": (
         "子どもを事故から守る！事故防止ハンドブック（消費者庁・PDF）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_002/assets/consumer_safety_cms205_230131_01.pdf"),
-    "caa_bed_fall": (
-        "0〜1歳児のベッドからの転落事故に御注意ください！─頭部を負傷する事故に加え、窒息事故も報告されており、ベビーベッドの安全基準が見直されています─（令和2年11月13日・消費者庁・PDF）",
-        "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_041/assets/consumer_safety_cms204_20201113_01.pdf"),
     "caa_bread": (
         "子ども安全メール from 消費者庁 Vol.569「パン等による子どもの窒息や誤嚥に気を付けましょう！」（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20211020/"),
