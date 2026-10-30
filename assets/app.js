@@ -15,11 +15,16 @@
       // 7つ全部がタブ停止だと、本文に入るまでに7回押すことになる。
       tab.tabIndex = on ? 0 : -1;
     });
-    // 選んだタブを必ず画面の中に出す。
-    // 共有リンクで開いたとき、該当タブが画面外のままだと
-    // どの月齢の記事なのか分からなかった。
-    if (tabs[index]) {
-      tabs[index].scrollIntoView({ block: 'nearest', inline: 'center' });
+    // 選んだタブを、タブ列の中で横に送って見えるようにする。
+    //
+    // scrollIntoView は使わない。block:'nearest' でも、タブ列が画面の下端に
+    // かかっているとページごと縦に動く。読み込み直後に activate(0) を呼ぶので、
+    // スマートフォンでトップページを開くと少し下から表示される原因になっていた。
+    // 横方向だけを、タブ列の scrollLeft で動かす。
+    var strip = tabs[index] && tabs[index].parentNode;
+    if (strip && strip.scrollWidth > strip.clientWidth) {
+      var t = tabs[index];
+      strip.scrollLeft = t.offsetLeft - (strip.clientWidth - t.offsetWidth) / 2;
     }
     panels.forEach(function (panel, i) {
       var on = i === index;
