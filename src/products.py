@@ -93,7 +93,7 @@ PRODUCTS = {
     "buzzer":          ("B093D8PKG3", "防犯ブザー 130dB（LEDライト付き）"),
     "gps":             ("B0DZMM9VNF", "みてねみまもりGPSトーク"),
     "lifejacket":      ("B07RPRBLTY", "オーシャンライフ 子供用ライフジャケット（船舶検査対応）"),
-    "lifejacket2":     ("B09TSYN53B", "Bluestorm 子供用 救命胴衣"),
+    "lifejacket2":     ("B09TSYN53B", "Bluestorm 子供用 救命胴衣 BSJ-212Y Lサイズ（国土交通省型式承認・桜マーク・身長120〜150cm）"),
     "wbgt":            ("B0FCSCH9CK", "黒球式 熱中症指数計（WBGT計・JIS準拠）"),
     "bottle_1l":       ("B08YNXLMHG", "BOTTLE BOTTLE ステンレス水筒 1L（保冷・ストロー）"),
     "neckcooler":      ("B0HBTDPKCX", "マジクール キッズ ネッククーラー"),
@@ -172,7 +172,7 @@ PRODUCTS = {
     "range_guard_takagi": ("B06XW6MV45", "高木金属 レンジガード 3面タイプ BC-K3（日本製・ガス/IH対応）"),
     "stove_guard_iris": ("B00426MLUA", "アイリスオーヤマ ストーブガード STG-580N（幅58cm）"),
     "heater_guard": ("B0DF1F9BSP", "永田金網 ファンヒーターガード NHG-5755FS2（石油・ガス兼用）"),
-    "lifejacket_takashina": ("B0HL8MM9L1", "高階救命器具 子供用 救命胴衣 TK-210（国土交通省型式承認・桜マーク）"),
+    "lifejacket_bsj_m": ("B09TSXJZG8", "Bluestorm 子供用 救命胴衣 BSJ-212C Mサイズ（国土交通省型式承認・桜マーク・身長100〜120cm）"),
     "lifejacket_cs": ("B07SRWN5LW", "キャプテンスタッグ 子供用 救命胴衣（国土交通省型式承認・桜マーク）"),
     "window_lock_itoh": ("B0091G036K", "伊藤製作所 ワンタッチシマリ 大（窓用補助錠）"),
     "window_fence": ("B0CTFG394Q", "窓用転落防止フェンス おとさんゾウ（突っ張り式の柵）"),
@@ -207,7 +207,7 @@ PRODUCTS = {
     "babyrack_combi": ("B0D4DBJ142", "コンビ ハイローチェア ネムリラ Fit AQ"),
     "babyrack_bedi":  ("B07ZTN6WBG", "コンビ ホワイトレーベル ネムリラ AUTO SWING BEDi Long シェル EG"),
     "babyrack_apr":   ("B0967Q7LS1", "アップリカ ハイローチェア ユラリズム オート ライト（0か月〜4歳頃）"),
-    "babyrack_katoji": ("B0D9NHJKPB", "カトージ スイングハイローラック ピッコロ（新生児〜）"),
+    "babyrack_katoji": ("B0FX473V35", "カトージ スイングハイローラック ピッコロ 03417（新生児〜4歳頃）"),
 
     # 4〜6か月。床で完結させる・外出先の暑さ・おもちゃ。
     "playmat_nuage":  ("B0FL25V9MR", "日本育児 nuage スムースプレイマット 220×140cm（厚さ4cm・継ぎ目なし）"),
@@ -302,32 +302,22 @@ CREDS = {
 }
 
 
-# 賞も導入実績も無いが、長く売られている定番であることを示すバッジ。
-# 「発売年」「累計販売数」のように、検証できて時間が経っても古くならない事実だけを書く。
-# メーカーの「ロングセラー」「大人気」といった主観的な形容は書かない。
-# 累計の数量には、メーカーが公表した時点を添える（時点を書かないと古くなる）。
+# 賞も導入実績も無いが、「みんなが当たりまえに使っている」ことを示すバッジ。
+#
+# **書くのは、どれだけ使われているかを示す数量だけ。**
+# 累計販売数や年間販売数のように、実際に広く使われていることが読み取れる数字を書く。
+# 「1973年から作っているメーカー」のような年数だけの記述は、長く続いていることしか
+# 読み取れず、定番であることの裏づけにならない。発売年は数量に添えるときだけ書く。
+# メーカーの「ロングセラー」「大人気」といった主観的な形容と、販売目標は書かない。
+# 数量には、メーカーが公表した時点を添える（時点を書かないと古くなる）。
 # 受賞バッジ・導入実績バッジと同じ位置に出るので、表示されるのは1つだけ。
 STAPLES = {
-    "toothbrush":     ("1976年発売。累計約3500万本（2006年時点）",
-                       "https://www.pigeon.co.jp/news/detail/book06_07_27.html"),
-    "neckcooler":     ("2005年発売。累計800万本以上",
-                       "https://magicool.jp/neck-cooler/index.html"),
-    "furniture_pole": ("突っ張り棒を1975年から、家具固定用を1994年から作るメーカー",
-                       "https://www.heianshindo.co.jp/company/profile"),
-    "carrier_bjorn":  ("1973年から抱っこひもを作るブランド",
-                       "https://www.babybjorn.jp/our-history"),
-    "carrier_mini":   ("1973年から抱っこひもを作るブランド",
-                       "https://www.babybjorn.jp/our-history"),
-    "thermometer":    ("1983年から続く「けんおんくん」",
-                       "https://www.healthcare.omron.co.jp/corp/companyhistory/trivia/03.html"),
-    "thermometer_terumo": ("1983年から予測式体温計を作るメーカー",
-                       "https://www.terumo.co.jp/about/history"),
-    "thermohygro":    ("1980年から温湿度計を作るメーカー",
-                       "https://www.tanita.co.jp/company/history/"),
-    "milk_pot_zojirushi": ("1980年から電気ポットを作るメーカー",
-                       "https://www.zojirushi.co.jp/corp/history/index.html"),
-    "jointmat":       ("年間20万セット以上（2025年・メーカー発表）",
-                       "https://prtimes.jp/main/html/rd/p/000000287.000039747.html"),
+    "toothbrush": ("1976年発売。累計約3500万本（2006年時点）",
+                   "https://www.pigeon.co.jp/news/detail/book06_07_27.html"),
+    "neckcooler": ("2005年発売。累計800万本以上",
+                   "https://magicool.jp/neck-cooler/index.html"),
+    "jointmat":   ("年間20万セット以上（2025年・メーカー発表）",
+                   "https://prtimes.jp/main/html/rd/p/000000287.000039747.html"),
 }
 
 
@@ -403,7 +393,7 @@ NOTES = {
     "range_guard_takagi": "3面で囲う。横からも手が入らない",
     "stove_guard_iris": "定番サイズ。石油ストーブを囲える",
     "heater_guard": "ファンヒーター用。吹き出し口の前をふさぐ",
-    "lifejacket_takashina": "桜マーク。国の型式承認を受けている",
+    "lifejacket_bsj_m": "桜マーク。身長100〜120cmに合う",
     "lifejacket_cs": "桜マーク。サイズ展開が広い",
     "window_lock_itoh": "ワンタッチ。換気の幅で止められる",
     "window_fence": "錠ではなく柵。窓を開けても出られない",
@@ -486,7 +476,7 @@ NOTES = {
     "buzzer": "130dB。LEDライト付き",
     "gps": "位置が分かる。音声でやり取りできる",
     "lifejacket": "船舶検査対応。浮力が確かめられている",
-    "lifejacket2": "救命胴衣。体格に合うサイズを選べる",
+    "lifejacket2": "桜マーク。身長120〜150cmに合う",
     "wbgt": "黒球式・JIS準拠。暑さ指数をその場で測れる",
     "bottle_1l": "1L。1日分を持たせられる",
     "neckcooler": "首を冷やす。繰り返し使える",
