@@ -44,16 +44,19 @@ DISCLOSURE = ("当サイトはアフィリエイトプログラムに参加し�
               "Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。")
 
 
-def asset(path):
-    """assets/ のファイルに内容ハッシュを付ける。更新してもキャッシュが残らないように。"""
+def asset(path, prefix=""):
+    """assets/ のファイルに内容ハッシュを付ける。更新してもキャッシュが残らないように。
+
+    prefix は、項目ページのように深い階層から参照するときの「../」を入れる。
+    """
     import hashlib
     full = os.path.join(ROOT, path)
     try:
         with open(full, "rb") as f:
             h = hashlib.sha1(f.read()).hexdigest()[:8]
     except OSError:
-        return path
-    return "%s?v=%s" % (path, h)
+        return prefix + path
+    return "%s%s?v=%s" % (prefix, path, h)
 
 
 def img_size(path):
@@ -190,6 +193,16 @@ def render_sources(sources):
     return ('    <details class="sources">\n'
             '      <summary>この項目の根拠</summary>\n'
             '      <ul>\n%s\n      </ul>\n    </details>\n' % "\n".join(lis))
+
+
+def item_url(tab_id, item_id):
+    """項目ページのURL（サイトのルートからの相対）。"""
+    return "%s/%s/" % (tab_id, item_id)
+
+
+def item_page_prefix():
+    """項目ページ（/タブ/項目/）から見たルートへの相対パス。"""
+    return "../../"
 
 
 def render_item(item, color):
@@ -429,20 +442,169 @@ def render_jsonld():
     return json.dumps(data, ensure_ascii=False, indent=2)
 
 
+
+ITEM_PAGE = """<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>%(title)s｜%(site)s</title>
+<meta name="description" content="%(desc)s">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="%(css)s">
+<link rel="icon" href="%(favicon_svg)s" type="image/svg+xml">
+<link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">
+<meta name="theme-color" content="#FFD3BC">
+<link rel="canonical" href="%(url)s">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="%(site)s">
+<meta property="og:title" content="%(title)s｜%(site)s">
+<meta property="og:description" content="%(desc)s">
+<meta property="og:url" content="%(url)s">
+<meta property="og:image" content="%(og_image)s">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+%(jsonld)s
+</script>
+</head>
+<body class="itempage">
+
+<header class="itemhead">
+  <p class="crumbs">
+    <a href="%(root)s">%(site)s</a> ›
+    <a href="%(root)s#%(tab_id)s">%(tab_label)s</a>
+  </p>
+  <p class="itemhead-updated">
+    <time datetime="%(updated)s">%(updated_ja)s</time>の時点での最新情報を掲載しています。
+  </p>
+</header>
+
+<main class="itemmain">
+%(card)s
+
+  <nav class="itemnav">
+    <h2>%(tab_label)s のほかの項目</h2>
+    <ul>
+%(siblings)s
+    </ul>
+    <p class="itemnav-all"><a href="%(root)s#%(tab_id)s">%(tab_label)s をまとめて見る</a></p>
+  </nav>
+</main>
+
+<footer class="itemfoot">
+  <p>
+    <strong>このページは「%(site)s」の1項目です。</strong>
+    0〜3か月から10歳〜までの%(total)d項目を、公的機関の資料をもとにまとめています。
+    <a href="%(root)s">全体を見る</a>
+  </p>
+  <p class="itemfoot-note">%(disclosure)s</p>
+</footer>
+
+<script src="%(js)s"></script>
+</body>
+</html>
+"""
+
+
+def render_item_jsonld(item, tab, url):
+    """項目ページの構造化データ。記事として出す。"""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": item["title"],
+        "description": item.get("sub") or re.sub(r"<[^>]+>", "", item["lead"])[:110],
+        "inLanguage": "ja",
+        "dateModified": UPDATED,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": url},
+        "isPartOf": {"@type": "WebSite", "name": SITE_TITLE, "url": SITE_URL},
+        "publisher": {"@type": "Organization", "name": SITE_TITLE, "url": SITE_URL},
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": SITE_TITLE, "item": SITE_URL},
+                {"@type": "ListItem", "position": 2, "name": tab["title"],
+                 "item": SITE_URL + "#" + tab["id"]},
+                {"@type": "ListItem", "position": 3, "name": item["title"], "item": url},
+            ],
+        },
+    }
+    if item.get("figure"):
+        data["image"] = SITE_URL + item["figure"][0]
+    return json.dumps(data, ensure_ascii=False, indent=2)
+
+
+def write_item_pages():
+    """項目ごとのページを書き出す。
+
+    トップページは月齢別に見渡すためのもので、これはその逆。
+    「ベビーゲート 階段上」のように、1つのことを調べて来た人が着地する。
+    本文はトップと同じ render_item を使うので、二重に持たない。
+    """
+    root = item_page_prefix()
+    n = 0
+    for tab in TABS:
+        items = [it for g in tab["groups"] for it in g["items"]]
+        for item in items:
+            url = SITE_URL + item_url(tab["id"], item["id"])
+            sib = []
+            for other in items:
+                if other["id"] == item["id"]:
+                    continue
+                sib.append('      <li><a href="%s%s">%s</a></li>'
+                           % (root, item_url(tab["id"], other["id"]), esc(other["title"])))
+            desc = item.get("sub") or re.sub(r"<[^>]+>", "", item["lead"])
+            doc = ITEM_PAGE % {
+                "title": esc(item["title"]),
+                "site": SITE_TITLE,
+                "desc": esc(desc[:115]),
+                "url": url,
+                "root": root,
+                "tab_id": tab["id"],
+                "tab_label": esc(tab["title"]),
+                "updated": UPDATED,
+                "updated_ja": _updated_ja(),
+                "og_image": (SITE_URL + item["figure"][0]) if item.get("figure")
+                            else SITE_URL + "assets/og.png",
+                "jsonld": render_item_jsonld(item, tab, url),
+                # 図のパスは assets/ からの相対なので、2階層分の「../」を足す
+                "card": render_item(item, tab["id"]).replace(
+                    'src="assets/', 'src="%sassets/' % root),
+                "siblings": "\n".join(sib),
+                "total": sum(len(g["items"]) for t in TABS for g in t["groups"]),
+                "disclosure": esc(DISCLOSURE),
+                "css": asset("assets/style.css", root),
+                "js": asset("assets/app.js", root),
+                "favicon_svg": asset("assets/favicon.svg", root),
+                "favicon_32": asset("assets/favicon-32.png", root),
+            }
+            d = os.path.join(ROOT, tab["id"], item["id"])
+            os.makedirs(d, exist_ok=True)
+            with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+                f.write(doc)
+            n += 1
+    return n
+
+
 def write_sitemap_and_robots():
     """sitemap.xml と robots.txt を書き出す。
 
-    1ページだけのサイトなので sitemap は1件。
+    トップページと、項目ごとのページを全部載せる。
     タブは URL を持たない（ハッシュで切り替える）ので、タブごとには出さない。
     """
-    sitemap = (
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        '  <url>\n'
-        '    <loc>%s</loc>\n'
-        '    <lastmod>%s</lastmod>\n'
-        '  </url>\n'
-        '</urlset>\n' % (SITE_URL, UPDATED))
+    urls = [SITE_URL]
+    for tab in TABS:
+        for g in tab["groups"]:
+            for it in g["items"]:
+                urls.append(SITE_URL + item_url(tab["id"], it["id"]))
+    body = "".join(
+        '  <url>\n    <loc>%s</loc>\n    <lastmod>%s</lastmod>\n  </url>\n' % (u, UPDATED)
+        for u in urls)
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+               + body + '</urlset>\n')
     robots = ("User-agent: *\n"
               "Allow: /\n"
               "\n"
@@ -1050,8 +1212,10 @@ def build():
     path = os.path.join(ROOT, "index.html")
     with open(path, "w", encoding="utf-8") as f:
         f.write(doc)
+    pages = write_item_pages()
     write_sitemap_and_robots()
     print("built %s (%d 項目)" % (path, total))
+    print("built %d 項目ページ" % pages)
 
 
 if __name__ == "__main__":

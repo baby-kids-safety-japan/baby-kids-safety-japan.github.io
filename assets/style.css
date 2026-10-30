@@ -1108,3 +1108,40 @@ html, body { overflow-x: clip; }
   /* :has() が効かない環境でも読めるよう、ボタンより手前に出す */
   .term > .term-desc { z-index: 60; }
 }
+
+/* ---------- 項目ごとのページ ---------- */
+/* トップは月齢別に見渡すためのもので、こちらは1つのことを調べて来た人が着地する。
+   本文（.card）はトップと同じものを使うので、周りだけを定義する。 */
+.itempage { background: var(--bg); }
+.itemhead {
+  max-width: 760px; margin: 0 auto; padding: 18px 16px 0;
+}
+.itemhead .crumbs { font-size: .84rem; color: var(--ink-soft); margin: 0 0 6px; }
+.itemhead .crumbs a { color: var(--ink-soft); }
+.itemhead .crumbs a:hover { color: var(--ink); }
+.itemhead-updated { font-size: .8rem; color: var(--ink-soft); margin: 0 0 14px; }
+
+.itemmain { max-width: 760px; margin: 0 auto; padding: 0 16px 8px; }
+.itemmain > .card { margin-bottom: 28px; }
+/* 単独で読むページなので、見出しの # は要らない */
+.itemmain .anchor-mark { display: none; }
+
+.itemnav {
+  background: #fff; border-radius: 18px; padding: 18px 20px 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05); margin-bottom: 24px;
+}
+.itemnav h2 { font-size: .98rem; margin: 0 0 10px; }
+.itemnav ul { list-style: none; margin: 0; padding: 0; }
+.itemnav li { margin-bottom: 7px; font-size: .9rem; line-height: 1.5; }
+.itemnav-all { margin: 14px 0 0; font-size: .9rem; font-weight: 700; }
+
+.itemfoot {
+  max-width: 760px; margin: 0 auto; padding: 0 16px 48px;
+  font-size: .88rem; color: var(--ink-soft); line-height: 1.7;
+}
+.itemfoot a { font-weight: 700; }
+.itemfoot-note { font-size: .78rem; margin-top: 10px; }
+
+@media (min-width: 720px) {
+  .itemnav ul { columns: 2; column-gap: 28px; }
+}
