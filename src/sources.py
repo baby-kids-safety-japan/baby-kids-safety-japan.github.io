@@ -281,9 +281,6 @@ SRC = {
     "kids_design_18": (
         "第18回キッズデザイン賞 受賞作品一覧（キッズデザイン協議会・PDF）",
         "https://kidsdesignaward.jp/docs/2024/18thKDawardPressrelease20240821.pdf"),
-    "meti_psc": (
-        "消費生活用製品安全法 PSCマーク制度（経済産業省）",
-        "https://www.meti.go.jp/policy/consumer/seian/shouan/index.htm"),
     "ncac_fall": (
         "入浴・沐浴に伴う乳児の落下事故に注意！─浴槽の蓋や洗濯機の上には寝かせないで─（国民生活センター）",
         "https://www.kokusen.go.jp/news/data/n-20251217_1.html"),

@@ -237,6 +237,12 @@ PRODUCTS.update(BOOKS)
 
 # 第三者評価。**商品そのものが受賞したと確認できたものだけ**を書く。
 # 「メーカー別集計で○位」のように、受賞対象と紹介商品が一致しないものは載せない。
+def _src(key):
+    """受賞の参照先は出典レジストリから引く。直書きするとリンクチェックから漏れる。"""
+    from sources import SRC
+    return SRC[key][1]
+
+
 AWARDS = {
     "carrier":       ("マザーズセレクション大賞2025（Ergobaby OMNIシリーズ）",
                       "https://www.best-mother.jp/selection/mothers_selection17/"),
@@ -245,7 +251,7 @@ AWARDS = {
     "sterilizer":    ("マザーズセレクション大賞2025（哺乳びんスチーム除菌・乾燥器 ポチットシリーズ）",
                       "https://www.best-mother.jp/selection/mothers_selection17/"),
     "crib_tomoneru": ("第18回キッズデザイン賞（すくすや トモネル ベビーベッド コンパクト）",
-                      "https://kidsdesignaward.jp/docs/2024/18thKDawardPressrelease20240821.pdf"),
+                      _src("kids_design_18")),
 }
 
 

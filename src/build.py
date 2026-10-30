@@ -661,9 +661,22 @@ def validate():
                     errors.append("%s: サブタイトルがない" % where)
                 if not item.get("sources"):
                     errors.append("%s: 根拠がない" % where)
+                seen_src = set()
                 for key, _ in item["sources"]:
                     if key not in SRC:
                         errors.append("%s: 未登録の出典キー %s" % (where, key))
+                    # 同じ出典を1項目に2回書くと、「この項目の根拠」に二重に出る。
+                    if key in seen_src:
+                        errors.append("%s: 出典キー %s が重複している" % (where, key))
+                    seen_src.add(key)
+    # どこからも参照していない出典は、消し忘れか、埋めていない内容の穴である。
+    # 受賞制度と第三者評価の参照先は、項目ではなくフッターから使うので除く。
+    used_src = set(k for t in TABS for g in t["groups"] for i in g["items"]
+                   for k, _ in i.get("sources", []))
+    FOOTER_SRC = {"mothers_selection", "tamahiyo_award", "kids_design",
+                  "kids_design_18"}
+    for k in sorted(set(SRC) - used_src - FOOTER_SRC):
+        warnings.append("出典 %s がどこからも参照されていない" % k)
     if errors:
         raise SystemExit("ビルド中止:\n  " + "\n  ".join(errors))
     if warnings:
@@ -848,14 +861,14 @@ def build():
         STマーク（おもちゃ）、一般医療機器の届出（ベビーセンサー）など。<br>
         <strong>ベビーベッドとライターは、法律でPSCマークが義務づけられた「特定製品」です。</strong>
         マークのないものは販売できません
-        （<a href="https://www.meti.go.jp/policy/consumer/seian/shouan/index.htm" target="_blank" rel="noopener">経済産業省</a>）。
+        （<a href="%(caa_psc_start)s" target="_blank" rel="noopener">消費者庁</a>）。
         ベビーカーと乳幼児用ベッドガードも、順次この対象になります。</li>
       <li><strong>定番として長く売られていること。</strong>
         廃番になりにくく、使い方の情報も見つけやすいためです。</li>
       <li><strong>第三者の評価があること。</strong>
-        <a href="https://www.best-mother.jp/selection/mothers_selection17/" target="_blank" rel="noopener">マザーズセレクション大賞</a>、
-        <a href="https://st.benesse.ne.jp/ninshin/content/?id=216711" target="_blank" rel="noopener">たまひよ赤ちゃんグッズ大賞</a>、
-        <a href="https://kidsdesignaward.jp/" target="_blank" rel="noopener">キッズデザイン賞</a>を参照しています。
+        <a href="%(mothers_selection)s" target="_blank" rel="noopener">マザーズセレクション大賞</a>、
+        <a href="%(tamahiyo_award)s" target="_blank" rel="noopener">たまひよ赤ちゃんグッズ大賞</a>、
+        <a href="%(kids_design)s" target="_blank" rel="noopener">キッズデザイン賞</a>を参照しています。
         商品そのものが受賞したと確認できたものだけ、商品名の下に受賞を書いています。
         メーカー別の集計で上位だったものは、紹介している商品と受賞対象が一致しないため書いていません。</li>
     </ol>
@@ -1003,6 +1016,12 @@ def build():
        "hero_updated": _hero_updated(), "footer_updated": _footer_updated(total),
        "total": total, "tabnav": render_tab_nav(), "panels": panels,
        "sources": render_footer(), "disclosure": DISCLOSURE, "form": FORM_URL,
+       # 第三者評価と制度の参照先。直書きせず出典レジストリから引く。
+       # 直書きだと link_check.py の対象から外れ、リンク切れに気づけない。
+       "mothers_selection": SRC["mothers_selection"][1],
+       "tamahiyo_award": SRC["tamahiyo_award"][1],
+       "kids_design": SRC["kids_design"][1],
+       "caa_psc_start": SRC["caa_psc_start"][1],
        "css": asset("assets/style.css"), "js": asset("assets/app.js"),
        "favicon_svg": asset("assets/favicon.svg"),
        "favicon_32": asset("assets/favicon-32.png"),
