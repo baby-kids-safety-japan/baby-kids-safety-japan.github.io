@@ -1194,6 +1194,11 @@ def build():
       <a href="%(form)s" target="_blank" rel="noopener">お問い合わせフォーム<span class="sr-only">（新しいタブで開きます）</span></a>
       からお知らせください。確認のうえ、直します。
     </p>
+    <p class="disclaimer" id="about-author">
+      このサイトは、子どもが生まれて退院した日に安全対策のまとまった資料が見つからなかったことから、
+      公的機関の資料を月齢別に網羅し、1項目ずつ出典をたどれるようにしたもので、
+      <strong>高橋 晶（Akira Takahashi）</strong>が運営しています。
+    </p>
     <h3>主な出典</h3>
     <ul class="footer-sources">
 %(sources)s

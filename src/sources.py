@@ -489,4 +489,28 @@ SRC = {
     "env_heat_firstaid": (
         "熱中症環境保健マニュアル「熱中症を疑ったときには何をするべきか」（環境省・PDF）",
         "https://www.wbgt.env.go.jp/pdf/manual/heatillness_manual_2-3_2-4.pdf"),
+    "cfa_techou_ninshin": (
+        "母子健康手帳 任意様式「すこやかな妊娠と出産のために」（こども家庭庁 母子健康手帳情報支援サイト・PDF）",
+        "https://mchbook.cfa.go.jp/pdf/item_1_1.pdf"),
+    "cfa_techou_shinseiji": (
+        "母子健康手帳 任意様式「新生児（生後約４週間までの赤ちゃん）」（こども家庭庁 母子健康手帳情報支援サイト・PDF）",
+        "https://mchbook.cfa.go.jp/pdf/item_1_2.pdf"),
+    "cfa_techou_jiko": (
+        "母子健康手帳 任意様式「事故の予防」（こども家庭庁 母子健康手帳情報支援サイト・PDF）",
+        "https://mchbook.cfa.go.jp/pdf/item_3_2.pdf"),
+    "cfa_techou_nini": (
+        "母子健康手帳 任意様式（こども家庭庁 母子健康手帳情報支援サイト・PDF）",
+        "https://mchbook.cfa.go.jp/pdf/20260116_policies_boshihoken_techou_15.pdf"),
+    "nite_bedguard_stroller": (
+        "こどもの命を守るため、今知ってほしい ── 乳幼児用ベッドガード・ベビーカーの事故を防ぐために（2026年6月25日・製品評価技術基盤機構）",
+        "https://www.nite.go.jp/jiko/chuikanki/press/2026fy/prs260625.html"),
+    "caa_blind_cord": (
+        "こども安全メール Vol.553 ブラインドやロール式網戸などの操作用ひもに注意！（消費者庁）",
+        "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20210518"),
+    "cfa_sangocare_gl": (
+        "産前・産後サポート事業ガイドライン／産後ケア事業ガイドライン 令和8年3月（こども家庭庁・PDF）",
+        "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/514c8c85-824a-4d32-96e0-318b82bd75b5/4571be59/20260331_policies_boshihoken_tsuuchi_2026_19.pdf"),
+    "cao_carseat_manual3": (
+        "チャイルドシートの着用指導マニュアル 3（内閣府・PDF）",
+        "https://www8.cao.go.jp/koutu/keihatsu/pdf/child/car-seat-m3.pdf"),
 }
