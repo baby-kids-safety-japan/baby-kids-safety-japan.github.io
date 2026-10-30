@@ -116,6 +116,9 @@ SRC = {
     "fdma_bls2025": (
         "「救急蘇生法の指針2025（市民用）」への対応について（令和8年10月23日・消防救第385号・総務省消防庁・PDF）",
         "https://www.fdma.go.jp/laws/tutatsu/items/20261023_kyuuki_01.pdf"),
+    "env_uv_sunscreen": (
+        "紫外線環境保健マニュアル2008 第3章「紫外線による影響を防ぐためには」（環境省・PDF）",
+        "https://www.env.go.jp/chemi/uv/uv_pdf/03.pdf"),
     "jma_uvindex": (
         "紫外線情報（分布図）（気象庁）",
         "https://www.data.jma.go.jp/env/uvindex/"),
@@ -149,6 +152,18 @@ SRC = {
     "cao_bicycle_haku": (
         "令和5年交通安全白書 特集「自転車の安全利用の促進について」（内閣府）",
         "https://www8.cao.go.jp/koutu/taisaku/r05kou_haku/zenbun/genkyo/feature/feature_3_7.html"),
+    "npa_mlit_carleaflet": (
+        "お子様を車に乗せる際の注意事項について（国土交通省・警察庁・PDF）",
+        "https://www.npa.go.jp/bureau/traffic/anzen/img/childseat/kokkousyou_keisatutyou_leaflet.pdf"),
+    "npa_seatbelt": (
+        "全ての座席でシートベルトを着用しましょう（警察庁）",
+        "https://www.npa.go.jp/bureau/traffic/anzen/seatbelt.html"),
+    "npa_seatbelt_toukei": (
+        "シートベルト関連統計（令和7年中・警察庁交通局・PDF）",
+        "https://www.npa.go.jp/bureau/traffic/anzen/8-1.pdf"),
+    "npa_childseat": (
+        "子供を守るチャイルドシート（警察庁）",
+        "https://www.npa.go.jp/bureau/traffic/anzen/childseat.html"),
     "npa_child_traffic": (
         "令和7年春の全国交通安全運動 幼児・児童の交通事故分析（警察庁 交通局・PDF）",
         "https://www.npa.go.jp/news/release/2025/R7harunoundou_koutuujikobunseki.pdf"),
@@ -369,6 +384,12 @@ SRC = {
     "caa_pool": (
         "みんなの消費安全ナビ Vol.693 家庭用プールでの事故を防ぎましょう！（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20260807"),
+    "caa_disinfectant": (
+        "子ども安全メール Vol.583 消毒剤・除菌剤の取扱いに留意しましょう。誤飲や眼に入る事故の発生が続いています！（消費者庁）",
+        "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20220228/"),
+    "caa_trampoline": (
+        "遊戯施設におけるトランポリンでの事故にご注意ください！─骨折や、神経損傷等の重傷例も─（令和2年12月9日・消費者庁・PDF）",
+        "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_044/assets/consumer_safety_cms204_20201209_03.pdf"),
     "caa_cart": (
         "子ども安全メール Vol.588 ショッピングカートからの転落に注意！（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20220418/"),
