@@ -173,6 +173,30 @@ SRC = {
     "gov_1st_grade": (
         "小学校1年生の歩行中の死者・重傷者は6年生の約2.5倍。新1年生を交通事故から守るには？（政府広報オンライン）",
         "https://www.gov-online.go.jp/article/201804/entry-8077.html"),
+    "cao_milk_notice": (
+        "災害時における授乳の支援並びに母子に必要となる物資の備蓄及び活用について（内閣府・内閣府男女共同参画局・厚生労働省 連名事務連絡・PDF）",
+        "https://www.mhlw.go.jp/content/10200000/000561611.pdf"),
+    "cao_bichiku_sheet": (
+        "災害対応力を強化する女性の視点 備蓄チェックシート（内閣府男女共同参画局・PDF）",
+        "https://www.gender.go.jp/policy/saigai/fukkou/pdf/guidelene_06.pdf"),
+    "mhlw_liquid_milk": (
+        "乳及び乳製品の成分規格等に関する省令及び食品、添加物等の規格基準の一部改正について（厚生労働省・PDF）",
+        "https://www.mhlw.go.jp/content/11130500/000342402.pdf"),
+    "cfa_hinanjo_mc": (
+        "避難所等で生活している妊産婦・乳幼児に対する支援のポイント（こども家庭庁・PDF）",
+        "https://sukoyaka21.cfa.go.jp/media/tools/s08_sai_po013.pdf"),
+    "tokyo_mc_disaster": (
+        "妊産婦・乳幼児を守る災害対策ガイドライン（東京都福祉保健局・PDF）",
+        "https://www.fukushi.metro.tokyo.lg.jp/documents/d/fukushi/guideline"),
+    "jda_dat_nutrition": (
+        "災害時における乳幼児の栄養支援の手引き（日本栄養士会 JDA-DAT 赤ちゃん防災プロジェクト・PDF）",
+        "https://www.fukushi.metro.tokyo.lg.jp/documents/d/fukushi/jda-dat"),
+    "tokyo_balcony_leaflet": (
+        "子供をベランダからの転落事故から守るために（東京都商品等安全対策協議会 注意喚起リーフレット・PDF）",
+        "https://www.shouhiseikatu.metro.tokyo.lg.jp/anzen/kyougikai/h29/documents/29_leaflet_balcony.pdf"),
+    "tokyo_balcony_hiyari": (
+        "ベランダからの子供の転落に注意！（東京都生活文化局 危害・危険情報・PDF）",
+        "https://www.shouhiseikatu.metro.tokyo.lg.jp/attention/documents/kigaikiken_bereanda.pdf"),
     "gov_window": (
         "ご注意ください！窓やベランダからのこどもの転落事故（政府広報オンライン）",
         "https://www.gov-online.go.jp/article/202107/entry-10298.html"),
