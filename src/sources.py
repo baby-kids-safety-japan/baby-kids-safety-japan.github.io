@@ -390,6 +390,9 @@ SRC = {
     "caa_trampoline": (
         "遊戯施設におけるトランポリンでの事故にご注意ください！─骨折や、神経損傷等の重傷例も─（令和2年12月9日・消費者庁・PDF）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_044/assets/consumer_safety_cms204_20201209_03.pdf"),
+    "ncac_cart": (
+        "医療機関ネットワークにみる店舗用ショッピングカートでの子どもの事故─転落時の頭部損傷のリスクが高く、危険です！─（平成28年12月7日・国民生活センター）",
+        "https://www.kokusen.go.jp/news/data/n-20161207_1.html"),
     "caa_cart": (
         "子ども安全メール Vol.588 ショッピングカートからの転落に注意！（消費者庁）",
         "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20220418/"),
