@@ -116,6 +116,12 @@ PRODUCTS = {
     "futon_junior_kataen": ("B0D41KP131", "こどものふとん ジュニア敷き布団 90×190cm（固綿入・日本製）"),
     "futon_junior_nishikawa": ("B0FBRK9ZLY", "西川 ジュニアサイズ 合繊敷きふとん 90×180cm（抗菌加工・日本製）"),
     "futon_junior_3layer": ("B07MFTTPCF", "リビングプランニング 敷き布団 ジュニアサイズ 85×185cm（3層構造・日本製）"),
+    "pool_intex_baby": ("B000I9RZOW", "INTEX サンセットグローベビープール 86×25cm 58924（日本正規品）"),
+    "pool_bestway": ("B0CDXWSJZB", "Bestway Rangs キッズプール 70×30cm 3リング 51033"),
+    "pool_folding": ("B0FH6L8M21", "Bonarca 折りたたみプール 直径80cm（空気入れ不要）"),
+    "pool_intex_114": ("B0018ANDAK", "INTEX サンセットグロープール 114×25cm 57412（日本正規品）"),
+    "shade_coleman": ("B07NL45LZS", "コールマン パーティーシェードDX 300+（UVカット・サイドウォール付き）"),
+    "shade_tarp": ("B0F6V947X3", "HomeGround ワンタッチ タープテント 3m×3m（UVカット・3段階高さ調整）"),
     "quake_mat": ("B0FB8QMHHG", "ネセクト ヒュッゲ 強力耐震マット（フリーカット・耐荷重900kg・厚さ5mm）"),
     "tv_belt": ("B0DCVRCNXV", "FORESIA テレビ転倒防止ベルト（震度7対応・VESA穴固定）"),
     "raincover": ("B091QL6DPJ", "ダイヤ ベビーカー用レインカバー（A型B型・対面/背面式）"),
@@ -264,6 +270,12 @@ def award(key):
 # 検証できない性能や効果は書かない。登録名に入っている特徴と、
 # その項目の「選び方のポイント」で説明できる範囲にとどめる。
 NOTES = {
+    "pool_intex_baby": "86cm・深さ25cm。乳児期に大きすぎない",
+    "pool_bestway": "70cm。ベランダにも置ける大きさ",
+    "pool_folding": "空気入れ不要。出し入れが短時間で済む",
+    "pool_intex_114": "114cm。きょうだいで入れる",
+    "shade_coleman": "自立する。プールから離れずに張れる",
+    "shade_tarp": "ワンタッチ。一人でも立てられる",
     "quake_mat": "切って使える。家具の脚の形に合わせられる",
     "tv_belt": "VESA穴に固定。テレビ台と連結できる",
     "raincover": "雨よけと風よけ。幌だけでは覆えない前面をふさぐ",
