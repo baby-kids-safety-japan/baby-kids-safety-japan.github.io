@@ -16,6 +16,7 @@ from content import TABS, UPDATED
 from glossary import GLOSSARY
 from products import award as product_award
 from products import note as product_note
+from products import cred as product_cred
 from products import link as product_link
 from sources import SRC
 
@@ -145,8 +146,12 @@ def render_goods(goods, kind=None, seen=None):
     for key in goods["picks"]:
         url, name = product_link(key)
         aw = product_award(key)
+        cr = product_cred(key)
         if aw:
             badge = '<span class="award">🏅 %s</span>' % esc(aw[0])
+        elif cr:
+            # 賞ではなく、第三者が使っている実績で選んだもの。賞と混ぜない。
+            badge = '<span class="cred">🏥 %s</span>' % esc(cr[0])
         else:
             # 受賞バッジが無いと、その行だけ空きができる。
             # 代わりに「なぜ挙げたのか」の一言を同じ位置に出す。
@@ -603,7 +608,7 @@ def validate():
     errors, warnings = [], []
     errors.extend(_duplicate_keys())
     errors.extend(_duplicate_item_keys())
-    from products import AWARDS, NOTES
+    from products import AWARDS, CREDS, NOTES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
     errors.extend(_duplicate_source_urls())
@@ -640,9 +645,9 @@ def validate():
                     for k in goods["picks"]:
                         if k not in PRODUCTS:
                             errors.append("%s: 未登録の商品キー %s" % (where, k))
-                        # 受賞バッジも一言も無いと、その行だけ空きができる。
-                        elif not AWARDS.get(k) and not NOTES.get(k):
-                            warnings.append("%s: 商品 %s に受賞バッジも一言も無い"
+                        # 受賞バッジも導入実績バッジも一言も無いと、その行だけ空きができる。
+                        elif not AWARDS.get(k) and not CREDS.get(k) and not NOTES.get(k):
+                            warnings.append("%s: 商品 %s にバッジも一言も無い"
                                             % (where, k))
 
                 # 受賞の登録が、存在しない商品を指していないか。
@@ -869,8 +874,11 @@ def build():
         <a href="%(mothers_selection)s" target="_blank" rel="noopener">マザーズセレクション大賞</a>、
         <a href="%(tamahiyo_award)s" target="_blank" rel="noopener">たまひよ赤ちゃんグッズ大賞</a>、
         <a href="%(kids_design)s" target="_blank" rel="noopener">キッズデザイン賞</a>を参照しています。
-        商品そのものが受賞したと確認できたものだけ、商品名の下に受賞を書いています。
-        メーカー別の集計で上位だったものは、紹介している商品と受賞対象が一致しないため書いていません。</li>
+        商品そのもの、または同じシリーズの別の型番が受賞したと確認できたものだけ、
+        商品名の下に受賞を書いています。別の型番が受賞した場合は、その型番をかっこの中に書いています。
+        メーカー別の集計で上位だったものは、紹介している商品と受賞対象が一致しないため書いていません。<br>
+        賞ではなく、<strong>医療機関や保育施設での導入実績</strong>で選んだものには、
+        🏥 のバッジを付けています。これは販売元の説明に基づくもので、賞とは別のものとして分けています。</li>
     </ol>
     <h3 id="ads">広告について</h3>
     <p>

@@ -400,7 +400,7 @@ TABS.append({
         "<strong>ベビーセンサー</strong>には、おむつに留めるクリップ型と、布団の下に敷くマット型があります。寝返り前はクリップ型、寝返り後はマット型が外れにくくなります。",
         "製品によっては、パッケージや販売ページに<strong>一般医療機器</strong>としての表示があります。表示の有無を確認して選びます。",
         "<strong>アラームが手元で鳴る</strong>こと（親機がある、スマホに通知が来る）を確認します。本体だけで鳴る製品は、別室にいると気づけません。",
-     ], "picks": ["monitor", "sensor_med", "sensor_mat", "monitor_eufy", "monitor_babysense", "thermohygro"]},
+     ], "picks": ["monitor", "sensor_med", "sensor_mat", "sensor_babysense", "monitor_eufy", "monitor_babysense"]},
      "sources": [
         ("cfa_guideline", "子どもの数・職員の数に合わせて定期的に呼吸・体位・睡眠状態を点検し、呼吸停止などの異常を早期に発見することで重大事故を防ぐ、という考え方。"),
         ("cfa_sids", "乳幼児突然死症候群の予防法は確立していないこと、あおむけ寝・硬めの寝具という基本の対策。"),

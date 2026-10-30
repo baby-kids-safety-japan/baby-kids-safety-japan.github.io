@@ -33,7 +33,8 @@ PRODUCTS = {
     "repel_pigeon":   ("B0GH8HZLXS", "ピジョン 虫くるりんplus まも〜るミスト"),
     "monitor":        ("B07QR8RZJH", "パナソニック ベビーモニター KX-HC705"),
     "sensor_med":     ("B07KY57C5Y", "Sense-U ベビーセンサー（一般医療機器）"),
-    "sensor_mat":     ("B08HCSBWWC", "ベビースマイル ベビーアラーム（乳児用体動センサ）"),
+    "sensor_mat":     ("B08HCSBWWC", "ベビースマイル ベビーアラーム E-201（乳児用体動センサ）"),
+    "sensor_babysense": ("B07X7R6BZY", "ベビーセンスホーム（マットレスの下に敷く非接触型・一般医療機器）"),
     "thermohygro":    ("B0DZ1VNDMN", "タニタ 温湿度計（気圧計つき）"),
     "thermometer":    ("B076Q5WCPP", "オムロン 電子体温計 けんおんくん MC-688（15秒予測）"),
 
@@ -258,7 +259,26 @@ AWARDS = {
                       "https://www.best-mother.jp/selection/mothers_selection17/"),
     "crib_tomoneru": ("第18回キッズデザイン賞（すくすや トモネル ベビーベッド コンパクト）",
                       _src("kids_design_18")),
+    # 受賞したのは同じシリーズの別の型番。どの型番が受賞したのかをかっこの中に書く。
+    "sensor_med":    ("第16回キッズデザイン賞 奨励賞（Sense-Uベビービデオカメラと体動センサ3）",
+                      "https://kidsdesignaward.jp/search/detail_220416"),
+    "sensor_mat":    ("第18回キッズデザイン賞（同シリーズ 乳児用体動センサ ベビーアラーム E-202）",
+                      "https://kidsdesignaward.jp/search/detail_240193"),
 }
+
+
+# 受賞ではないが、第三者が使っているという実績で選んだ商品のバッジ。
+# 医療機関や保育施設での導入のように、賞とは種類の違う裏付けを持つ商品に出す。
+# 受賞バッジと同じ位置に出るので、どちらか一方しか表示されない。
+# 販売元の説明に基づく導入実績なので、賞と混ぜずに別のバッジにしている。
+CREDS = {
+    "sensor_babysense": ("病院・産後施設・保育施設で導入（販売元による）",
+                         "https://www.babysense.jp/"),
+}
+
+
+def cred(key):
+    return CREDS.get(key)
 
 
 def award(key):
@@ -362,8 +382,8 @@ NOTES = {
     "repel_skinvape": "イカリジン。年齢制限がない",
     "repel_kincho": "ディートフリー。6か月未満でも使える",
     "repel_pigeon": "ミスト。顔に直接かけずに手から塗れる",
-    "sensor_med": "一般医療機器。体動を見る",
-    "sensor_mat": "マットの下に敷く。体に付けない",
+    "sensor_med": "おむつに留めるクリップ型。寝返り前でも外れない",
+    "sensor_mat": "敷布団の下に敷くマット型。体に付けない",
     "thermohygro": "室温と湿度を一目で。置くだけ",
     "thermometer": "15秒で測れる。嫌がる前に終わる",
     "carrier_light": "軽い。ヘッドサポートで首を支える",
