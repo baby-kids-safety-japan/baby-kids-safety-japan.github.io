@@ -461,8 +461,7 @@ def _hero_updated():
     if not UPDATED:
         return ""
     return ('    <p class="hero-updated">\n'
-            '      改訂を追って書き直しています。'
-            '最新の更新は<time datetime="%s">%s</time>。\n'
+            '      <time datetime="%s">%s</time>の時点での最新情報を掲載しています。\n'
             '    </p>' % (UPDATED, _updated_ja()))
 
 
