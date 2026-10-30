@@ -607,6 +607,14 @@ def validate():
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
     errors.extend(_duplicate_source_urls())
+    # 同じ ASIN を別のキーで二重登録すると、同じ商品が2行並ぶ。
+    # 競合を足しているときに実際にやった（repel_kincho / repel_kincho200）。
+    seen_asin = {}
+    for k, (asin, _name) in PRODUCTS.items():
+        if asin in seen_asin:
+            errors.append('products.py: 同じ ASIN %s を "%s" と "%s" が指している'
+                          % (asin, seen_asin[asin], k))
+        seen_asin[asin] = k
     errors.extend(_unknown_item_keys())
     for t in TABS:
         for g in t["groups"]:
