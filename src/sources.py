@@ -185,12 +185,6 @@ SRC = {
     "jspd_pacifier": (
         "おしゃぶりについての考え方（小児科と小児歯科の保健検討委員会・日本小児歯科学会・PDF）",
         "https://www.jspd.or.jp/common/pdf/06_03.pdf"),
-    "derma_ad2024": (
-        "アトピー性皮膚炎診療ガイドライン2024 CQ25（日本皮膚科学会・日本アレルギー学会・PDF）",
-        "https://www.dermatol.or.jp/dermatol/wp-content/uploads/xoops/files/guideline/ADGL2024.pdf"),
-    "ncchd_moisturizer": (
-        "世界初・アレルギー疾患の発症予防法を発見（2014年・国立成育医療研究センター）",
-        "https://www.ncchd.go.jp/press/2014/topic141001-1.html"),
     "cao_carseat_manual": (
         "チャイルドシートの着用指導マニュアル（内閣府・PDF）",
         "https://www8.cao.go.jp/koutu/keihatsu/pdf/child/car-seat-m1.pdf"),
