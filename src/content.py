@@ -220,7 +220,7 @@ TABS.append({
         "敷寝具は<strong>硬めで平ら</strong>なものを選びます。あおむけ寝と並んで、どちらの対策にもなります。",
         "掛け布団の代わりにスリーパーを使うと、顔に布がかかるのを避けられます。",
         "体動センサーは異常に早く気づくための補助で、乳幼児突然死症候群を予防する装置ではありません。",
-     ], "picks": ["mattress", "sleeper", "sensor_med", "mattress_nitori", "mattress_undoudou", "sleeper_vest"]},
+     ], "picks": ["mattress", "sleeper", "sensor_med", "sensor_babysense", "mattress_nitori", "sleeper_vest"]},
      "sources": [
         ("cfa_sids_press", "乳幼児突然死症候群は原因不明の病気で窒息などの事故とは異なること、令和6年に55名が亡くなり乳児期の死亡原因の第3位であること、3つのポイント、11月が対策強化月間であること。"),
         ("cfa_sids", "あおむけ寝、あたためすぎに注意、硬めで傾斜のない寝具。赤ちゃんの過度な保温によって乳幼児突然死症候群の発症率が上がること、赤ちゃんの胸元を触ってみて汗ばんでいる場合には着るものや室温で調整すること。"),
