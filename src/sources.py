@@ -194,9 +194,9 @@ SRC = {
     "cfa_sids_press": (
         "11月は「乳幼児突然死症候群（SIDS）」の対策強化月間です（令和7年10月31日・こども家庭庁・PDF）",
         "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/0717ee9f-4180-4240-bc82-ed0669464687/e294a7f5/20251031press-0717ee9f-4180-4240-bc82-ed0669464687-01.pdf"),
-    "cfa_tsuchi": (
-        "教育・保育施設等における重大事故を防ぐための通知・事務連絡（こども家庭庁）",
-        "https://www.cfa.go.jp/policies/child-safety/effort/tsuchi"),
+    "cfa_azukari": (
+        "預かり始めの時期における教育・保育施設等の事故防止に向けた取組の徹底について（令和8年3月30日・こども家庭庁・文部科学省・PDF）",
+        "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/787dd8a4-3b44-4eed-a661-b9d0729f70c9/725d4064/20260327_policies_child-safety_effort_tsuchi_51.pdf"),
     "env_uv": (
         "紫外線環境保健マニュアル2008 第1章「赤ちゃんと紫外線」（環境省・PDF）",
         "https://www.env.go.jp/chemi/uv/uv_pdf/01.pdf"),
