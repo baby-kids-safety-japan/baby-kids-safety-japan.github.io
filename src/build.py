@@ -622,13 +622,13 @@ def validate():
                     elif len(goods["picks"]) > 6:
                         errors.append("%s: グッズは6件までにする（現在 %d 件）"
                                       % (where, len(goods["picks"])))
-                    # 選び方のポイントが商品の件数を下回ると、
-                    # 選ぶ基準の書かれていない商品が混ざる。
-                    # まだ手を入れていないタブにも残っているので、
-                    # ビルドは止めず、あとでまとめて直せるよう一覧に出す。
-                    if len(goods["points"]) < len(goods["picks"]):
-                        warnings.append("%s: 選び方のポイントが商品より少ない（ポイント %d / 商品 %d）"
-                                        % (where, len(goods["points"]), len(goods["picks"])))
+                    # 選び方のポイントは「何を基準に選ぶか」で、商品1件ごとの説明ではない。
+                    # 商品ごとの違いは products.py の NOTES（カードに出る一言）が担う。
+                    # 以前は商品の件数以上を求めていたが、商品を最大6件に増やしたときに
+                    # 基準を水増しさせる形になったのでやめた。下限は3。
+                    if len(goods["points"]) < 3:
+                        warnings.append("%s: 選び方のポイントが3件未満（%d 件）"
+                                        % (where, len(goods["points"])))
                     for k in goods["picks"]:
                         if k not in PRODUCTS:
                             errors.append("%s: 未登録の商品キー %s" % (where, k))
