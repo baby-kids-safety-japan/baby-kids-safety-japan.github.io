@@ -173,6 +173,33 @@ SRC = {
     "gov_1st_grade": (
         "小学校1年生の歩行中の死者・重傷者は6年生の約2.5倍。新1年生を交通事故から守るには？（政府広報オンライン）",
         "https://www.gov-online.go.jp/article/201804/entry-8077.html"),
+    "jsdh_tableware": (
+        "乳幼児期における親との食器共有について（令和5年8月31日・日本口腔衛生学会・PDF）",
+        "https://www.kokuhoken.or.jp/jsdh/statement/file/statement_20230901.pdf"),
+    "mhlw_sids_month": (
+        "11月は「乳幼児突然死症候群（SIDS）」の対策強化月間です（厚生労働省 政策レポート）",
+        "https://www.mhlw.go.jp/seisaku/2010/11/02.html"),
+    "mhlw_weaning2007": (
+        "授乳・離乳の支援ガイド 離乳編（平成19年3月14日・厚生労働省・PDF）",
+        "https://www.mhlw.go.jp/shingi/2007/03/dl/s0314-17c.pdf"),
+    "jspd_pacifier": (
+        "おしゃぶりについての考え方（小児科と小児歯科の保健検討委員会・日本小児歯科学会・PDF）",
+        "https://www.jspd.or.jp/common/pdf/06_03.pdf"),
+    "derma_ad2024": (
+        "アトピー性皮膚炎診療ガイドライン2024 CQ25（日本皮膚科学会・日本アレルギー学会・PDF）",
+        "https://www.dermatol.or.jp/dermatol/wp-content/uploads/xoops/files/guideline/ADGL2024.pdf"),
+    "ncchd_moisturizer": (
+        "世界初・アレルギー疾患の発症予防法を発見（2014年・国立成育医療研究センター）",
+        "https://www.ncchd.go.jp/press/2014/topic141001-1.html"),
+    "cao_carseat_manual": (
+        "チャイルドシートの着用指導マニュアル（内閣府・PDF）",
+        "https://www8.cao.go.jp/koutu/keihatsu/pdf/child/car-seat-m1.pdf"),
+    "caa_r129": (
+        "Vol.653 より安全なチャイルドシートの使用を！（消費者庁）",
+        "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20240920/"),
+    "npa_haku_bicycle2": (
+        "平成22年警察白書「交通安全教育と交通安全活動」（幼児二人同乗用自転車・警察庁）",
+        "https://www.npa.go.jp/hakusyo/h22/honbun/html/m3230000.html"),
     "cao_milk_notice": (
         "災害時における授乳の支援並びに母子に必要となる物資の備蓄及び活用について（内閣府・内閣府男女共同参画局・厚生労働省 連名事務連絡・PDF）",
         "https://www.mhlw.go.jp/content/10200000/000561611.pdf"),
