@@ -52,9 +52,17 @@
     // ハッシュが空（戻るで消えたとき）は、先頭のタブに戻す。
     // 何もしないと、タブは前のままでスクロールだけ飛んで迷子になる。
     if (!id) { activate(0); return false; }
+    // 旧形式（#panel-0 など）で共有されたリンクを、いまの月齢のIDに読み替える。
+    // 公開後に id を panel-N から m0/m4/… へ変えたので、古いリンクが切れないようにする。
     var pm = /^panel-(\d+)$/.exec(id);
     if (pm && panels[Number(pm[1])]) {
-      var pi = Number(pm[1]);
+      id = panels[Number(pm[1])].id;
+      history.replaceState(null, '', '#' + id);
+    }
+    // パネルそのものを指すハッシュ（#m0 など）は、そのタブを開いて先頭に合わせる。
+    var pi = -1;
+    for (var n = 0; n < panels.length; n++) { if (panels[n].id === id) { pi = n; break; } }
+    if (pi >= 0) {
       activate(pi);
       scrollToY(panels[pi].getBoundingClientRect().top + window.scrollY - nav.offsetHeight, false);
       return true;

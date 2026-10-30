@@ -332,11 +332,11 @@ def render_tab_nav():
         sel = "true" if i == 0 else "false"
         rows.append(
             '    <button class="tab%s" role="tab" aria-selected="%s" tabindex="%s"'
-            ' aria-controls="panel-%d" id="tab-%d" data-tab="%d">\n'
+            ' aria-controls="%s" id="tab-%s" data-tab="%d">\n'
             '      %s'
             '<span class="tab-label">%s</span>'
             '<span class="tab-sub">%s</span>\n    </button>'
-            % (active, sel, "0" if i == 0 else "-1", i, i, i,
+            % (active, sel, "0" if i == 0 else "-1", t["id"], t["id"], i,
                tab_icon(t), esc(t["label"]), esc(t["sub"])))
     return "\n".join(rows)
 
@@ -366,8 +366,8 @@ def render_panel(i, tab):
     active = " is-active" if i == 0 else ""
     # tabindex="0" を付けて、タブを切り替えたあとに
     # 読み上げの位置をここへ移せるようにする（app.js の activate）。
-    out = ['<section class="panel%s" id="panel-%d" role="tabpanel" aria-labelledby="tab-%d"'
-           ' tabindex="0"%s>' % (active, i, i, hidden)]
+    out = ['<section class="panel%s" id="%s" role="tabpanel" aria-labelledby="tab-%s"'
+           ' tabindex="0"%s>' % (active, tab["id"], tab["id"], hidden)]
     out.append('  <div class="panel-intro">')
     out.append('    <h2 class="panel-title">%s <small>%s</small></h2>'
                % (esc(tab["title"]), esc(tab["subtitle"])))
