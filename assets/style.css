@@ -451,6 +451,35 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .sources li { margin-bottom: 12px; }
 .sources small { color: var(--ink-soft); font-size: .85em; line-height: 1.6; display: inline-block; }
 
+/* 読者が打ちそうな語を、カードのいちばん下に並べる。
+   サイト内検索の入口であり、同時に、この項目が何を扱っているかの
+   索引にもなる。本文より小さく、淡い色で、主題の邪魔をしない大きさにする。
+   隠して仕込むのではなく出しているので、検索エンジンから見ても本文である。 */
+.card-keywords {
+  margin: 14px 0 0;
+  padding: 0 2px;
+  font-size: .8rem;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+.card-keywords-label {
+  margin-right: .5em;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.card-keywords-label::after { content: "："; }
+/* 区切りは、前の語の後ろに付ける。次の語の前に付けると、
+   行が折れたときに「／」が行頭に残る。
+   span ~ span で見出し語（最初の span）を除き、:last-child で末尾を除く。 */
+.card-keywords span ~ span:not(:last-child)::after {
+  content: "／";
+  margin: 0 .1em;
+  color: #C9BBAE;
+}
+/* 語の途中で行を折らない。「背部叩」で切れると読めない。 */
+.card-keywords span ~ span { white-space: nowrap; }
+@media print { .card-keywords { display: none; } }
+
 .wip {
   margin: 22px 0 0;
   padding: 12px 16px;

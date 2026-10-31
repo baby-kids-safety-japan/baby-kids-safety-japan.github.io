@@ -19,6 +19,7 @@ from products import note as product_note
 from products import cred as product_cred
 from products import staple as product_staple
 from products import link as product_link
+from keywords import KEYWORDS
 from sources import SRC
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -327,6 +328,15 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False):
         out.append(render_goods(item["goods"], item.get("goods_kind"), seen).rstrip("\n"))
 
     out.append(render_sources(item["sources"]).rstrip("\n"))
+    # 読者が打ちそうな語を、カードの末尾に並べる。
+    # サイト内検索はカードの文面をそのまま走査しているので、ここに置けば
+    # 「喉に詰まった」のような、本文では使っていない書き方でも当たる。
+    # 隠さずに出すのは、見えない文字で検索語を仕込む形にしないため。
+    kw = KEYWORDS.get(item["id"])
+    if kw:
+        words = "".join('<span>%s</span>' % esc(w) for w in kw.split())
+        out.append('    <p class="card-keywords"><span class="card-keywords-label">'
+                   '関連キーワード</span>%s</p>' % words)
     out.append('  </article>')
     return "\n".join(out)
 
@@ -920,6 +930,7 @@ def _font_coverage():
             for item in group["items"]:
                 for key in ("title", "sub", "lead", "chip"):
                     need.update(item.get(key) or "")
+                need.update(KEYWORDS.get(item["id"]) or "")
     # 本文にはHTMLのタグがそのまま書かれている欄があるので、記号は除く。
     markup = set('<>&/="\'')
     missing = sorted(c for c in need - have
@@ -988,6 +999,16 @@ def validate():
     errors.extend(_tags_in_escaped_fields())
     warnings.extend(_missing_webp())
     warnings.extend(_font_coverage())
+    # 検索の入口なので、欠けていると、その項目だけが探せなくなる。
+    ids = set()
+    for tab in TABS:
+        for group in tab["groups"]:
+            for item in group["items"]:
+                ids.add(item["id"])
+    for i in sorted(ids - set(KEYWORDS)):
+        errors.append('keywords.py: "%s" の関連キーワードが無い' % i)
+    for i in sorted(set(KEYWORDS) - ids):
+        errors.append('keywords.py: "%s" という項目は無い' % i)
     from products import AWARDS, CREDS, NOTES, STAPLES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)

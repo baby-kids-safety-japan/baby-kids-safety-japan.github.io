@@ -199,7 +199,9 @@
     ['誤嚥', '誤えん'],
     ['誤えん', '誤嚥'],
     ['ひきつけ', 'けいれん'],
-    ['引きつけ', 'けいれん']
+    ['引きつけ', 'けいれん'],
+    ['喉', 'のど'],
+    ['のど', '喉']
   ];
 
   // 1つの語を、当たりうる書き方の集合に広げる。
@@ -220,6 +222,9 @@
       // 結果の説明には、短いほうの一行（.card-tagline）を使う。
       // 本文の導入（.card-sub）は中央値116字あり、1件で画面が埋まる。
       var line = card.querySelector('.card-tagline');
+      // 関連キーワードは、読者が打つ側の語を集めた欄なので、見出しと同じ
+      // 重みで数える。見出しに無い言い方で探したとき、その項目が先頭に来る。
+      var kw = card.querySelector('.card-keywords');
       var name = head ? head.textContent.replace('#', '').trim() : card.id;
       var desc = line ? line.textContent.trim() : '';
       return {
@@ -230,6 +235,7 @@
         s: desc,
         nn: norm(name),
         ns: norm(desc),
+        nk: norm(kw ? kw.textContent : ''),
         all: norm(card.textContent)
       };
     });
@@ -325,6 +331,7 @@
         var v = 0;
         tokens.forEach(function (tk) {
           if (hitsToken(it.nn, tk)) v += 2;
+          if (hitsToken(it.nk, tk)) v += 2;
           if (hitsToken(it.ns, tk)) v += 1;
         });
         return v;
