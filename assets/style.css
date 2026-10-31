@@ -120,8 +120,11 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(255, 250, 242, .88);
-  backdrop-filter: blur(10px);
+  /* backdrop-filter は、画面上端に居座る要素だと、スクロールのたびに
+     背後をぼかし直すGPUの処理が走る。長い本文を読み続けるあいだずっと
+     効き続けるので、中位の端末では滑らかさと電池に出る。
+     背景をほぼ不透明にすれば、同じ「下が透けない」結果が0コストで得られる。 */
+  background: rgba(255, 250, 242, .97);
   border-bottom: 2px dotted #F0DCC9;
 }
 /* タブは横スクロールにしない。

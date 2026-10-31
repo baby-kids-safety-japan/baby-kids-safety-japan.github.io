@@ -313,7 +313,14 @@
       render(hit, shown);
     }
 
-    input.addEventListener('input', function () { search(input.value); });
+    // 日本語の入力では、変換中にも input が連続して発火する。そのたびに
+    // 123項目の全文を走査すると、打っている最中に引っかかる。
+    // 少し待ってからまとめて走らせる。
+    var typing = null;
+    input.addEventListener('input', function () {
+      window.clearTimeout(typing);
+      typing = window.setTimeout(function () { search(input.value); }, 120);
+    });
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { input.value = ''; results.hidden = true; }
       if (e.key === 'ArrowDown') {

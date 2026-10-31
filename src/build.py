@@ -522,7 +522,12 @@ ITEM_PAGE = """<!doctype html>
 <link rel="stylesheet" href="%(css)s">
 <link rel="icon" href="%(favicon_svg)s" type="image/svg+xml">
 <link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">
-<meta name="theme-color" content="#FFD3BC">
+<!-- ブラウザの上下の帯の色。端末を夜間モードにしている人には、
+     ページは明るいままでも、枠だけ落とせる。
+     ページ自体のダークモードは持たない（color-scheme: only light）が、
+     これは矛盾しない。 -->
+<meta name="theme-color" content="#FFD3BC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#4A3B34" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="%(url)s">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="%(site)s">
@@ -1051,7 +1056,12 @@ def build():
 <link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">
 <link rel="icon" href="%(favicon_16)s" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="%(apple_icon)s">
-<meta name="theme-color" content="#FFD3BC">
+<!-- ブラウザの上下の帯の色。端末を夜間モードにしている人には、
+     ページは明るいままでも、枠だけ落とせる。
+     ページ自体のダークモードは持たない（color-scheme: only light）が、
+     これは矛盾しない。 -->
+<meta name="theme-color" content="#FFD3BC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#4A3B34" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="%(site_url)s">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="%(title)s">
