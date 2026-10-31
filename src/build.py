@@ -507,7 +507,18 @@ ITEM_PAGE = """<!doctype html>
 <meta name="description" content="%(desc)s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- フォントのCSSは、そのまま置くと描画を止める。Googleから返るまで1文字も
+     出ないので、夜間のモバイル回線では待たされる。media を print にして
+     読み込み、届いてから all に戻すと、本文が先に出る。
+     JavaScript を切っている場合は noscript のほうが効く。
+     ウェイトは 400/700/900 の3つ。500 は装飾的な小さい文字2か所だけだったので、
+     400 で代替して1ウェイト分の転送をやめた。 -->
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
+<noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"></noscript>
 <link rel="stylesheet" href="%(css)s">
 <link rel="icon" href="%(favicon_svg)s" type="image/svg+xml">
 <link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">
@@ -1023,7 +1034,18 @@ def build():
 <meta name="description" content="%(desc)s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- フォントのCSSは、そのまま置くと描画を止める。Googleから返るまで1文字も
+     出ないので、夜間のモバイル回線では待たされる。media を print にして
+     読み込み、届いてから all に戻すと、本文が先に出る。
+     JavaScript を切っている場合は noscript のほうが効く。
+     ウェイトは 400/700/900 の3つ。500 は装飾的な小さい文字2か所だけだったので、
+     400 で代替して1ウェイト分の転送をやめた。 -->
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
+<noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"></noscript>
 <link rel="stylesheet" href="%(css)s">
 <link rel="icon" href="%(favicon_svg)s" type="image/svg+xml">
 <link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">

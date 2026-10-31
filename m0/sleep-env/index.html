@@ -8,8 +8,19 @@
 <meta name="description" content="あおむけ・硬めの敷寝具・顔の周りに何も置かない">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=02576da5">
+<!-- フォントのCSSは、そのまま置くと描画を止める。Googleから返るまで1文字も
+     出ないので、夜間のモバイル回線では待たされる。media を print にして
+     読み込み、届いてから all に戻すと、本文が先に出る。
+     JavaScript を切っている場合は noscript のほうが効く。
+     ウェイトは 400/700/900 の3つ。500 は装飾的な小さい文字2か所だけだったので、
+     400 で代替して1ウェイト分の転送をやめた。 -->
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
+<noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"></noscript>
+<link rel="stylesheet" href="../../assets/style.css?v=c416446f">
 <link rel="icon" href="../../assets/favicon.svg?v=fe77d87c" type="image/svg+xml">
 <link rel="icon" href="../../assets/favicon-32.png?v=5a192339" sizes="32x32" type="image/png">
 <meta name="theme-color" content="#FFD3BC">
