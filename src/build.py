@@ -350,7 +350,11 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
     # 押されるまで YouTube には一切つながない。このサイトは外部への接続が
     # 0本なので、埋めただけで毎回数百KBを引くようになるのは割に合わない。
     # 押したあと app.js が youtube-nocookie.com の iframe を作る。
-    vids = VIDEOS.get(item["id"]) if link_prefix is not None else None
+    #
+    # 特定の商品だけに当てはまる説明は置かない。ある製品の装着方法を、
+    # その種類の製品一般のやり方として見せると、このサイトの
+    # 「メーカーによって禁止事項が違う」という項目と食い違う。
+    vids = VIDEOS.get(item["id"])
     if vids:
         out.append('    <div class="card-videos">')
         out.append('      <h4>動画で見る</h4>')
