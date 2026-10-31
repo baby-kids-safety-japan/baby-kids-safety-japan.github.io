@@ -563,6 +563,12 @@ ITEM_PAGE = """<!doctype html>
 %(siblings)s
     </ul>
     <p class="itemnav-all"><a href="%(root)s#%(tab_id)s">%(tab_label)s をまとめて見る</a></p>
+  <div class="itemnav-tabs">
+    <h3>ほかの月齢</h3>
+    <ul>
+%(other_tabs)s
+    </ul>
+  </div>
   </nav>
 </main>
 
@@ -687,6 +693,12 @@ def write_item_pages():
                     .replace(' assets/img/', ' %sassets/img/' % root),
                     item["id"], root),
                 "siblings": "\n".join(sib),
+                # 上の子と下の子を同時に見る読者がいる。項目ページからは
+                # 同じ月齢のほかの項目にしか行けなかった。
+                "other_tabs": "\n".join(
+                    '      <li><a href="%s#%s">%s</a></li>'
+                    % (root, t["id"], esc(t["label"]))
+                    for t in TABS if t["id"] != tab["id"]),
                 "total": sum(len(g["items"]) for t in TABS for g in t["groups"]),
                 "disclosure": esc(DISCLOSURE),
                 "css": asset("assets/style.css", root),

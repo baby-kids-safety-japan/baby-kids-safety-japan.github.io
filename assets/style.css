@@ -1449,3 +1449,29 @@ html, body { overflow-x: clip; }
   /* 下端の波は飾りなので、狭い画面では低くする。 */
   .hero-wave svg { height: 28px; }
 }
+
+/* 項目ページから、ほかの月齢へ移れるようにする。
+   これまでは同じ月齢のほかの項目にしか行けなかった。
+   上の子と下の子を同時に見る読者がいる。 */
+.itemnav-tabs { margin-top: 18px; padding-top: 14px; border-top: 2px dotted #F0DCC9; }
+.itemnav-tabs h3 { margin: 0 0 8px; font-size: .9rem; color: var(--ink-soft); }
+.itemnav-tabs ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.itemnav-tabs a {
+  display: inline-block;
+  padding: 11px 14px;
+  border-radius: 999px;
+  background: var(--cream-deep);
+  color: var(--ink);
+  font-size: .86rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.itemnav-tabs a:hover { background: var(--peach); }
+.itemnav-tabs a:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
