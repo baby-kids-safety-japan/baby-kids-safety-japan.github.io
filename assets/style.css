@@ -1395,3 +1395,21 @@ html, body { overflow-x: clip; }
   .tab { padding: 9px 6px; }
   .tab-label { white-space: nowrap; }
 }
+
+/* 狭い画面では、最初の1画面にタイトルと説明文しか入らなかった。
+   ヒーローの高さが922px（1.38画面分）あり、検索欄は上端が585px、
+   月齢タブは922pxで画面外だった。一度来たことのある人が夜中に開き直しても、
+   タブに触れるまで必ず1.4画面分スワイプすることになる。
+   余白と説明文を詰めて、検索欄とタブを最初の画面に入れる。 */
+@media (max-width: 480px) {
+  .hero { padding: 24px 16px 28px; }
+  .hero-title { margin: 8px 0 10px; }
+  .hero-lead { font-size: .94rem; line-height: 1.75; }
+  .search { margin-bottom: 12px; }
+  /* バッジは2段に折れて88pxを使っていた。小さくして1段に収める。 */
+  .hero-badges { gap: 6px; }
+  .badge { padding: 5px 10px; font-size: .76rem; }
+  .hero-updated { margin: 10px 0 0; font-size: .84rem; }
+  /* 下端の波は飾りなので、狭い画面では低くする。 */
+  .hero-wave svg { height: 28px; }
+}
