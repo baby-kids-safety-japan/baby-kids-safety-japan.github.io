@@ -20,6 +20,7 @@ from products import cred as product_cred
 from products import staple as product_staple
 from products import link as product_link
 from keywords import KEYWORDS
+from related import related_ids
 from sources import SRC
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -247,7 +248,24 @@ def item_page_prefix():
     return "../../"
 
 
-def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False):
+def _item_index():
+    """項目idから、タブのid・タブ名・見出し・月齢の並び順を引く。"""
+    out = {}
+    n = 0
+    for tab in TABS:
+        for group in tab["groups"]:
+            for item in group["items"]:
+                out[item["id"]] = (tab["id"], tab["label"], item["title"], n)
+                n += 1
+    return out
+
+
+ITEM_INDEX = _item_index()
+AGE_OF = dict((k, v[3]) for k, v in ITEM_INDEX.items())
+
+
+def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
+                link_prefix=None):
     """tab_id を渡すと、カードの末尾に、その項目だけのページへのリンクが付く。
     項目ページ自身では渡さない（自分へのリンクになるため）。
     見出しの「#」は、どちらの場合もそのカードへのページ内リンクである。"""
@@ -326,6 +344,32 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False):
 
     if item.get("goods"):
         out.append(render_goods(item["goods"], item.get("goods_kind"), seen).rstrip("\n"))
+
+    # 同じ危険が、月齢を変えて何度も出てくる。そのつながりを見せる。
+    # このサイトの売りは網羅性なので、1項目を読んだ人がその先を
+    # たどれないのは、持っているものを渡しそこねていることになる。
+    #
+    # 月齢のラベルはリンクの外に出す。中に入れると、a に付けた下線が
+    # 子孫にも伝わり、ラベル側で text-decoration: none と書いても消せない。
+    # トップは124項目が1ページに並ぶので、ここに6本ずつ足すと縦に伸びすぎる。
+    # 項目ページにだけ出す。検索から1項目に着地した人が、次へ進む場所である。
+    # トップには月齢別の目次があるので、たどる道はすでにある。
+    rel = related_ids(item["id"], AGE_OF) if link_prefix is not None else []
+    if rel:
+        out.append('    <nav class="card-related">')
+        out.append('      <h4>関連する項目</h4>')
+        out.append('      <ul>')
+        for rid in rel:
+            r_tab, r_label, r_title, _ = ITEM_INDEX[rid]
+            if link_prefix is None:
+                href = "#%s" % rid
+            else:
+                href = "%s%s" % (link_prefix, item_url(r_tab, rid))
+            out.append('        <li><span class="card-related-age">%s</span>'
+                       '<a href="%s">%s</a></li>'
+                       % (esc(r_label), href, esc(r_title)))
+        out.append('      </ul>')
+        out.append('    </nav>')
 
     out.append(render_sources(item["sources"]).rstrip("\n"))
     # 読者が打ちそうな語を、カードの末尾に並べる。
@@ -697,7 +741,7 @@ def write_item_pages():
                 # 静かに JPEG に落ちる（表示は出るので気づきにくい）。
                 "card": _relink_card(
                     render_item(item, COLORS[idx % len(COLORS)],
-                                eager_figure=True)
+                                eager_figure=True, link_prefix=root)
                     .replace('src="assets/', 'src="%sassets/' % root)
                     .replace('srcset="assets/', 'srcset="%sassets/' % root)
                     .replace(' assets/img/', ' %sassets/img/' % root),
@@ -1009,6 +1053,20 @@ def validate():
         errors.append('keywords.py: "%s" の関連キーワードが無い' % i)
     for i in sorted(set(KEYWORDS) - ids):
         errors.append('keywords.py: "%s" という項目は無い' % i)
+    # どの種類にも入っていない項目は、関連が片向きにも張らず孤立する。
+    from related import THEMES
+    in_theme = set()
+    for name, members in THEMES.items():
+        if len(members) < 2:
+            errors.append('related.py: "%s" に項目が1つしか無い' % name)
+        if len(members) != len(set(members)):
+            errors.append('related.py: "%s" に同じ項目が2度出てくる' % name)
+        for i in members:
+            if i not in ids:
+                errors.append('related.py: "%s" に無い項目 "%s"' % (name, i))
+        in_theme.update(members)
+    for i in sorted(ids - in_theme):
+        errors.append('related.py: "%s" がどの種類にも入っていない' % i)
     from products import AWARDS, CREDS, NOTES, STAPLES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)

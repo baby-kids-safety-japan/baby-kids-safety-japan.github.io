@@ -451,6 +451,62 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .sources li { margin-bottom: 12px; }
 .sources small { color: var(--ink-soft); font-size: .85em; line-height: 1.6; display: inline-block; }
 
+/* 同じ危険が、月齢を変えて何度も出てくる。そのつながりを見せる欄。
+   本文のあと、出典の前に置く。読み終えた人がその先へ進む場所なので、
+   関連キーワード（探す言葉の索引）より前にある。 */
+.card-related {
+  margin: 24px 0 0;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: var(--cream-deep);
+}
+.card-related h4 {
+  margin: 0 0 6px;
+  font-size: .95rem;
+  color: var(--ink);
+}
+.card-related h4::before { content: "\1f517 " / ""; }
+.card-related ul { margin: 0; padding: 0; list-style: none; }
+.card-related li {
+  display: flex;
+  gap: .6em;
+  align-items: baseline;
+  line-height: 1.6;
+}
+/* どの月齢の話かを先に出す。見出しだけでは、いまの月齢のことか
+   先のことかが分からない。 */
+.card-related-age {
+  flex: 0 0 5.6em;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+/* 指で押す的は44pxいる。li 側に余白を置くと、見た目は同じでも
+   当たるのは文字の高さ（21px）だけになる。a を箱にして余白を中へ入れる。 */
+.card-related li a {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 11px 2px;
+  font-size: .92rem;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: #C9B9A8;
+}
+.card-related li a:hover { text-decoration-color: currentColor; }
+.card-related li a:focus-visible {
+  outline: 3px solid #6E4AA8;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* 狭い画面では、月齢と見出しを横に並べると見出しが3行に折れる。 */
+@media (max-width: 480px) {
+  .card-related li { display: block; }
+  .card-related-age { display: block; margin: 8px 0 -6px; }
+}
+
 /* 読者が打ちそうな語を、カードのいちばん下に並べる。
    サイト内検索の入口であり、同時に、この項目が何を扱っているかの
    索引にもなる。本文より小さく、淡い色で、主題の邪魔をしない大きさにする。
