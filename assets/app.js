@@ -256,8 +256,20 @@
       if (!list.length) {
         var none = document.createElement('li');
         none.className = 'search-none';
-        none.textContent = '「' + q + '」に当てはまる項目はありませんでした。'
-                         + '別の言い方（ひらがな、短い語）でもお試しください。';
+        var p = document.createElement('p');
+        p.textContent = '「' + q + '」に当てはまる項目はありませんでした。'
+                      + '別の言い方（ひらがな、短い語）でもお試しください。';
+        none.appendChild(p);
+        // このサイトは事故を防ぐための項目でできていて、病気そのものは
+        // 扱っていない。「発熱」「熱性けいれん」のような語で来た人が
+        // いちばん必要としているのは記事ではなく相談先なので、そこへ渡す。
+        var p2 = document.createElement('p');
+        p2.className = 'search-none-tel';
+        p2.innerHTML = '病気やけがで判断に迷うときは '
+                     + '<a href="tel:%238000">#8000</a>（子ども医療電話相談）へ。'
+                     + '意識がない、呼吸がおかしい、けいれんしているときは '
+                     + '<a href="tel:119">119番</a>です。';
+        none.appendChild(p2);
         results.appendChild(none);
         results.hidden = false;
         return;

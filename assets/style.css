@@ -1320,6 +1320,20 @@ html, body { overflow-x: clip; }
   font-size: .92rem;
   line-height: 1.7;
 }
+.search-none p { margin: 0 0 8px; }
+.search-none p:last-child { margin-bottom: 0; }
+.search-none-tel { color: var(--ink); }
+.search-none-tel a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 10px 8px;
+  margin: -10px 0;
+  font-weight: 700;
+  color: #B04A2E;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+}
+.search-none-tel a:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 
 /* 狭い画面では、1行に入る字数が少なすぎた。375pxで本文18.4全角、
    チェックリスト14.9全角しか入らず、見出しが4行に折れるものがあった。
