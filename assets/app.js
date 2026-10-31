@@ -49,9 +49,10 @@
 
   function openByHash() {
     var id = decodeURIComponent(window.location.hash.replace('#', ''));
-    // ハッシュが空（戻るで消えたとき）は、先頭のタブに戻す。
-    // 何もしないと、タブは前のままでスクロールだけ飛んで迷子になる。
-    if (!id) { activate(0); return false; }
+    // ハッシュが空（戻るで消えたとき）は、先頭のタブに戻して上端まで戻す。
+    // タブだけ戻してスクロール位置を残すと、12項目しかない先頭のタブの
+    // 深い位置（本文より下の余白やフッター）に着地して、迷子になる。
+    if (!id) { activate(0); scrollToY(0, false); return false; }
     // 旧形式（#panel-0 など）で共有されたリンクを、いまの月齢のIDに読み替える。
     // 公開後に id を panel-N から m0/m4/… へ変えたので、古いリンクが切れないようにする。
     var pm = /^panel-(\d+)$/.exec(id);
