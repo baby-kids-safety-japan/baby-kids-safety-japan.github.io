@@ -1169,3 +1169,28 @@ html, body { overflow-x: clip; }
 .card-permalink a::after { content: " →"; }
 .card-permalink a:hover { color: var(--peach-deep); }
 .itemmain .card-permalink { display: none; }
+
+/* 電話番号は、タップで発信できるようにする。
+   夜中に片手で開く人が、番号を読み取って電話アプリに手入力するのは現実的ではない。
+   短縮番号（#8000 など）は tel:%238000 と書く。
+   「#」をそのまま書くと断片識別子として切り落とされ、発信できない。 */
+.emergency a.tel {
+  display: inline-block;
+  min-height: 44px;
+  padding: 9px 10px;
+  margin: -9px 2px -9px -10px;
+  font-weight: 700;
+  color: #B04A2E;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  border-radius: 6px;
+}
+.emergency a.tel:hover { color: #8A3A20; background: var(--cream-deep); }
+.emergency a.tel:focus-visible {
+  outline: 3px solid #6E4AA8;
+  outline-offset: 2px;
+}
+/* 紙では、リンクの下線も当たり判定の余白も要らない。 */
+@media print {
+  .emergency a.tel { min-height: 0; padding: 0; margin: 0; border-bottom: none; color: inherit; }
+}
