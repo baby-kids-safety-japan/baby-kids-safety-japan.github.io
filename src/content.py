@@ -716,11 +716,11 @@ TABS.append({
           <li>寝返りのきざしが見えたらやめること</li>
         </ul>
         <p>おひなまきを含めた股関節の考え方は、
-        <a href="https://www.jpoa.org/news/topics/1585/" target="_blank" rel="noopener">日本小児整形外科学会の解説</a>にあります。
+        <a href="https://www.jpoa.org/news/topics/1585/" target="_blank" rel="noopener">日本小児整形外科学会の解説<span class="sr-only">（新しいタブで開きます）</span></a>にあります。
         「否定する立場ではない」としたうえで、脚まで巻かないことを求めています。
         同じページから、安全な巻き方の動画も見られます。
         図解した手順の原文は
-        <a href="https://healthychildren.org/English/ages-stages/baby/diapers-clothing/Pages/Swaddling-Is-it-Safe.aspx" target="_blank" rel="noopener">米国小児科学会のページ</a>にあります。</p>"""),
+        <a href="https://healthychildren.org/English/ages-stages/baby/diapers-clothing/Pages/Swaddling-Is-it-Safe.aspx" target="_blank" rel="noopener">米国小児科学会のページ<span class="sr-only">（新しいタブで開きます）</span></a>にあります。</p>"""),
      ],
      "goods": {"points": [
         "<strong>100×100cm以上の正方形</strong>を選びます。小さいとほどけやすく、ほどけた布が顔にかかります。",

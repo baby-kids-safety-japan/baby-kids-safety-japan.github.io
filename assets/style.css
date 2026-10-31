@@ -1148,7 +1148,17 @@ html, body { overflow-x: clip; }
 }
 .itemnav h2 { font-size: .98rem; margin: 0 0 10px; }
 .itemnav ul { list-style: none; margin: 0; padding: 0; }
-.itemnav li { margin-bottom: 7px; font-size: .9rem; line-height: 1.5; }
+/* 兄弟リストは、検索から着地した人が次の項目へ移る唯一の導線である。
+   行の高さ20.5px・間隔7pxでは、抱っこしながら12本のうち1本を狙うと
+   隣を踏む。リンクを面として持たせ、1本ずつ離す。 */
+.itemnav li { margin-bottom: 4px; break-inside: avoid; }
+.itemnav li a {
+  display: block;
+  padding: 11px 12px;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+.itemnav li a:hover { background: var(--cream-deep); }
 .itemnav-all { margin: 14px 0 0; font-size: .9rem; font-weight: 700; }
 
 .itemfoot {
@@ -1282,4 +1292,45 @@ html, body { overflow-x: clip; }
   .checklist li { padding: 12px 10px; }
   .steps li { padding-left: 3rem; }
   .callout { padding: 18px 16px; }
+}
+
+/* 緊急番号への入口は、画面の広さで置き方を変える。
+
+   狭い画面（片手で読む場面）は、親指が届く左下に浮かせる。本文に少し
+   重なるが、スクロールすれば読めるので実害は小さい。
+
+   広い画面では浮かせない。本文の列が画面の中央にあるため、左下のボタンが
+   カードの上に乗って、チェックリストの見出しを隠してしまう。
+   代わりに、固定ヘッダーの中に1行足す。縦に余裕があるので入れられる。 */
+.tabs-emergency { display: none; }
+@media (min-width: 761px) {
+  .to-emergency { display: none; }
+  .tabs-emergency {
+    display: block;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 8px 16px 0;
+    text-align: right;
+    font-size: .86rem;
+    font-weight: 700;
+  }
+  .tabs-emergency a {
+    color: #B04A2E;
+    text-decoration: none;
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 1px;
+  }
+  .tabs-emergency a:hover { color: #8A3A20; }
+  .tabs-emergency a:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 3px; border-radius: 4px; }
+  .tabs-inner { padding-top: 8px; }
+  /* 項目ページには固定タブが無いので、パンくずの上に置く */
+  .itemhead .tabs-emergency { max-width: 760px; padding: 0 16px 4px; }
+}
+@media print { .tabs-emergency { display: none !important; } }
+
+/* 中くらいの幅で、タブのラベルが2行に折れていた。
+   8列のまま、左右の余白を詰めて1行に収める。 */
+@media (min-width: 761px) and (max-width: 1060px) {
+  .tab { padding: 9px 6px; }
+  .tab-label { white-space: nowrap; }
 }

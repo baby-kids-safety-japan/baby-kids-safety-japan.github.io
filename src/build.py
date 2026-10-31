@@ -167,7 +167,8 @@ def render_goods(goods, kind=None, seen=None):
             badge = ('<span class="pick-note">%s</span>' % esc(nt)) if nt else ""
         picks.append('        <li><a href="%s" target="_blank" rel="nofollow sponsored noopener">'
                      '<span class="pick-name">%s%s</span>'
-                     '<span class="go">Amazonで見る →</span></a></li>'
+                     '<span class="go">Amazonで見る →'
+                     '<span class="sr-only">（新しいタブで開きます）</span></span></a></li>'
                      % (url, esc(name), badge))
 
     body = '      <ul class="goods-picks">\n%s\n      </ul>\n' % "\n".join(picks)
@@ -487,6 +488,7 @@ ITEM_PAGE = """<!doctype html>
 <body class="itempage">
 
 <header class="itemhead">
+  <p class="tabs-emergency"><a href="#emergency"><span aria-hidden="true">☎</span> 困ったときの番号</a></p>
   <p class="crumbs">
     <a href="%(root)s">%(site)s</a> ›
     <a href="%(root)s#%(tab_id)s">%(tab_label)s</a>
@@ -1005,6 +1007,7 @@ def build():
 </header>
 
 <nav class="tabs" aria-label="月齢で選ぶ">
+  <p class="tabs-emergency"><a href="#emergency"><span aria-hidden="true">☎</span> 困ったときの番号</a></p>
   <div class="tabs-inner" role="tablist">
 %(tabnav)s
   </div>
@@ -1094,7 +1097,7 @@ def build():
     </p>
     <p>
       <strong>誤りや、抜けている対策にお気づきの点があれば、
-      <a href="%(form)s" target="_blank" rel="noopener">お問い合わせフォーム</a>からお知らせください。</strong>
+      <a href="%(form)s" target="_blank" rel="noopener">お問い合わせフォーム<span class="sr-only">（新しいタブで開きます）</span></a>からお知らせください。</strong>
       出典に当たり直したうえで、必要があれば修正します。修正したときは、掲載内容の時点を更新します。
       なお、個別の健康相談にはお答えできません。
       お子さんの様子に気になる点があるときは、かかりつけの小児科医か、
@@ -1111,15 +1114,15 @@ def build():
         STマーク（おもちゃ）、一般医療機器の届出（ベビーセンサー）など。<br>
         <strong>ベビーベッドとライターは、法律でPSCマークが義務づけられた「特定製品」です。</strong>
         マークのないものは販売できません
-        （<a href="%(caa_psc_start)s" target="_blank" rel="noopener">消費者庁</a>）。
+        （<a href="%(caa_psc_start)s" target="_blank" rel="noopener">消費者庁<span class="sr-only">（新しいタブで開きます）</span></a>）。
         ベビーカーと乳幼児用ベッドガードも、順次この対象になります。</li>
       <li><strong>定番として長く売られていること。</strong>
         廃番になりにくく、使い方の情報も見つけやすいためです。</li>
       <li><strong>第三者の評価があること。</strong>
-        <a href="%(mothers_selection)s" target="_blank" rel="noopener">マザーズセレクション大賞</a>、
-        <a href="%(tamahiyo_award)s" target="_blank" rel="noopener">たまひよ赤ちゃんグッズ大賞</a>、
-        <a href="%(kids_design)s" target="_blank" rel="noopener">キッズデザイン賞</a>、
-        <a href="%(good_design)s" target="_blank" rel="noopener">グッドデザイン賞</a>を参照しています。
+        <a href="%(mothers_selection)s" target="_blank" rel="noopener">マザーズセレクション大賞<span class="sr-only">（新しいタブで開きます）</span></a>、
+        <a href="%(tamahiyo_award)s" target="_blank" rel="noopener">たまひよ赤ちゃんグッズ大賞<span class="sr-only">（新しいタブで開きます）</span></a>、
+        <a href="%(kids_design)s" target="_blank" rel="noopener">キッズデザイン賞<span class="sr-only">（新しいタブで開きます）</span></a>、
+        <a href="%(good_design)s" target="_blank" rel="noopener">グッドデザイン賞<span class="sr-only">（新しいタブで開きます）</span></a>を参照しています。
         商品そのもの、または同じシリーズの別の型番が受賞したと確認できたものだけ、
         商品名の下に受賞を書いています。別の型番が受賞した場合は、その型番をかっこの中に書いています。
         メーカー別の集計で上位だったものは、紹介している商品と受賞対象が一致しないため書いていません。<br>
