@@ -253,7 +253,19 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False):
     seen = set()
     out = ['  <article class="card card-%s" id="%s">' % (color, item["id"])]
     out.append('    <div class="card-head">')
-    out.append('      <span class="chip">%s</span>' % esc(item["chip"]))
+    # 個別ページへの入口は、記号ではなく言葉で出す。「#」は見出しのページ内
+    # リンクに使っているうえ、技術文書の慣習なのでこのサイトの読者に通じない。
+    # 置き場所はカードの先頭、チップと同じ行。末尾に置いていたときは、
+    # 図解・チェックリスト・商品・根拠より後ろで、カード内でいちばん
+    # 目立たない要素になっていた。
+    if tab_id:
+        out.append('      <div class="card-top">'
+                   '<span class="chip">%s</span>'
+                   '<a class="card-permalink" href="%s%s">この項目だけを開く</a>'
+                   '</div>'
+                   % (esc(item["chip"]), page_prefix, item_url(tab_id, item["id"])))
+    else:
+        out.append('      <span class="chip">%s</span>' % esc(item["chip"]))
     out.append('      <h3><a class="anchor" href="#%s">%s'
                '<span class="anchor-mark" aria-hidden="true">#</span></a></h3>'
                % (item["id"], esc(item["title"])))
@@ -315,13 +327,6 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False):
         out.append(render_goods(item["goods"], item.get("goods_kind"), seen).rstrip("\n"))
 
     out.append(render_sources(item["sources"]).rstrip("\n"))
-    if tab_id:
-        # 個別ページへの入口は、記号ではなく言葉で出す。
-        # 「#」は見出しのページ内リンクとして使っているうえ、
-        # 技術文書の慣習なので、このサイトの読者には通じない。
-        out.append('    <p class="card-permalink">'
-                   '<a href="%s%s">この項目だけを開く</a></p>'
-                   % (page_prefix, item_url(tab_id, item["id"])))
     out.append('  </article>')
     return "\n".join(out)
 
