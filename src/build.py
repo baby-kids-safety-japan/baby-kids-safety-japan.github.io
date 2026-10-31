@@ -1248,6 +1248,10 @@ def build():
   </div>
 </footer>
 
+<a class="to-emergency" href="#emergency">
+  <span aria-hidden="true">☎</span> 緊急の番号
+</a>
+
 <button type="button" class="to-toc" id="to-toc">
   <span aria-hidden="true">↑</span> 目次へ
 </button>

@@ -1194,3 +1194,32 @@ html, body { overflow-x: clip; }
 @media print {
   .emergency a.tel { min-height: 0; padding: 0; margin: 0; border-bottom: none; color: inherit; }
 }
+
+/* 「困ったときの番号」への入口。
+   この一覧はフッターにあり、0〜3か月タブを開いていると先頭から208画面分
+   下になる。サイト内からのリンクが1本も無かったので、検索でも引けなかった。
+   夜中に子どもが発熱して開く人が最初に要るものなので、常に出しておく。
+   「目次へ」が右下なので、こちらは左下に置いて取り違えないようにする。 */
+.to-emergency {
+  position: fixed;
+  left: 16px; bottom: 16px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border: 2px solid #B04A2E;
+  border-radius: 999px;
+  background: #fff;
+  color: #B04A2E;
+  font-size: .88rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(150, 120, 100, .28);
+}
+.to-emergency:hover { background: #B04A2E; color: #fff; }
+.to-emergency:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+@media print { .to-emergency { display: none !important; } }
+
+/* 飛んできた先が固定タブの下に隠れないようにする。 */
+.emergency { scroll-margin-top: 150px; }
