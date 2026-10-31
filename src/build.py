@@ -95,18 +95,58 @@ def img_size(path):
     return None
 
 
-def img_tag(src, alt, indent):
+def img_tag(src, alt, indent, eager=False):
+    """図版を <picture> で出す。WebP を先に置き、元の JPEG を残す。
+
+    図版は1枚平均 210KB の JPEG で、全部で 25MB あった。モバイルの通信量の
+    ほとんどがこれだった。WebP の 1000px 版なら、同じ図が平均 47KB になる。
+
+    2種類置くのは、スマートフォンの表示幅が約 311px（画素密度3倍でも
+    933px で足りる）なのに対し、PC の Retina では 1400px が要るため。
+    srcset でブラウザに選ばせると、モバイルは 1000px 版だけを落とす。
+
+    JPEG を <img> に残すのは、WebP を読めない古い端末のため。
+    ダウンロードされるのはどちらか一方だけなので、通信量は増えない。
+    WebP が無いあいだ（変換前）は、これまでどおり <img> だけを出す。
+    """
     size = img_size(src)
     dim = ' width="%d" height="%d"' % size if size else ""
-    return '%s<img src="%s" alt="%s"%s loading="lazy" decoding="async">' % (
-        indent, src, esc(alt), dim)
+    # 検索から着地する項目ページでは、唯一の図が最初の画面に入る。
+    # lazy にすると、レイアウトが決まったあとに低い優先度で取りに行くため、
+    # いちばん見たい図が1往復ぶん遅れて出る。
+    load = (' loading="eager" fetchpriority="high"' if eager
+            else ' loading="lazy"')
+    img = '<img src="%s" alt="%s"%s%s decoding="async">' % (
+        src, esc(alt), dim, load)
+
+    base = src[:-4] if src.endswith(".jpg") else None
+    webps = []
+    if base:
+        for w in (1000, 1400):
+            cand = "%s-%d.webp" % (base, w)
+            if os.path.exists(os.path.join(ROOT, cand)):
+                webps.append((cand, w))
+    if not webps:
+        return indent + img
+
+    srcset = ", ".join("%s %dw" % (c, w) for c, w in webps)
+    return ('%s<picture>\n'
+            '%s  <source type="image/webp" srcset="%s" sizes="%s">\n'
+            '%s  %s\n'
+            '%s</picture>' % (indent, indent, srcset, IMG_SIZES, indent, img, indent))
+
+
+# 図版が実際に表示される幅。ブラウザが srcset からどれを選ぶかの判断に使う。
+# 本文の列は max-width 840px で、カードの内側の余白を引くと約 790px。
+# 狭い画面ではほぼ画面幅いっぱいになる。
+IMG_SIZES = "(max-width: 840px) 100vw, 790px"
 
 
 def esc(s):
     return html.escape(s, quote=False)
 
 
-def render_figure(fig):
+def render_figure(fig, eager=False):
     """fig = (src, alt, caption, kind)
     kind: "grid"    2x2の4コマ。読み順の番号バッジを重ねる
           "compare" 左右の比較図。左に×、右に◯のバッジを重ねる
@@ -121,7 +161,7 @@ def render_figure(fig):
             '<span class="mark">%d</span></span>' % (i, i)
             for i in range(1, cells + 1))
         img = ('      <div class="%s">\n%s\n%s\n      </div>'
-               % (cls, img_tag(src, alt, "        "), badges))
+               % (cls, img_tag(src, alt, "        ", eager), badges))
     elif kind in ("compare", "compare-ok-left"):
         # compare          左が危険な例、右が安全な例
         # compare-ok-left  左が安全な例、右が危険な例
@@ -136,9 +176,9 @@ def render_figure(fig):
                   % (side[left], side[right],
                      left, mark[left], right, mark[right]))
         img = ('      <div class="figure-compare">\n%s\n%s\n      </div>'
-               % (img_tag(src, alt, "        "), badges))
+               % (img_tag(src, alt, "        ", eager), badges))
     else:
-        img = img_tag(src, alt, "      ")
+        img = img_tag(src, alt, "      ", eager)
     return ('    <figure class="figure">\n%s\n'
             '      <figcaption>%s</figcaption>\n    </figure>\n' % (img, esc(caption)))
 
@@ -206,7 +246,7 @@ def item_page_prefix():
     return "../../"
 
 
-def render_item(item, color, tab_id=None, page_prefix=""):
+def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False):
     """tab_id を渡すと、カードの末尾に、その項目だけのページへのリンクが付く。
     項目ページ自身では渡さない（自分へのリンクになるため）。
     見出しの「#」は、どちらの場合もそのカードへのページ内リンクである。"""
@@ -223,7 +263,7 @@ def render_item(item, color, tab_id=None, page_prefix=""):
     out.append('    </div>')
 
     if item.get("figure"):
-        out.append(render_figure(item["figure"]).rstrip("\n"))
+        out.append(render_figure(item["figure"], eager_figure).rstrip("\n"))
 
     if item.get("steps"):
         out.append('    <ol class="steps">')
@@ -617,9 +657,18 @@ def write_item_pages():
                             else SITE_URL + "assets/og.png",
                 "jsonld": render_item_jsonld(item, tab, url),
                 # 図のパスは assets/ からの相対なので、2階層分の「../」を足す
+                # 項目ページでは、その1枚が最初の画面に入る。遅延読み込みに
+                # すると、いちばん見たい図が1往復ぶん遅れて出る。
+                # 図のパスは assets/ からの相対なので、2階層分の「../」を足す。
+                # src= だけでなく srcset= も直す。<picture> の WebP は
+                # srcset で指すので、src だけ直すと WebP が404になり、
+                # 静かに JPEG に落ちる（表示は出るので気づきにくい）。
                 "card": _relink_card(
-                    render_item(item, COLORS[idx % len(COLORS)]).replace(
-                        'src="assets/', 'src="%sassets/' % root),
+                    render_item(item, COLORS[idx % len(COLORS)],
+                                eager_figure=True)
+                    .replace('src="assets/', 'src="%sassets/' % root)
+                    .replace('srcset="assets/', 'srcset="%sassets/' % root)
+                    .replace(' assets/img/', ' %sassets/img/' % root),
                     item["id"], root),
                 "siblings": "\n".join(sib),
                 "total": sum(len(g["items"]) for t in TABS for g in t["groups"]),
@@ -818,6 +867,33 @@ def _duplicate_source_urls():
     return errors
 
 
+def _missing_webp():
+    """WebP が作られていない図版を知らせる。
+
+    無くてもビルドは通り、JPEG で表示されるので壊れない。ただし
+    1枚あたり4〜5倍の通信量になるので、気づかずに放置したくない。
+    src/make_webp.sh を走らせると作られる。"""
+    missing = []
+    for tab in TABS:
+        for group in tab["groups"]:
+            for item in group["items"]:
+                for key in ("figure", "figure2"):
+                    fig = item.get(key)
+                    if not fig:
+                        continue
+                    src = fig[0]
+                    if not src.endswith(".jpg"):
+                        continue
+                    for w in (1000, 1400):
+                        cand = "%s-%d.webp" % (src[:-4], w)
+                        if not os.path.exists(os.path.join(ROOT, cand)):
+                            missing.append(cand)
+    if missing:
+        return ["WebP が無い図版が %d 件ある（src/make_webp.sh で作れる）: %s"
+                % (len(missing), ", ".join(missing[:3]) + ("…" if len(missing) > 3 else ""))]
+    return []
+
+
 def _tags_in_escaped_fields():
     """そのまま画面に出る欄に、HTMLタグが書かれていないかを見る。
 
@@ -847,6 +923,7 @@ def validate():
     errors.extend(_duplicate_keys())
     errors.extend(_duplicate_item_keys())
     errors.extend(_tags_in_escaped_fields())
+    warnings.extend(_missing_webp())
     from products import AWARDS, CREDS, NOTES, STAPLES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
