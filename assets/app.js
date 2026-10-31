@@ -370,11 +370,33 @@
       window.clearTimeout(typing);
       typing = window.setTimeout(function () { search(input.value); }, 120);
     });
+    // 日本語入力では、変換を確定するのも Enter である。その Enter を
+    // 「先頭の候補を開け」と受け取ると、「けいれん」と打ち終えて確定した
+    // だけで、別の項目へ飛ばされる。打ち間違いの訂正もできない。
+    //
+    // 変換中かどうかは3つの手がかりで見る。どれか1つでは足りない。
+    // isComposing は Safari で、確定の Enter のときに false で来ることが
+    // ある。keyCode 229 は変換中の keydown に使われる古い約束で、
+    // これも全部の環境では来ない。最後の砦として、compositionend から
+    // 100ミリ秒以内の Enter は確定の Enter として扱う。
+    var composing = false;
+    var composedAt = 0;
+    input.addEventListener('compositionstart', function () { composing = true; });
+    input.addEventListener('compositionend', function () {
+      composing = false;
+      composedAt = Date.now();
+      window.clearTimeout(typing);
+      search(input.value);
+    });
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { input.value = ''; results.hidden = true; }
       // type="search" なのでソフトキーボードに「検索」が出るが、押しても
       // 何も起きなかった。先頭の候補を開く。
       if (e.key === 'Enter') {
+        if (composing || e.isComposing || e.keyCode === 229 ||
+            Date.now() - composedAt < 100) {
+          return;
+        }
         var top = results.querySelector('.search-hit');
         if (top) { e.preventDefault(); top.click(); }
       }
