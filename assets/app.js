@@ -360,6 +360,13 @@
     }, { passive: true });
   }
 
+  // 目次のグループは、狭い画面では畳んだ状態で出す（0〜3か月は32項目あり、
+  // 全部開くと目次だけで5画面分になる）。広い画面にはその制約が無く、
+  // 畳むとかえって一覧しにくいので、読み込み時に全部開く。
+  if (window.matchMedia('(min-width: 761px)').matches) {
+    document.querySelectorAll('details.toc-group').forEach(function (d) { d.open = true; });
+  }
+
   window.addEventListener('popstate', openByHash);
   window.addEventListener('hashchange', openByHash);
   openByHash();

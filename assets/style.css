@@ -791,16 +791,39 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .term:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 
 /* ---------- 目次のグループ ---------- */
-.toc-group + .toc-group { margin-top: 16px; }
-.toc-group h4 {
+.toc-group + .toc-group { margin-top: 8px; }
+/* グループを畳めるようにした。0〜3か月は32項目あり、狭い画面では目次だけで
+   約5画面分になって、目次そのものを一覧できなかった。
+   見出しだけ並べば、どのグループを開くかを1画面で選べる。 */
+.toc-group > summary {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 8px;
+  padding: 10px 10px 10px 4px;
+  margin: 0;
+  border-radius: 10px;
   font-size: .88rem;
   font-weight: 900;
   color: var(--ink);
+  cursor: pointer;
+  list-style: none;
 }
+.toc-group > summary::-webkit-details-marker { display: none; }
+/* 開閉の向きを三角で示す。記号は装飾で、開閉状態は details が読み上げに渡す。 */
+.toc-group > summary::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0; height: 0;
+  border-left: 6px solid var(--ink-soft);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  transition: transform .15s ease;
+}
+.toc-group[open] > summary::before { transform: rotate(90deg); }
+.toc-group > summary:hover { background: var(--cream-deep); }
+.toc-group > summary:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+.toc-group .toc-name { flex: 1 1 auto; }
+.toc-group > ul { margin-top: 6px; }
 .toc-count {
   padding: 1px 9px;
   border-radius: 999px;

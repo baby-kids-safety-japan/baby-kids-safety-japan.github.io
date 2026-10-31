@@ -426,10 +426,15 @@ def render_toc(tab):
             links.append('        <li><a href="#%s"><span class="toc-title">%s</span>'
                          '<span class="toc-sub">%s</span></a></li>'
                          % (item["id"], esc(item["title"]), esc(item.get("sub", ""))))
-        blocks.append('      <div class="toc-group">\n'
-                      '        <h4>%s<span class="toc-count">%d</span></h4>\n'
-                      '        <ul>\n%s\n        </ul>\n      </div>'
-                      % (esc(g["name"]), len(g["items"]), "\n".join(links)))
+        # グループごとに畳める形にする。0〜3か月は32項目あり、狭い画面では
+        # 目次だけで約5画面分になって、目次そのものを一覧できなかった。
+        # 最初のグループだけ開いておき、何が入っているかは分かるようにする。
+        blocks.append('      <details class="toc-group"%s>\n'
+                      '        <summary><span class="toc-name">%s</span>'
+                      '<span class="toc-count">%d</span></summary>\n'
+                      '        <ul>\n%s\n        </ul>\n      </details>'
+                      % (" open" if not blocks else "",
+                         esc(g["name"]), len(g["items"]), "\n".join(links)))
     return ('  <nav class="toc" aria-label="このタブの目次">\n'
             '    <h3>このページの項目（%d）</h3>\n%s\n  </nav>'
             % (total, "\n".join(blocks)))
