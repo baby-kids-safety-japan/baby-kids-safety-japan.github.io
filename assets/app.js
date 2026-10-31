@@ -238,6 +238,12 @@
       activate(it.i);
       var target = document.getElementById(it.id);
       if (target) {
+        // 目次のリンクは href="#id" なので履歴が積まれ、戻ると目次に帰れる。
+        // 検索だけハッシュを触っていなかったため、飛んだ直後に戻ると
+        // サイトを出てしまい、URLも表示内容と合わなくなっていた。
+        if (window.location.hash.replace('#', '') !== it.id) {
+          history.pushState(null, '', '#' + it.id);
+        }
         alignTo(target);
         target.setAttribute('tabindex', '-1');
         target.focus({ preventScroll: true });
@@ -335,6 +341,12 @@
     });
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { input.value = ''; results.hidden = true; }
+      // type="search" なのでソフトキーボードに「検索」が出るが、押しても
+      // 何も起きなかった。先頭の候補を開く。
+      if (e.key === 'Enter') {
+        var top = results.querySelector('.search-hit');
+        if (top) { e.preventDefault(); top.click(); }
+      }
       if (e.key === 'ArrowDown') {
         var first = results.querySelector('.search-hit');
         if (first) { e.preventDefault(); first.focus(); }
@@ -367,7 +379,14 @@
     document.querySelectorAll('details.toc-group').forEach(function (d) { d.open = true; });
   }
 
-  window.addEventListener('popstate', openByHash);
+  // popstate と hashchange の両方に登録すると、戻る・進むで2回走り、
+  // 位置合わせのタイマーが二重に仕掛かる。hashchange だけで足りる
+  // （戻る・進むでハッシュが変わるときは hashchange も発火する）。
+  // ハッシュが無い状態どうしの行き来は hashchange が出ないので、
+  // そこだけ popstate で拾う。
+  window.addEventListener('popstate', function () {
+    if (!window.location.hash) openByHash();
+  });
   window.addEventListener('hashchange', openByHash);
   openByHash();
 })();
