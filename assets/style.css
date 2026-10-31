@@ -327,7 +327,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .steps li:nth-child(3)::before { background: var(--mint-deep);  }
 .steps li:nth-child(4)::before { background: var(--sky-deep);   }
 .steps h4 { margin: 0 0 4px; font-size: 1rem; font-weight: 700; }
-.steps p  { margin: 0; font-size: .94rem; }
+.steps p  { margin: 0; }
 
 /* ---------- checklist ---------- */
 .checklist { margin: 26px 0 0; }
@@ -342,7 +342,6 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin-bottom: 8px;
   background: #FFFDF8;
   border: 2px solid #F6E8DA;
-  font-size: .94rem;
 }
 .checklist .ok, .checklist .ng {
   flex: 0 0 auto;
@@ -365,8 +364,10 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   border: 2px dashed #FFC9A0;
 }
 .callout h4 { margin: 0 0 8px; font-size: 1.02rem; font-weight: 900; }
-.callout p  { margin: 0 0 10px; font-size: .94rem; }
-.callout ul { margin: 0; padding-left: 1.2em; font-size: .94rem; }
+/* 段落のあきは、行送り（1.85 = 約30px）に負けない大きさにする。
+   10px だと行間との差がつかず、どこで話が変わったのか目で追えない。 */
+.callout p  { margin: 0 0 22px; }
+.callout ul { margin: 0; padding-left: 1.2em; }
 .callout li { margin-bottom: 6px; }
 /* 資料のあいだで記述が違うとき、どちらに合わせたかを書き添える段落。
    本文より一段下げて、本筋と読み分けられるようにする。 */
@@ -1264,4 +1265,14 @@ html, body { overflow-x: clip; }
   color: var(--ink-soft);
   font-size: .92rem;
   line-height: 1.7;
+}
+
+/* 狭い画面では、1行に入る字数が少なすぎた。375pxで本文18.4全角、
+   チェックリスト14.9全角しか入らず、見出しが4行に折れるものがあった。
+   日本語のモバイルの目安は20〜25全角なので、余白を削って幅を稼ぐ。 */
+@media (max-width: 480px) {
+  .card { padding: 24px 16px 22px; }
+  .checklist li { padding: 12px 10px; }
+  .steps li { padding-left: 3rem; }
+  .callout { padding: 18px 16px; }
 }
