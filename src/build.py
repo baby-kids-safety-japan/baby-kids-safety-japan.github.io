@@ -783,12 +783,35 @@ def _duplicate_source_urls():
     return errors
 
 
+def _tags_in_escaped_fields():
+    """そのまま画面に出る欄に、HTMLタグが書かれていないかを見る。
+
+    チェックの見出しと出典の要約は esc() を通すので、<strong> と書くと
+    「&lt;strong&gt;」という文字として読者に見える。本文（annotate）は
+    タグを通すため、同じ項目の中で片方だけ効く形になり、気づきにくい。"""
+    errors = []
+    for tab in TABS:
+        for group in tab["groups"]:
+            for item in group["items"]:
+                where = "%s / %s" % (tab["title"], item["id"])
+                for _, title, _body in item.get("checks") or []:
+                    if "<" in title:
+                        errors.append("%s: チェックの見出しにタグが入っている（"
+                                      "この欄は文字として出る）: %s" % (where, title[:40]))
+                for _key, note in item.get("sources") or []:
+                    if "<" in note:
+                        errors.append("%s: 出典の要約にタグが入っている（"
+                                      "この欄は文字として出る）: %s" % (where, note[:40]))
+    return errors
+
+
 def validate():
     """本文を書くときに踏みやすい間違いを、ビルド時に止める。"""
     from products import PRODUCTS
     errors, warnings = [], []
     errors.extend(_duplicate_keys())
     errors.extend(_duplicate_item_keys())
+    errors.extend(_tags_in_escaped_fields())
     from products import AWARDS, CREDS, NOTES, STAPLES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
