@@ -1267,8 +1267,9 @@ html, body { overflow-x: clip; }
   font-size: .86rem;
   font-weight: 700;
   color: var(--ink-soft);
-  text-decoration: none;
-  border-bottom: 2px solid currentColor;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
   white-space: nowrap;
 }
 .card-permalink::after { content: " →"; }
@@ -1287,8 +1288,9 @@ html, body { overflow-x: clip; }
   margin: -9px 2px -9px -10px;
   font-weight: 700;
   color: #B04A2E;
-  text-decoration: none;
-  border-bottom: 2px solid currentColor;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
   border-radius: 6px;
 }
 .emergency a.tel:hover { color: #8A3A20; background: var(--cream-deep); }
@@ -1298,7 +1300,7 @@ html, body { overflow-x: clip; }
 }
 /* 紙では、リンクの下線も当たり判定の余白も要らない。 */
 @media print {
-  .emergency a.tel { min-height: 0; padding: 0; margin: 0; border-bottom: none; color: inherit; }
+  .emergency a.tel { min-height: 0; padding: 0; margin: 0; text-decoration: none; color: inherit; }
 }
 
 /* 「困ったときの番号」への入口。
@@ -1356,15 +1358,16 @@ html, body { overflow-x: clip; }
   margin: -9px 2px -9px -10px;
   font-weight: 700;
   color: #B04A2E;
-  text-decoration: none;
-  border-bottom: 2px solid currentColor;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
   border-radius: 6px;
 }
 .itememergency a.tel:hover { color: #8A3A20; background: #fff; }
 .itememergency a.tel:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 .itememergency-more { margin: 4px 0 0; font-size: .92rem; }
 @media print {
-  .itememergency a.tel { min-height: 0; padding: 0; margin: 0; border-bottom: none; color: inherit; }
+  .itememergency a.tel { min-height: 0; padding: 0; margin: 0; text-decoration: none; color: inherit; }
 }
 
 /* 0件のときの案内。押せる項目と見間違えないよう、背景も枠も付けない。 */
@@ -1384,8 +1387,9 @@ html, body { overflow-x: clip; }
   margin: -10px 0;
   font-weight: 700;
   color: #B04A2E;
-  text-decoration: none;
-  border-bottom: 2px solid currentColor;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 .search-none-tel a:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 
