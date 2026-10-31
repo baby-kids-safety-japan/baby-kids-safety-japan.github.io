@@ -167,18 +167,68 @@
   var results = document.getElementById('search-results');
   var index = null;
 
+  // 表記ゆれを吸収するための正規化。
+  // カタカナをひらがなに寄せ、全角の英数を半角にし、小文字にそろえる。
+  // これで「ベビーゲート」と「べびーげーと」、「ＡＢ」と「ab」が同じになる。
+  function norm(str) {
+    return str
+      .replace(/[\u30a1-\u30f6]/g, function (c) {
+        return String.fromCharCode(c.charCodeAt(0) - 0x60);
+      })
+      .replace(/[\uff01-\uff5e]/g, function (c) {
+        return String.fromCharCode(c.charCodeAt(0) - 0xfee0);
+      })
+      .replace(/\u30fc/g, '\u30fc')
+      .toLowerCase();
+  }
+
+  // 正規化だけでは橋が架からない、漢字と仮名の言い換え。
+  // 読者が打つ側の語を、本文で使っている語に寄せる。
+  // 入れるのは、同じものを指す書き方の違いだけにする。
+  // 「発熱→熱」のような広げ方をすると、熱中症や加熱を拾って
+  // 関係のない項目が先頭に出る。載っていないものは0件と出すほうが正直である。
+  var SYNONYMS = [
+    ['火傷', 'やけど'],
+    ['痙攣', 'けいれん'],
+    ['溺', 'おぼれ'],
+    ['おぼれ', '溺'],
+    ['抱っこ紐', '抱っこひも'],
+    ['だっこひも', '抱っこひも'],
+    ['煙草', 'たばこ'],
+    ['怪我', 'けが'],
+    ['誤嚥', '誤えん'],
+    ['誤えん', '誤嚥']
+  ];
+
+  // 1つの語を、当たりうる書き方の集合に広げる。
+  function expand(token) {
+    var out = [token];
+    SYNONYMS.forEach(function (pair) {
+      if (token.indexOf(norm(pair[0])) >= 0) {
+        out.push(token.split(norm(pair[0])).join(norm(pair[1])));
+      }
+    });
+    return out;
+  }
+
   function buildIndex() {
     return Array.prototype.map.call(document.querySelectorAll('.card'), function (card) {
       var panel = card.closest('.panel');
       var head = card.querySelector('.card-head h3');
-      var sub = card.querySelector('.card-sub');
+      // 結果の説明には、短いほうの一行（.card-tagline）を使う。
+      // 本文の導入（.card-sub）は中央値116字あり、1件で画面が埋まる。
+      var line = card.querySelector('.card-tagline');
+      var name = head ? head.textContent.replace('#', '').trim() : card.id;
+      var desc = line ? line.textContent.trim() : '';
       return {
         id: card.id,
         i: panels.indexOf(panel),
         t: tabs[panels.indexOf(panel)].querySelector('.tab-label').textContent,
-        n: head ? head.textContent.replace('#', '').trim() : card.id,
-        s: sub ? sub.textContent.trim() : '',
-        all: card.textContent
+        n: name,
+        s: desc,
+        nn: norm(name),
+        ns: norm(desc),
+        all: norm(card.textContent)
       };
     });
   }
@@ -199,9 +249,19 @@
       input.value = '';
     }
 
-    function render(list) {
+    function render(list, q) {
       results.innerHTML = '';
-      if (!list.length) { results.hidden = true; return; }
+      // 0件のときに何も出さないと、検索が壊れているのか、その話題が
+      // 無いのかを読者が区別できない。はっきり書く。
+      if (!list.length) {
+        var none = document.createElement('li');
+        none.className = 'search-none';
+        none.textContent = '「' + q + '」に当てはまる項目はありませんでした。'
+                         + '別の言い方（ひらがな、短い語）でもお試しください。';
+        results.appendChild(none);
+        results.hidden = false;
+        return;
+      }
       list.slice(0, 12).forEach(function (it) {
         var li = document.createElement('li');
         var b = document.createElement('button');
@@ -220,18 +280,37 @@
       results.hidden = false;
     }
 
-    function search(q) {
-      q = q.trim();
-      if (!q) { results.hidden = true; return; }
+    // 1つの語が、その文字列のどこかに当たるか（言い換えも試す）。
+    function hitsToken(hay, token) {
+      var forms = expand(token);
+      for (var i = 0; i < forms.length; i++) {
+        if (hay.indexOf(forms[i]) >= 0) return true;
+      }
+      return false;
+    }
+
+    function search(raw) {
+      var shown = raw.trim();
+      if (!shown) { results.hidden = true; return; }
       if (!index) index = buildIndex();
-      var hit = index.filter(function (it) { return it.all.indexOf(q) >= 0; });
-      // 見出しとサブタイトルに入っているものを先に出す
-      hit.sort(function (a, b) {
-        var sa = (a.n.indexOf(q) >= 0 ? 2 : 0) + (a.s.indexOf(q) >= 0 ? 1 : 0);
-        var sb = (b.n.indexOf(q) >= 0 ? 2 : 0) + (b.s.indexOf(q) >= 0 ? 1 : 0);
-        return sb - sa;
+      // 全角・半角の空白で区切って、すべてを含むものを出す。
+      // 「ボタン電池 誤飲」のような打ち方で0件になっていた。
+      var tokens = norm(shown).split(/[\s\u3000]+/).filter(Boolean);
+      if (!tokens.length) { results.hidden = true; return; }
+      var hit = index.filter(function (it) {
+        return tokens.every(function (tk) { return hitsToken(it.all, tk); });
       });
-      render(hit);
+      // 見出しと一行説明に入っているものを先に出す
+      function score(it) {
+        var v = 0;
+        tokens.forEach(function (tk) {
+          if (hitsToken(it.nn, tk)) v += 2;
+          if (hitsToken(it.ns, tk)) v += 1;
+        });
+        return v;
+      }
+      hit.sort(function (a, b) { return score(b) - score(a); });
+      render(hit, shown);
     }
 
     input.addEventListener('input', function () { search(input.value); });

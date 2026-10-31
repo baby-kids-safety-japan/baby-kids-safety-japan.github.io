@@ -1257,3 +1257,11 @@ html, body { overflow-x: clip; }
 @media print {
   .itememergency a.tel { min-height: 0; padding: 0; margin: 0; border-bottom: none; color: inherit; }
 }
+
+/* 0件のときの案内。押せる項目と見間違えないよう、背景も枠も付けない。 */
+.search-none {
+  padding: 14px 16px;
+  color: var(--ink-soft);
+  font-size: .92rem;
+  line-height: 1.7;
+}
