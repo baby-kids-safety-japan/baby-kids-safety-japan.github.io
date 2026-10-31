@@ -974,8 +974,13 @@ html, body { overflow-x: clip; }
 .steps li { padding-left: 3.75em; }
 .steps li::before { left: 1em; width: 1.9em; height: 1.9em; }
 @media (max-width: 480px) {
-  .figure-compare .judge { width: 1.3em; height: 1.3em; }
-  .figure-grid6 .order { width: 1.5em; height: 1.5em; }
+  /* 375px では、1.3em = 20.8px の丸に 1rem = 16px の ◯／× が入り、
+     記号が丸をほぼ埋め尽くしていた。6コマの番号も 16.8px の丸に
+     11.2px の数字だった。イラストの上に乗る印としては小さすぎる。
+     px を em に変えた判断（文字だけ200%にする設定への対応）は保ったまま、
+     倍率を上げる。 */
+  .figure-compare .judge { width: 1.7em; height: 1.7em; }
+  .figure-grid6 .order { width: 2em; height: 2em; }
 }
 
 /* キーボードで操作している人が、いまどこにいるか分かるように。
