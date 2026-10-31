@@ -1,3 +1,38 @@
+/* Zen Maru Gothic を自前で配信する。
+   SIL Open Font License 1.1（assets/fonts/OFL.txt に原文）。
+
+   なぜ自前にしたか:
+   Google Fonts から読むと、日本語のサブセットが使用頻度順の細かい塊に
+   分かれているため、使う文字が少なくても塊が散り、大量のファイルを引く。
+   実測で、432字しか使わない項目ページでも woff2 を123本・1.55MB、
+   トップページでは234本・3.65MB 落ちていた。
+   このサイトで実際に使う1,843字だけを1ファイルに詰めると、
+   ウェイトあたり約310KB・3つで951KBに収まる。
+   あわせて、描画の前に置かれる87KBのCSSも、外部への接続2本も要らなくなる。
+
+   作り直し方: src/make_font_subset.py を見ること。 */
+@font-face {
+  font-family: "Zen Maru Gothic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/zen-maru-gothic-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Zen Maru Gothic";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/zen-maru-gothic-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Zen Maru Gothic";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("fonts/zen-maru-gothic-900.woff2") format("woff2");
+}
+
 :root {
   --cream:      #FFFAF2;
   --cream-deep: #FFF2E2;

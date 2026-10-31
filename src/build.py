@@ -505,20 +505,10 @@ ITEM_PAGE = """<!doctype html>
 <meta name="color-scheme" content="only light">
 <title>%(title)s｜%(site)s</title>
 <meta name="description" content="%(desc)s">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- フォントのCSSは、そのまま置くと描画を止める。Googleから返るまで1文字も
-     出ないので、夜間のモバイル回線では待たされる。media を print にして
-     読み込み、届いてから all に戻すと、本文が先に出る。
-     JavaScript を切っている場合は noscript のほうが効く。
-     ウェイトは 400/700/900 の3つ。500 は装飾的な小さい文字2か所だけだったので、
-     400 で代替して1ウェイト分の転送をやめた。 -->
-<link rel="preload" as="style"
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
-<link rel="stylesheet" media="print" onload="this.media='all'"
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
-<noscript><link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"></noscript>
+<!-- フォントは自前で配信する。外部への接続も、描画の前に置かれる87KBのCSSも要らない。
+     本文に使う400だけ先に取りに行き、見出し用の700/900はCSSが必要になった時点で読む。 -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="%(font400)s">
 <link rel="stylesheet" href="%(css)s">
 <link rel="icon" href="%(favicon_svg)s" type="image/svg+xml">
 <link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">
@@ -690,6 +680,7 @@ def write_item_pages():
                 "total": sum(len(g["items"]) for t in TABS for g in t["groups"]),
                 "disclosure": esc(DISCLOSURE),
                 "css": asset("assets/style.css", root),
+                "font400": root + "assets/fonts/zen-maru-gothic-400.woff2",
                 "js": asset("assets/app.js", root),
                 "favicon_svg": asset("assets/favicon.svg", root),
                 "favicon_32": asset("assets/favicon-32.png", root),
@@ -883,6 +874,40 @@ def _duplicate_source_urls():
     return errors
 
 
+def _font_coverage():
+    """本文の文字が、自前のサブセットに入っているかを見る。
+
+    文章を足したときに新しい漢字が増えると、その字だけ代替フォントで出て
+    字形が変わる。見落としやすいので、ビルドのたびに数えておく。
+    直すには src/make_font_subset.py を走らせ直す。"""
+    path = os.path.join(ROOT, "assets", "fonts", "zen-maru-gothic-400.woff2")
+    if not os.path.exists(path):
+        return ["自前のフォントが無い（src/make_font_subset.py で作れる）"]
+    # woff2 は圧縮されていて中身を読むのが重いので、作った時点の文字一覧と
+    # 突き合わせる。make_font_subset.py が chars.txt を残す。
+    manifest = os.path.join(ROOT, "assets", "fonts", "chars.txt")
+    if not os.path.exists(manifest):
+        return []
+    with open(manifest, encoding="utf-8") as f:
+        have = set(f.read())
+    need = set()
+    for tab in TABS:
+        need.update(tab["title"], tab["label"], tab["sub"], tab["lead"])
+        for group in tab["groups"]:
+            need.update(group["name"])
+            for item in group["items"]:
+                for key in ("title", "sub", "lead", "chip"):
+                    need.update(item.get(key) or "")
+    # 本文にはHTMLのタグがそのまま書かれている欄があるので、記号は除く。
+    markup = set('<>&/="\'')
+    missing = sorted(c for c in need - have
+                     if not c.isspace() and ord(c) > 0x20 and c not in markup)
+    if missing:
+        return ["フォントに無い文字が %d 字ある（src/make_font_subset.py で作り直す）: %s"
+                % (len(missing), "".join(missing[:20]))]
+    return []
+
+
 def _missing_webp():
     """WebP が作られていない図版を知らせる。
 
@@ -940,6 +965,7 @@ def validate():
     errors.extend(_duplicate_item_keys())
     errors.extend(_tags_in_escaped_fields())
     warnings.extend(_missing_webp())
+    warnings.extend(_font_coverage())
     from products import AWARDS, CREDS, NOTES, STAPLES
     for k in sorted(set(AWARDS) - set(PRODUCTS)):
         errors.append('products.py: 受賞 "%s" が、登録のない商品を指している' % k)
@@ -1037,20 +1063,10 @@ def build():
 <meta name="color-scheme" content="only light">
 <title>%(title)s｜%(tagline)s</title>
 <meta name="description" content="%(desc)s">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- フォントのCSSは、そのまま置くと描画を止める。Googleから返るまで1文字も
-     出ないので、夜間のモバイル回線では待たされる。media を print にして
-     読み込み、届いてから all に戻すと、本文が先に出る。
-     JavaScript を切っている場合は noscript のほうが効く。
-     ウェイトは 400/700/900 の3つ。500 は装飾的な小さい文字2か所だけだったので、
-     400 で代替して1ウェイト分の転送をやめた。 -->
-<link rel="preload" as="style"
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
-<link rel="stylesheet" media="print" onload="this.media='all'"
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap">
-<noscript><link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"></noscript>
+<!-- フォントは自前で配信する。外部への接続も、描画の前に置かれる87KBのCSSも要らない。
+     本文に使う400だけ先に取りに行き、見出し用の700/900はCSSが必要になった時点で読む。 -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="%(font400)s">
 <link rel="stylesheet" href="%(css)s">
 <link rel="icon" href="%(favicon_svg)s" type="image/svg+xml">
 <link rel="icon" href="%(favicon_32)s" sizes="32x32" type="image/png">
@@ -1400,7 +1416,11 @@ def build():
        "kids_design": SRC["kids_design"][1],
        "good_design": SRC["good_design"][1],
        "caa_psc_start": SRC["caa_psc_start"][1],
-       "css": asset("assets/style.css"), "js": asset("assets/app.js"),
+       "css": asset("assets/style.css"),
+        # preload は @font-face の src と完全に同じURLでないと一致せず、
+        # 同じフォントを2回落とす。style.css 側は fonts/… の相対指定で
+        # ?v= を付けていないので、ここでも付けない。
+        "font400": "assets/fonts/zen-maru-gothic-400.woff2", "js": asset("assets/app.js"),
        "favicon_svg": asset("assets/favicon.svg"),
        "favicon_32": asset("assets/favicon-32.png"),
        "favicon_16": asset("assets/favicon-16.png"),
