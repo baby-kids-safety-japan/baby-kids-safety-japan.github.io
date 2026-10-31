@@ -508,6 +508,22 @@ ITEM_PAGE = """<!doctype html>
   </nav>
 </main>
 
+<section class="itememergency" id="emergency">
+  <h2>困ったときの番号</h2>
+  <p><strong>意識がない、呼吸がおかしい、顔色が青白い、けいれんしている。
+  このときは相談ではなく、<a class="tel" href="tel:119">119番<span class="sr-only">に発信する</span></a>です。</strong></p>
+  <ul>
+    <li><a class="tel" href="tel:%%238000">#8000<span class="sr-only">に発信する</span></a>　子ども医療電話相談。夜間・休日に、小児科の医師・看護師へ相談できます</li>
+    <li><a class="tel" href="tel:%%237119">#7119<span class="sr-only">に発信する</span></a>　救急安心センター。救急車を呼ぶか迷ったとき（全国42地域）</li>
+    <li><a class="tel" href="tel:0727272499">072-727-2499<span class="sr-only">に発信する</span></a>　中毒110番・大阪（24時間）。飲み込んだかもしれないとき</li>
+  </ul>
+  <p class="itememergency-more"><a href="%(root)s#emergency">ほかの番号も見る</a></p>
+</section>
+
+<a class="to-emergency" href="#emergency">
+  <span aria-hidden="true">☎</span> 緊急の番号
+</a>
+
 <footer class="itemfoot">
   <p>
     <strong>このページは「%(site)s」の1項目です。</strong>

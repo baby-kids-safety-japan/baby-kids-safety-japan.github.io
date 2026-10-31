@@ -1223,3 +1223,37 @@ html, body { overflow-x: clip; }
 
 /* 飛んできた先が固定タブの下に隠れないようにする。 */
 .emergency { scroll-margin-top: 150px; }
+.itememergency { scroll-margin-top: 16px; }
+
+/* 項目ページにも、最小限の緊急番号を置く。
+   検索から着地するのはトップではなくこちらで、ここから番号に行くには
+   1.5MBのトップを読み込み直して最下部まで下る必要があった。
+   いちばん急いでいる読者が、いちばん遠い位置にいた。 */
+.itememergency {
+  max-width: 760px;
+  margin: 28px auto 0;
+  padding: 18px 20px;
+  background: var(--cream-deep);
+  border-radius: var(--radius);
+}
+.itememergency h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.itememergency p { margin: 0 0 10px; }
+.itememergency ul { margin: 0; padding-left: 1.1em; }
+.itememergency li { margin-bottom: 10px; line-height: 1.75; }
+.itememergency a.tel {
+  display: inline-block;
+  min-height: 44px;
+  padding: 9px 10px;
+  margin: -9px 2px -9px -10px;
+  font-weight: 700;
+  color: #B04A2E;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  border-radius: 6px;
+}
+.itememergency a.tel:hover { color: #8A3A20; background: #fff; }
+.itememergency a.tel:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+.itememergency-more { margin: 4px 0 0; font-size: .92rem; }
+@media print {
+  .itememergency a.tel { min-height: 0; padding: 0; margin: 0; border-bottom: none; color: inherit; }
+}
