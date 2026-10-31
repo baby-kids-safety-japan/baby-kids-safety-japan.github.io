@@ -550,6 +550,21 @@ def render_item_jsonld(item, tab, url):
     return json.dumps(data, ensure_ascii=False, indent=2)
 
 
+def _relink_card(html, own_id, root):
+    """カードの中の同一ページ前提のリンクを、項目ページから届く形に直す。
+
+    カードはトップページ用に組み立ててあるので、「#policy」のような
+    フッターへのリンクや、ほかの項目への相互参照が入っている。
+    項目ページにはその行き先が無いため、押しても何も起きない。
+    自分自身を指すリンク（見出しのアンカー）だけは、そのまま残す。"""
+    def fix(m):
+        target = m.group(1)
+        if target == own_id:
+            return m.group(0)
+        return 'href="%s#%s"' % (root, target)
+    return re.sub(r'href="#([^"]+)"', fix, html)
+
+
 def write_item_pages():
     """項目ごとのページを書き出す。
 
@@ -584,8 +599,10 @@ def write_item_pages():
                             else SITE_URL + "assets/og.png",
                 "jsonld": render_item_jsonld(item, tab, url),
                 # 図のパスは assets/ からの相対なので、2階層分の「../」を足す
-                "card": render_item(item, COLORS[idx % len(COLORS)]).replace(
-                    'src="assets/', 'src="%sassets/' % root),
+                "card": _relink_card(
+                    render_item(item, COLORS[idx % len(COLORS)]).replace(
+                        'src="assets/', 'src="%sassets/' % root),
+                    item["id"], root),
                 "siblings": "\n".join(sib),
                 "total": sum(len(g["items"]) for t in TABS for g in t["groups"]),
                 "disclosure": esc(DISCLOSURE),
