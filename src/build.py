@@ -21,6 +21,7 @@ from products import staple as product_staple
 from products import link as product_link
 from keywords import KEYWORDS
 from related import related_ids
+from videos import VIDEOS
 from sources import SRC
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -344,6 +345,32 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
 
     if item.get("goods"):
         out.append(render_goods(item["goods"], item.get("goods_kind"), seen).rstrip("\n"))
+
+    # 手の当て方や叩く強さは、図と文章だけでは再現できる精度が違う。
+    # 押されるまで YouTube には一切つながない。このサイトは外部への接続が
+    # 0本なので、埋めただけで毎回数百KBを引くようになるのは割に合わない。
+    # 押したあと app.js が youtube-nocookie.com の iframe を作る。
+    vids = VIDEOS.get(item["id"]) if link_prefix is not None else None
+    if vids:
+        out.append('    <div class="card-videos">')
+        out.append('      <h4>動画で見る</h4>')
+        for vid, v_title, v_org, _channel in vids:
+            out.append('      <div class="card-video">')
+            out.append('        <button type="button" class="card-video-play" '
+                       'data-video="%s" aria-label="%s（%s）を再生する">'
+                       '<span class="card-video-mark" aria-hidden="true">▶</span>'
+                       '<span class="card-video-text">'
+                       '<span class="card-video-title">%s</span>'
+                       '<span class="card-video-org">%s</span></span></button>'
+                       % (esc(vid), esc(v_title), esc(v_org),
+                          esc(v_title), esc(v_org)))
+            out.append('        <p class="card-video-out">'
+                       '<a href="https://www.youtube.com/watch?v=%s" '
+                       'target="_blank" rel="noopener">YouTubeで開く'
+                       '<span class="sr-only">（新しいタブで開きます）</span></a></p>'
+                       % esc(vid))
+            out.append('      </div>')
+        out.append('    </div>')
 
     # 同じ危険が、月齢を変えて何度も出てくる。そのつながりを見せる。
     # このサイトの売りは網羅性なので、1項目を読んだ人がその先を
@@ -1054,6 +1081,12 @@ def validate():
     for i in sorted(set(KEYWORDS) - ids):
         errors.append('keywords.py: "%s" という項目は無い' % i)
     # どの種類にも入っていない項目は、関連が片向きにも張らず孤立する。
+    for i in sorted(set(VIDEOS) - ids):
+        errors.append('videos.py: "%s" という項目は無い' % i)
+    for i, rows in sorted(VIDEOS.items()):
+        for row in rows:
+            if len(row) != 4:
+                errors.append('videos.py: "%s" の行が4つ組では無い' % i)
     from related import THEMES
     in_theme = set()
     for name, members in THEMES.items():

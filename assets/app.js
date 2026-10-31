@@ -215,6 +215,28 @@
     return out;
   }
 
+  // 動画は、押されたときに初めて YouTube につなぐ。
+  // 置いただけでつなぐと、このページを開く全員が第三者のスクリプトを
+  // 引くことになる。見ない人のほうが多い。
+  // 押したあとも youtube-nocookie.com を使い、広告の個人化に使う
+  // クッキーを置かせない。
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.card-video-play') : null;
+    if (!btn) return;
+    var id = btn.getAttribute('data-video');
+    if (!id) return;
+    var frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+                '?autoplay=1&rel=0';
+    frame.title = btn.querySelector('.card-video-title').textContent;
+    frame.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+    frame.allowFullscreen = true;
+    frame.loading = 'lazy';
+    frame.className = 'card-video-frame';
+    btn.parentNode.replaceChild(frame, btn);
+    frame.focus();
+  });
+
   function buildIndex() {
     return Array.prototype.map.call(document.querySelectorAll('.card'), function (card) {
       var panel = card.closest('.panel');

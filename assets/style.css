@@ -451,6 +451,73 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .sources li { margin-bottom: 12px; }
 .sources small { color: var(--ink-soft); font-size: .85em; line-height: 1.6; display: inline-block; }
 
+/* 公的機関の解説動画。押されるまで YouTube にはつながない。
+   押す前は、題名と発行元だけの板を出しておく。サムネイルを置かないのは、
+   YouTube の画像を取りに行けばその時点で接続が1本できてしまうためで、
+   見た目のためではない。 */
+.card-videos { margin: 24px 0 0; }
+.card-videos h4 {
+  margin: 0 0 10px;
+  font-size: .95rem;
+  color: var(--ink);
+}
+.card-videos h4::before { content: "\25b6\fe0e " / ""; color: #B04A2E; }
+.card-video { margin-bottom: 12px; }
+.card-video-play {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 16px;
+  border: 2px solid #E3D6C6;
+  border-radius: 16px;
+  background: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.card-video-play:hover { border-color: #B04A2E; background: var(--cream-deep); }
+.card-video-play:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+.card-video-mark {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  background: #B04A2E;
+  color: #fff;
+  font-size: .9rem;
+  padding-left: 3px;   /* ▶ の墨は左に寄っているので、丸の中心に戻す */
+}
+.card-video-text { display: block; }
+.card-video-title {
+  display: block;
+  font-size: .92rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.card-video-org {
+  display: block;
+  margin-top: 2px;
+  font-size: .8rem;
+  color: var(--ink-soft);
+}
+/* 押したあとの iframe。縦横比を保って、親の幅いっぱいに置く。 */
+.card-video-frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 16px;
+  background: #000;
+}
+.card-video-out { margin: 6px 0 0; font-size: .82rem; }
+.card-video-out a { color: var(--ink-soft); }
+/* 紙には動画を出せない。URLも長いので出さない。 */
+@media print { .card-videos { display: none; } }
+
 /* 同じ危険が、月齢を変えて何度も出てくる。そのつながりを見せる欄。
    本文のあと、出典の前に置く。読み終えた人がその先へ進む場所なので、
    関連キーワード（探す言葉の索引）より前にある。 */
