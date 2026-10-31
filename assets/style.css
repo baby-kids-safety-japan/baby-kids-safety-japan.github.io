@@ -178,7 +178,9 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
 .tab[data-tab="7"].is-active { background: var(--mint);  }
 /* 背景の色がどれでも「選んでいる」が分かるよう、内側の縁も足す。
    色だけだと、3〜5歳以降は白のままで見分けがつかなかった。 */
-.tab.is-active { box-shadow: inset 0 0 0 2px rgba(91, 74, 66, .35); }
+/* 縁を足した判断は正しかったが、不透明度 .35 では mint 上で 1.71:1 にしか
+   ならず、3:1 に届いていなかった。不透明にすると 6.44:1 になる。 */
+.tab.is-active { box-shadow: inset 0 0 0 2px rgb(91, 74, 66); }
 
 /* ---------- panels ---------- */
 main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
@@ -737,7 +739,9 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   opacity: 1;
   visibility: visible;
 }
-.term:focus-visible { outline: 2px solid var(--grape-deep); outline-offset: 2px; }
+/* ほかのフォーカス枠はすべて #6E4AA8（白地 6.55:1）にそろえてある。
+   ここだけ grape-deep で 2.85:1 と、3:1 に届いていなかった。 */
+.term:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 
 /* ---------- 目次のグループ ---------- */
 .toc-group + .toc-group { margin-top: 16px; }
@@ -964,7 +968,10 @@ html, body { overflow-x: clip; }
 .search-input {
   width: 100%;
   padding: 13px 18px;
-  border: 2px solid #F0DCC9;
+  /* 枠が #F0DCC9 だと cream の地色に対して 1.28:1 しかなく、
+     「ここに入力できる」という手がかりが暗所で消えていた。
+     --ink-soft なら cream 上で 6.16:1 になる。 */
+  border: 2px solid var(--ink-soft);
   border-radius: 999px;
   background: #fff;
   font: inherit;
@@ -1046,7 +1053,7 @@ html, body { overflow-x: clip; }
   align-items: center;
   gap: 6px;
   padding: 12px 18px;
-  border: 2px solid var(--peach-deep);
+  border: 2px solid var(--ink-soft);
   border-radius: 999px;
   background: #fff;
   color: var(--ink);
