@@ -513,4 +513,7 @@ SRC = {
     "cao_carseat_manual3": (
         "チャイルドシートの着用指導マニュアル 3（内閣府・PDF）",
         "https://www8.cao.go.jp/koutu/keihatsu/pdf/child/car-seat-m3.pdf"),
+    "aomori_kyukyu": (
+        "小児救急ガイドブック「けいれんが起きたとき」（青森県・PDF）",
+        "https://www.pref.aomori.lg.jp/soshiki/kenko/iryo/files/17shouni-guidebook.pdf"),
 }
