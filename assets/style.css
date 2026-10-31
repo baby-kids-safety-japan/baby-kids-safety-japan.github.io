@@ -77,12 +77,22 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
 /* ---------- hero ---------- */
 .hero {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden を .hero に掛けると、検索結果のドロップダウンが
+     ヒーローの下端で切り落とされる。375pxでは最大384pxのうち130px前後が
+     見えず、12件出ても1〜2件しか読めなかった。
+     装飾の円だけを別の入れ物で切り抜く。 */
   padding: 72px 20px 96px;
   background:
     radial-gradient(1200px 500px at 50% -10%, #FFF6D9 0%, transparent 60%),
     linear-gradient(180deg, #FFF1E4 0%, #FDF6FF 55%, var(--cream) 100%);
   text-align: center;
+}
+/* 装飾の円は、この入れ物の中だけで切り抜く。 */
+.hero-blobs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 .blob {
   position: absolute;

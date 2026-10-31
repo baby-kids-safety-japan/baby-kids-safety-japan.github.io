@@ -1100,9 +1100,11 @@ def build():
 <body>
 
 <header class="hero">
-  <div class="blob blob-a"></div>
-  <div class="blob blob-b"></div>
-  <div class="blob blob-c"></div>
+  <div class="hero-blobs" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+  </div>
   <div class="hero-inner">
     <p class="hero-eyebrow">%(tagline)s</p>
     <h1 class="hero-title">赤ちゃんとこどもの<br>安全ノート</h1>
