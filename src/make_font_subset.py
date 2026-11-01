@@ -17,6 +17,7 @@
 
 拾う文字:
   生成済みの index.html と全項目ページに出てくる文字すべて。
+  alt・title・aria-label の中身も含める。
   これに加えて、ASCII・ひらがな・カタカナ・約物の全域を入れる。
   検索欄に打った文字が代替フォントに落ちて見た目が変わるのを防ぐため。
 
@@ -63,8 +64,15 @@ def used_chars():
     for path in files:
         raw = io.open(path, encoding="utf-8").read()
         raw = re.sub(r"(?s)<(script|style)\b.*?</\1>", " ", raw)
+        # alt・title・aria-label も拾う。画像が出ないとき alt が表示されるので、
+        # ここを外すと、そのときだけ別の書体で出る。
+        # 図の説明文には、本文に出てこない漢字が入っていることが多い
+        # （机、隣、琥珀、眉 など）。
+        attrs = " ".join(m.group(2) for m in
+                         re.finditer(r'\b(alt|title|aria-label)="([^"]*)"', raw))
         text = html_mod.unescape(re.sub(r"<[^>]+>", " ", raw))
         chars.update(text)
+        chars.update(html_mod.unescape(attrs))
     chars.discard("\n")
     chars.discard("\r")
     chars.discard("\t")
@@ -104,8 +112,22 @@ def main():
         size = os.path.getsize(out)
         total += size
         print("  %d: %s %s バイト" % (weight, os.path.basename(out), format(size, ",")))
-    # ビルド時の照合に使う。どの文字を入れたかを残しておく。
-    io.open(os.path.join(OUT_DIR, "chars.txt"), "w", encoding="utf-8").write(text)
+    # ビルド時の照合に使う。
+    #
+    # 「入れたかった文字」ではなく「実際に入った文字」を書く。
+    # pyftsubset は、元のフォントに無い字を黙って落とす。頼んだ一覧を
+    # 残すと、落ちた字も「入っている」ことになり、照合が素通りする。
+    # 実際、▶ ― ↗ は Zen Maru Gothic に無いのに、ビルドの警告に
+    # かからないまま代替フォントで出ていた。
+    from fontTools.ttLib import TTFont
+    got = set(TTFont(os.path.join(OUT_DIR, "zen-maru-gothic-400.woff2"))
+              .getBestCmap())
+    kept = "".join(c for c in text if ord(c) in got)
+    io.open(os.path.join(OUT_DIR, "chars.txt"), "w", encoding="utf-8").write(kept)
+    dropped = [c for c in text if ord(c) not in got and ord(c) < 0x1F000]
+    if dropped:
+        print("元のフォントに無くて落ちた字（絵文字を除く）: %s"
+              % "".join(dropped))
     print("合計 %s バイト" % format(total, ","))
     return 0
 

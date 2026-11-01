@@ -362,7 +362,7 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
             out.append('      <div class="card-video">')
             out.append('        <button type="button" class="card-video-play" '
                        'data-video="%s" aria-label="%s（%s）を再生する">'
-                       '<span class="card-video-mark" aria-hidden="true">▶</span>'
+                       '<span class="card-video-mark" aria-hidden="true"></span>'
                        '<span class="card-video-text">'
                        '<span class="card-video-title">%s</span>'
                        '<span class="card-video-org">%s</span></span></button>'
@@ -997,19 +997,56 @@ def _font_coverage():
         return []
     with open(manifest, encoding="utf-8") as f:
         have = set(f.read())
+    # 画面に出る文字を、できるだけ広く集める。
+    # 図の説明文（alt）も入れる。画像が出ないときに表示されるので、
+    # 外すとそのときだけ別の書体になる。実際、机・隣・琥珀・眉などが
+    # 本文には無く alt だけにあり、サブセットから漏れていた。
     need = set()
     for tab in TABS:
-        need.update(tab["title"], tab["label"], tab["sub"], tab["lead"])
+        need.update(tab["title"], tab["label"], tab["sub"], tab["lead"],
+                    tab.get("subtitle") or "")
         for group in tab["groups"]:
             need.update(group["name"])
             for item in group["items"]:
                 for key in ("title", "sub", "lead", "chip"):
                     need.update(item.get(key) or "")
                 need.update(KEYWORDS.get(item["id"]) or "")
+                for fig in ("figure", "figure2"):
+                    for part in item.get(fig) or []:
+                        if isinstance(part, str):
+                            need.update(part)
+                if item.get("table"):
+                    head, rows = item["table"]
+                    need.update(head)
+                    for left, right in rows:
+                        need.update(left, right)
+                for _kind, title, body in item.get("checks") or []:
+                    need.update(title, body)
+                callouts = (item.get("callouts")
+                            or ([item["callout"]] if item.get("callout") else []))
+                for title, body in callouts:
+                    need.update(title, body)
+                for _h, step in item.get("steps") or []:
+                    need.update(step)
+                for key, note in item.get("sources") or []:
+                    need.update(note)
+                    # 出典の題名も画面に出る。公的機関の題名をそのまま
+                    # 引いているので、本文では使わない記号が混ざる。
+                    # 全角チルダ（～）がフォントに無いまま出ていた。
+                    src = SRC.get(key)
+                    if src:
+                        need.update(src[0])
+                for _vid, v_title, v_org, _ch in VIDEOS.get(item["id"]) or []:
+                    need.update(v_title, v_org)
+    # カードの飾りに使っている記号も、本文と同じ書体で出したい。
+    need.update("◯×")
     # 本文にはHTMLのタグがそのまま書かれている欄があるので、記号は除く。
     markup = set('<>&/="\'')
+    # 絵文字は、どの和文フォントにも入っていない。端末の絵文字フォントで
+    # 出るのが正しいので、ここでは数えない。
     missing = sorted(c for c in need - have
-                     if not c.isspace() and ord(c) > 0x20 and c not in markup)
+                     if not c.isspace() and ord(c) > 0x20 and c not in markup
+                     and ord(c) < 0x1F000 and c != "\ufe0f")
     if missing:
         return ["フォントに無い文字が %d 字ある（src/make_font_subset.py で作り直す）: %s"
                 % (len(missing), "".join(missing[:20]))]

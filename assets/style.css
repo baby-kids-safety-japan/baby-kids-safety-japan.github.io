@@ -461,7 +461,14 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   font-size: .95rem;
   color: var(--ink);
 }
-.card-videos h4::before { content: "\25b6\fe0e " / ""; color: #B04A2E; }
+.card-videos h4 { display: flex; align-items: center; gap: 7px; }
+.card-videos h4::before {
+  content: "";
+  flex: 0 0 auto;
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #B04A2E;
+}
 .card-video { margin-bottom: 12px; }
 .card-video-play {
   display: flex;
@@ -479,6 +486,10 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 }
 .card-video-play:hover { border-color: #B04A2E; background: var(--cream-deep); }
 .card-video-play:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
+/* 再生の三角は、文字ではなくCSSの枠線で描く。
+   Zen Maru Gothic には右向きの三角が1つも入っていない（▶ ▷ ► ➤ どれも無い）。
+   文字で書くと、ここだけ端末の代替フォントになり、字形も位置も揃わない。
+   枠線で描けば、どの端末でも同じ形になり、中心にも正確に置ける。 */
 .card-video-mark {
   flex: 0 0 auto;
   display: grid;
@@ -486,9 +497,13 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   width: 38px; height: 38px;
   border-radius: 999px;
   background: #B04A2E;
-  color: #fff;
-  font-size: .9rem;
-  padding-left: 3px;   /* ▶ の墨は左に寄っているので、丸の中心に戻す */
+}
+.card-video-mark::before {
+  content: "";
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 2px;   /* 三角の重心は左寄りなので、丸の中心に戻す */
 }
 .card-video-text { display: block; }
 .card-video-title {
@@ -1169,7 +1184,14 @@ html, body { overflow-x: clip; }
    代替テキストを空にしているのは、読み上げ側には
    .sr-only の「（新しいタブで開きます）」で渡しているため。 */
 .sources a[target="_blank"]::after,
-.footer-sources a[target="_blank"]::after { content: " ↗" / ""; }
+/* ↗ はフォントに無いので、入っている → を回して作る。
+   文字で書くと、この矢印だけ端末の代替フォントになる。 */
+.footer-sources a[target="_blank"]::after {
+  content: "→" / "";
+  display: inline-block;
+  margin-left: .2em;
+  transform: rotate(-45deg);
+}
 
 /* ---------- 困ったときの番号 ----------
    番号が月齢タブに散っていて、いちばん時間が惜しい調べものが
