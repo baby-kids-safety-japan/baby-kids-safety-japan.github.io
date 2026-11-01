@@ -1043,25 +1043,66 @@ def _missing_webp():
     return []
 
 
-def _tags_in_escaped_fields():
-    """そのまま画面に出る欄に、HTMLタグが書かれていないかを見る。
+# 文字参照（&amp; &lt; &#39; など）を書いてあるかどうかを見る。
+_ENTITY = re.compile(r"&(#[0-9]+|#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]{1,30});")
 
-    チェックの見出しと出典の要約は esc() を通すので、<strong> と書くと
-    「&lt;strong&gt;」という文字として読者に見える。本文（annotate）は
-    タグを通すため、同じ項目の中で片方だけ効く形になり、気づきにくい。"""
-    errors = []
+
+def _escaped_fields():
+    """esc() を通す欄を、(場所, 欄の名前, 中身) で列挙する。
+
+    この一覧は build.py の esc() の呼び出しと対応していないといけない。
+    欄を増やしたら、ここにも足すこと。"""
     for tab in TABS:
         for group in tab["groups"]:
+            yield ("%s" % tab["title"], "グループ名", group["name"])
             for item in group["items"]:
                 where = "%s / %s" % (tab["title"], item["id"])
+                for key, label in (("title", "見出し"), ("sub", "一行説明"),
+                                   ("chip", "チップ")):
+                    if item.get(key):
+                        yield (where, label, item[key])
+                for fig in ("figure", "figure2"):
+                    row = item.get(fig)
+                    if row and len(row) > 2:
+                        yield (where, "図の説明文", row[1])
+                        yield (where, "図のキャプション", row[2])
+                if item.get("table"):
+                    head, rows = item["table"]
+                    yield (where, "表の見出し", head)
+                    for left, _right in rows:
+                        yield (where, "表の左の欄", left)
                 for _, title, _body in item.get("checks") or []:
-                    if "<" in title:
-                        errors.append("%s: チェックの見出しにタグが入っている（"
-                                      "この欄は文字として出る）: %s" % (where, title[:40]))
+                    yield (where, "チェックの見出し", title)
+                callouts = (item.get("callouts")
+                            or ([item["callout"]] if item.get("callout") else []))
+                for title, _body in callouts:
+                    yield (where, "補足の見出し", title)
                 for _key, note in item.get("sources") or []:
-                    if "<" in note:
-                        errors.append("%s: 出典の要約にタグが入っている（"
-                                      "この欄は文字として出る）: %s" % (where, note[:40]))
+                    yield (where, "出典の要約", note)
+
+
+def _tags_in_escaped_fields():
+    """そのまま画面に出る欄に、HTMLの書き方が混ざっていないかを見る。
+
+    これらの欄は esc() を通すので、<strong> と書くと「&lt;strong&gt;」と
+    いう文字として読者に見える。本文（annotate）はタグを通すため、
+    同じ項目の中で片方だけ効く形になり、気づきにくい。
+
+    文字参照も同じで、「Q&amp;A」と書くと「Q&amp;amp;A」になり、画面には
+    「Q&amp;A」と出る。本文からコピーしてきたときに起きる。
+    この欄に書くときは、記号そのもの（& < >）をそのまま書く。"""
+    errors = []
+    for where, label, text in _escaped_fields():
+        if not text:
+            continue
+        if "<" in text:
+            errors.append("%s: %sにタグが入っている（この欄は文字として出る）: %s"
+                          % (where, label, text[:40]))
+        m = _ENTITY.search(text)
+        if m:
+            errors.append("%s: %sに文字参照「%s」が書かれている（この欄は"
+                          "esc()を通すので二重になる。記号をそのまま書く）: %s"
+                          % (where, label, m.group(0), text[:40]))
     return errors
 
 
