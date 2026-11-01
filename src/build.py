@@ -265,6 +265,20 @@ ITEM_INDEX = _item_index()
 AGE_OF = dict((k, v[3]) for k, v in ITEM_INDEX.items())
 
 
+def paragraphs(text):
+    """本文を段落の一覧にする。文字列1つなら1段落として扱う。
+
+    日本語は語のあいだに空きが無いので、7行続くと字の壁になる。
+    content.py でリストに書いたものが、そのまま段落の区切りになる。"""
+    if isinstance(text, (list, tuple)):
+        return list(text)
+    return [text]
+
+
+def lead_paragraphs(lead):
+    return paragraphs(lead)
+
+
 def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
                 link_prefix=None):
     """tab_id を渡すと、カードの末尾に、その項目だけのページへのリンクが付く。
@@ -291,7 +305,10 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
                % (item["id"], esc(item["title"])))
     if item.get("sub"):
         out.append('      <p class="card-tagline">%s</p>' % esc(item["sub"]))
-    out.append('      <p class="card-sub">%s</p>' % annotate(item["lead"], seen))
+    # リード文は段落に割れる。日本語は語のあいだに空きが無いので、
+    # 7行続くと字の壁になる。lead をリストで書くと、1要素が1段落になる。
+    for para in lead_paragraphs(item["lead"]):
+        out.append('      <p class="card-sub">%s</p>' % annotate(para, seen))
     out.append('    </div>')
 
     if item.get("figure"):
@@ -331,8 +348,10 @@ def render_item(item, color, tab_id=None, page_prefix="", eager_figure=False,
             out.append('        <li><span class="%s" aria-hidden="true">'
                        '<span class="mark">%s</span></span>'
                        '<span class="sr-only">%s：</span>'
-                       '<div><strong>%s</strong><br>%s</div></li>'
-                       % (kind, mark, label, esc(title), annotate(body, seen)))
+                       '<div><strong>%s</strong>%s</div></li>'
+                       % (kind, mark, label, esc(title),
+                          "".join('<p>%s</p>' % annotate(x, seen)
+                                  for x in paragraphs(body))))
         out.append('      </ul>')
         out.append('    </div>')
 
@@ -694,7 +713,7 @@ def render_item_jsonld(item, tab, url):
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": item["title"],
-        "description": item.get("sub") or re.sub(r"<[^>]+>", "", item["lead"])[:110],
+        "description": item.get("sub") or re.sub(r"<[^>]+>", "", "".join(lead_paragraphs(item["lead"])))[:110],
         "inLanguage": "ja",
         "dateModified": UPDATED,
         "mainEntityOfPage": {"@type": "WebPage", "@id": url},
@@ -749,7 +768,7 @@ def write_item_pages():
                     continue
                 sib.append('      <li><a href="%s%s">%s</a></li>'
                            % (root, item_url(tab["id"], other["id"]), esc(other["title"])))
-            desc = item.get("sub") or re.sub(r"<[^>]+>", "", item["lead"])
+            desc = item.get("sub") or re.sub(r"<[^>]+>", "", "".join(lead_paragraphs(item["lead"])))
             doc = ITEM_PAGE % {
                 "title": esc(item["title"]),
                 "site": SITE_TITLE,
@@ -1008,8 +1027,10 @@ def _font_coverage():
         for group in tab["groups"]:
             need.update(group["name"])
             for item in group["items"]:
-                for key in ("title", "sub", "lead", "chip"):
+                for key in ("title", "sub", "chip"):
                     need.update(item.get(key) or "")
+                # lead は段落のリストにできるので、つないでから数える。
+                need.update("".join(lead_paragraphs(item["lead"])))
                 need.update(KEYWORDS.get(item["id"]) or "")
                 for fig in ("figure", "figure2"):
                     for part in item.get(fig) or []:
@@ -1021,7 +1042,7 @@ def _font_coverage():
                     for left, right in rows:
                         need.update(left, right)
                 for _kind, title, body in item.get("checks") or []:
-                    need.update(title, body)
+                    need.update(title, "".join(paragraphs(body)))
                 callouts = (item.get("callouts")
                             or ([item["callout"]] if item.get("callout") else []))
                 for title, body in callouts:
