@@ -293,6 +293,27 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
    本文だけ幅を止める。チェックの本文（38字）と行長がそろう。 */
 .card-sub { max-width: 38em; }
 
+/* 和文の行末をそろえる。
+   「、」や「。」は行頭に置けないので（禁則処理）、
+   行末に1〜2字ぶんしか残っていないと、その字ごと次の行へ送られる。
+   そのままだと、枠の中が空いているのに改行したように見える。
+   両端そろえにすると、字間をわずかに詰めて行を右端まで伸ばすので、
+   その見え方がなくなる。和文の組版では普通のやり方である。
+   最後の行は、そろえずに左寄せのままになる。 */
+.card-sub,
+.checklist li div p,
+.callout p,
+.hazard td,
+.goods li,
+.steps li p,
+.card-tagline {
+  text-align: justify;
+  text-justify: inter-character;
+  /* 英数字の長い連なりを、字の途中で割らない。
+     justify と組み合わせると、URLのような文字列で行が割れることがある。 */
+  word-break: normal;
+}
+
 /* チェックの本文も、長いものは段落に割れる。
    div の中なので、最初の段落の上には余白を作らない。 */
 .checklist li div p { margin: .8em 0 0; }
