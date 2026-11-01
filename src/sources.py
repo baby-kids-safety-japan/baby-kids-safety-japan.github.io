@@ -173,6 +173,21 @@ SRC = {
     "gov_1st_grade": (
         "小学校1年生の歩行中の死者・重傷者は6年生の約2.5倍。新1年生を交通事故から守るには？（政府広報オンライン）",
         "https://www.gov-online.go.jp/article/201804/entry-8077.html"),
+    "jpeds_doji": (
+        "日本小児科学会の予防接種の同時接種に対する考え方（2026年6月3日改訂・日本小児科学会 予防接種・感染症対策委員会）",
+        "https://www.jpeds.or.jp/society-activities/vaccination/opinion/20127.html"),
+    "jsnc_febrile_2023": (
+        "熱性けいれん（熱性発作）診療ガイドライン2023（日本小児神経学会・Minds ガイドラインライブラリ）",
+        "https://minds.jcqhc.or.jp/summary/c00763/"),
+    "derm_school": (
+        "学校感染症 第三種 その他の感染症：皮膚の学校感染症に関する統一見解（平成22年7月・日本臨床皮膚科医会／日本小児皮膚科学会／日本皮膚科学会／日本小児感染症学会）",
+        "https://www.dermatol.or.jp/public/publicnews/4294/"),
+    "jsdh_fluoride": (
+        "4学会合同のフッ化物配合歯磨剤の推奨される利用方法（2023年1月1日・日本口腔衛生学会／日本小児歯科学会／日本歯科保存学会／日本老年歯科医学会・PDF）",
+        "https://www.kokuhoken.or.jp/jsdh/news/2023/news_230106.pdf"),
+    "ncchd_lactation": (
+        "授乳と薬について知りたい方へ（国立成育医療研究センター 妊娠と薬情報センター）",
+        "https://www.ncchd.go.jp/kusuri/lactation/index.html"),
     "jsdh_tableware": (
         "乳幼児期における親との食器共有について（令和5年8月31日・日本口腔衛生学会・PDF）",
         "https://www.kokuhoken.or.jp/jsdh/statement/file/statement_20230901.pdf"),

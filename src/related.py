@@ -80,9 +80,11 @@ THEMES = {
     "ミルクと離乳食": [
         "formula-pre", "formula", "feeding", "outdated-m4",
         "weaning-start", "weaning", "allergy-4m", "honey", "food-7m",
+        "milk-medicine",
     ],
     "泣きやまないときと、親のこころ": [
         "cry-pre", "support-pre", "smoke-pre", "sbs", "hair-tourniquet",
+        "milk-medicine",
     ],
     "製品の選び方と使い方": [
         "crib-pre", "stroller-pre", "notyet-pre", "misinformation", "manual",
@@ -91,8 +93,12 @@ THEMES = {
     "ひも・コードが首に巻く": [
         "home-pre", "cord", "playground", "play-y3",
     ],
+    "予防接種と、うつる病気": [
+        "vaccine-m0", "vaccine-seizure", "skin-infection",
+    ],
+
     "歯": [
-        "teeth-7m", "toothbrush",
+        "teeth-7m", "toothpaste-7m", "toothbrush",
     ],
     "ネットとお金": [
         "net-y6", "gamepay-y6", "net-y10",
@@ -103,13 +109,14 @@ THEMES = {
     "古くなった常識": [
         "outdated-m0", "misinformation", "outdated-m4",
         "outdated-m7", "outdated-y6",
+        "vaccine-m0", "vaccine-seizure", "toothpaste-7m", "skin-infection",
     ],
     "遊具と運動": [
         "playground", "play-y3", "trampoline-y6",
         "school-injury-y6", "sports-y10",
     ],
     "そのときどうするか": [
-        "first-aid", "seizure-m7", "first-aid-1y",
+        "first-aid", "seizure-m7", "vaccine-seizure", "first-aid-1y",
     ],
     "虫よけと日差し": [
         "uv", "repellent-4m",
