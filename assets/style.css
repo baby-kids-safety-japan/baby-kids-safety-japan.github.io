@@ -288,10 +288,6 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
    段落のあいだは1行分近く空ける。詰めると、割った意味がなくなる。 */
 .card-sub + .card-sub { margin-top: .9em; }
 
-/* 1行が長いと、行を折り返したときに次の行の頭を見失う。
-   和文は1行35〜40字あたりが読みやすい。カードの幅のままだと43字になるので、
-   本文だけ幅を止める。チェックの本文（38字）と行長がそろう。 */
-.card-sub { max-width: 38em; }
 
 /* 和文の行末をそろえる。
    「、」や「。」は行頭に置けないので（禁則処理）、
@@ -309,8 +305,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .card-tagline {
   text-align: justify;
   text-justify: inter-character;
-  /* 英数字の長い連なりを、字の途中で割らない。
-     justify と組み合わせると、URLのような文字列で行が割れることがある。 */
+  /* 英数字の長い連なりを、字の途中で割らない。 */
   word-break: normal;
 }
 
