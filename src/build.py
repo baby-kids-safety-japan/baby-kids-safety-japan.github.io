@@ -479,6 +479,57 @@ def _mark_text(text):
     return "".join(out)
 
 
+# 和文と見なす範囲。全角の約物、ひらがな、カタカナ、漢字、全角英数。
+_CJK = ("\u3000-\u303f\u3040-\u30ff\u31f0-\u31ff"
+        "\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff00-\uffef")
+_IS_CJK = re.compile(r"[%s]" % _CJK)
+_NEWLINE_RUN = re.compile(r"[ \t]*\n[ \t\n]*")
+# 文の途中に入りうるタグ。これだけは飛ばして、外側の字で判断する。
+_INLINE = ("strong", "em", "b", "i", "span", "a", "small", "code", "sup", "sub",
+           "abbr", "mark", "time", "wbr", "br")
+_INLINE_BEFORE = re.compile(
+    r"(?:</?(?:%s)\b[^<>]*>)+$" % "|".join(_INLINE), re.I)
+_INLINE_AFTER = re.compile(
+    r"^(?:</?(?:%s)\b[^<>]*>)+" % "|".join(_INLINE), re.I)
+
+
+def unwrap_cjk(html):
+    """和文のところにある、ソースの折り返し由来の改行を消す。
+
+    content.py と build.py のHTMLは、読みやすさのためにソースの途中で
+    折り返して書いてある。ブラウザはその改行を空白1つとして描くが、
+    和文には語のあいだの空きが無いので、文の途中に不自然な空きが開く。
+    「。」でもないのにそこで切れて見える。
+    指摘を受けた時点で502か所あった。
+
+    消すのは、改行の前か後ろのどちらかが和文のときだけ。
+    英数字どうしのあいだの改行は語の区切りなので、何もしない。
+
+    飛ばすのは <strong> のような行内のタグに限る。
+    <p> や <div> のようなブロックのタグは境目として扱い、そこで判断をやめる。
+    こうしないと、タグとタグのあいだの字下げを見て、
+    遠くにある別の文の字で判断してしまう。"""
+    if "\n" not in html:
+        return html
+    out, last = [], 0
+    for m in _NEWLINE_RUN.finditer(html):
+        out.append(html[last:m.start()])
+        left = _INLINE_BEFORE.sub("", html[:m.start()])
+        right = _INLINE_AFTER.sub("", html[m.end():])
+        l = left[-1:]
+        r = right[:1]
+        # ブロックのタグに行き当たったら、そこは文の切れ目なので触らない
+        if l == ">" or r == "<":
+            out.append(m.group(0))
+        elif (l and _IS_CJK.match(l)) or (r and _IS_CJK.match(r)):
+            pass
+        else:
+            out.append(m.group(0))
+        last = m.end()
+    out.append(html[last:])
+    return "".join(out)
+
+
 def annotate(html, seen=None):
     """用語に、マウスオーバーで1行説明が出る印を付ける。
     見出し（項目名、サブタイトル、チェックの見出し、表の左列）には付けない。
@@ -814,7 +865,7 @@ def write_item_pages():
             d = os.path.join(ROOT, tab["id"], item["id"])
             os.makedirs(d, exist_ok=True)
             with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
-                f.write(doc)
+                f.write(unwrap_cjk(doc))
             n += 1
     return n
 
@@ -1667,7 +1718,7 @@ def build():
 
     path = os.path.join(ROOT, "index.html")
     with open(path, "w", encoding="utf-8") as f:
-        f.write(doc)
+        f.write(unwrap_cjk(doc))
     pages = write_item_pages()
     write_sitemap_and_robots()
     print("built %s (%d 項目)" % (path, total))

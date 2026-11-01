@@ -6,17 +6,13 @@
 <meta name="color-scheme" content="only light">
 <title>オンラインゲームの無断課金｜赤ちゃんとこどもの安全ノート</title>
 <meta name="description" content="認証をかけていても、抜け道がある">
-<!-- フォントは自前で配信する。外部への接続も、描画の前に置かれる87KBのCSSも要らない。
-     本文に使う400だけ先に取りに行き、見出し用の700/900はCSSが必要になった時点で読む。 -->
+<!-- フォントは自前で配信する。外部への接続も、描画の前に置かれる87KBのCSSも要らない。本文に使う400だけ先に取りに行き、見出し用の700/900はCSSが必要になった時点で読む。 -->
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="../../assets/fonts/zen-maru-gothic-400.woff2">
 <link rel="stylesheet" href="../../assets/style.css?v=c5a4d155">
 <link rel="icon" href="../../assets/favicon.svg?v=fe77d87c" type="image/svg+xml">
 <link rel="icon" href="../../assets/favicon-32.png?v=5a192339" sizes="32x32" type="image/png">
-<!-- ブラウザの上下の帯の色。端末を夜間モードにしている人には、
-     ページは明るいままでも、枠だけ落とせる。
-     ページ自体のダークモードは持たない（color-scheme: only light）が、
-     これは矛盾しない。 -->
+<!-- ブラウザの上下の帯の色。端末を夜間モードにしている人には、ページは明るいままでも、枠だけ落とせる。ページ自体のダークモードは持たない（color-scheme: only light）が、これは矛盾しない。 -->
 <meta name="theme-color" content="#FFD3BC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#4A3B34" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://baby-kids-safety-japan.github.io/y6/gamepay-y6/">
@@ -105,8 +101,7 @@
           <source type="image/webp" srcset="../../assets/img/y6/gamepay-y6-1000.webp 1000w, ../../assets/img/y6/gamepay-y6-1400.webp 1400w" sizes="(max-width: 840px) 100vw, 790px">
           <img src="../../assets/img/y6/gamepay-y6.jpg" alt="オンラインゲームの課金の比較図。左は危険な例で、子どもがひとりで大人のスマートフォンを持ち、課金の購入ボタンを押そうとしている。右は安全な例で、画面に鍵のしるしが出ていて購入が止められており、大人がとなりで一緒に画面を見ている" width="1400" height="788" loading="eager" fetchpriority="high" decoding="async">
         </picture>
-        <span class="sr-only">左は危険な例、右は安全な例です。</span>
-        <span class="judge judge-left judge-ng" aria-hidden="true"><span class="mark">×</span></span>
+        <span class="sr-only">左は危険な例、右は安全な例です。</span><span class="judge judge-left judge-ng" aria-hidden="true"><span class="mark">×</span></span>
         <span class="judge judge-right judge-ok" aria-hidden="true"><span class="mark">◯</span></span>
       </div>
       <figcaption>左：ひとりで購入まで進める／右：承認制にして、一緒に見る</figcaption>
@@ -127,28 +122,19 @@
 
         <p>国民生活センターが挙げている相談事例です。どれも、保護者は対策をしていたつもりでした。</p>
         <ul>
-          <li><strong>小学生</strong>。母親のスマホを<strong>母親のアカウントにログインしたまま</strong>貸したところ、
-          娘が<strong>アカウントのパスワードを変更して</strong>登録済みのクレジットカードで課金</li>
-          <li><strong>小学生</strong>。課金に母親の指紋認証が必要な設定にしていたが、
-          母親のアカウントにログインしたままだったため、
-          息子が<strong>自分の指紋を追加登録して</strong>約5万円を課金</li>
-          <li><strong>中学生</strong>。5か月のあいだに<strong><span class="term" tabindex="0" role="button" aria-describedby="gl295">キャリア決済<span class="term-desc" id="gl295" role="tooltip">携帯電話の通信料金と合わせて支払う決済方法。上限額を引き下げられる。</span></span></strong>で約5万円。
-          保護者は<strong>上限額を引き下げられることを知らなかった</strong></li>
-          <li><strong>中学生</strong>。1年前から総額<strong>約55万円</strong>。
-          数年前に母親が<strong>ゲーム課金以外の目的で</strong>息子のスマホに入力したカード番号が使われた</li>
+          <li><strong>小学生</strong>。母親のスマホを<strong>母親のアカウントにログインしたまま</strong>貸したところ、娘が<strong>アカウントのパスワードを変更して</strong>登録済みのクレジットカードで課金</li>
+          <li><strong>小学生</strong>。課金に母親の指紋認証が必要な設定にしていたが、母親のアカウントにログインしたままだったため、息子が<strong>自分の指紋を追加登録して</strong>約5万円を課金</li>
+          <li><strong>中学生</strong>。5か月のあいだに<strong><span class="term" tabindex="0" role="button" aria-describedby="gl295">キャリア決済<span class="term-desc" id="gl295" role="tooltip">携帯電話の通信料金と合わせて支払う決済方法。上限額を引き下げられる。</span></span></strong>で約5万円。保護者は<strong>上限額を引き下げられることを知らなかった</strong></li>
+          <li><strong>中学生</strong>。1年前から総額<strong>約55万円</strong>。数年前に母親が<strong>ゲーム課金以外の目的で</strong>息子のスマホに入力したカード番号が使われた</li>
         </ul>
-        <p>共通しているのは、<strong>親のアカウントのまま渡したこと</strong>と、
-        <strong>一度入力した決済情報が残っていたこと</strong>です。</p>
+        <p>共通しているのは、<strong>親のアカウントのまま渡したこと</strong>と、<strong>一度入力した決済情報が残っていたこと</strong>です。</p>
     </div>
     <div class="callout callout-warn">
       <h4>取り消せる場合と、取り消せない場合</h4>
 
         <p>民法では、<strong>未成年者が保護者の同意なく契約した場合は取り消すことができます</strong>。</p>
-        <p>ただし国民生活センターは、<strong>子どもが保護者のアカウントでログインしたスマホで課金した場合は、
-        アカウントの所有者である保護者が決済を行ったとみなされる場合もある</strong>としています。
-        上の「ログオフする」が効くのは、安全対策としてだけではありません。</p>
-        <p>起きてしまったら、最寄りの消費生活センターへ。
-        全国共通の電話番号は<strong>消費者ホットライン 188</strong>です。</p>
+        <p>ただし国民生活センターは、<strong>子どもが保護者のアカウントでログインしたスマホで課金した場合は、アカウントの所有者である保護者が決済を行ったとみなされる場合もある</strong>としています。上の「ログオフする」が効くのは、安全対策としてだけではありません。</p>
+        <p>起きてしまったら、最寄りの消費生活センターへ。全国共通の電話番号は<strong>消費者ホットライン 188</strong>です。</p>
     </div>
     <div class="goods">
       <div class="goods-head"><h4>🛍 グッズの選び方</h4><span class="pr">PR</span></div>
@@ -214,8 +200,7 @@
 
 <section class="itememergency" id="emergency">
   <h2>困ったときの番号</h2>
-  <p><strong>意識がない、呼吸がおかしい、顔色が青白い、けいれんしている。
-  このときは相談ではなく、<a class="tel" href="tel:119">119番<span class="sr-only">に発信する</span></a>です。</strong></p>
+  <p><strong>意識がない、呼吸がおかしい、顔色が青白い、けいれんしている。このときは相談ではなく、<a class="tel" href="tel:119">119番<span class="sr-only">に発信する</span></a>です。</strong></p>
   <ul>
     <li><a class="tel" href="tel:%238000">#8000<span class="sr-only">に発信する</span></a>　子ども医療電話相談。夜間・休日に、小児科の医師・看護師へ相談できます</li>
     <li><a class="tel" href="tel:%237119">#7119<span class="sr-only">に発信する</span></a>　救急安心センター。救急車を呼ぶか迷ったとき（全国42地域）</li>
@@ -225,14 +210,11 @@
 </section>
 
 <a class="to-emergency" href="#emergency">
-  <span class="to-emergency-icon" aria-hidden="true">☎</span><span class="sr-only">緊急の番号</span>
-</a>
+  <span class="to-emergency-icon" aria-hidden="true">☎</span><span class="sr-only">緊急の番号</span></a>
 
 <footer class="itemfoot">
   <p>
-    <strong>このページは「赤ちゃんとこどもの安全ノート」の1項目です。</strong>
-    0〜3か月から10歳〜までの129項目を、公的機関の資料をもとにまとめています。
-    <a href="../../">全体を見る</a>
+    <strong>このページは「赤ちゃんとこどもの安全ノート」の1項目です。</strong>0〜3か月から10歳〜までの129項目を、公的機関の資料をもとにまとめています。<a href="../../">全体を見る</a>
   </p>
   <p class="itemfoot-note">当サイトはアフィリエイトプログラムに参加しています。Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。</p>
 </footer>
