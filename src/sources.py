@@ -185,6 +185,12 @@ SRC = {
     "jsdh_fluoride": (
         "4学会合同のフッ化物配合歯磨剤の推奨される利用方法（2023年1月1日・日本口腔衛生学会／日本小児歯科学会／日本歯科保存学会／日本老年歯科医学会・PDF）",
         "https://www.kokuhoken.or.jp/jsdh/news/2023/news_230106.pdf"),
+    "pmda_i123": (
+        "ヨードカプセル-123 添付文書（医薬品医療機器総合機構 医療用医薬品情報検索）",
+        "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/530359_4300002M1029_1_09"),
+    "pmda_i131": (
+        "ヨウ化ナトリウムカプセル 添付文書（医薬品医療機器総合機構 医療用医薬品情報検索）",
+        "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/651410_4300003M5037_2_01"),
     "ncchd_unfit": (
         "授乳中の使用には適さないと考えられる薬（国立成育医療研究センター 妊娠と薬情報センター）",
         "https://www.ncchd.go.jp/kusuri/lactation/druglist_unfit.html"),
