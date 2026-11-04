@@ -185,6 +185,12 @@ SRC = {
     "jsdh_fluoride": (
         "4学会合同のフッ化物配合歯磨剤の推奨される利用方法（2023年1月1日・日本口腔衛生学会／日本小児歯科学会／日本歯科保存学会／日本老年歯科医学会・PDF）",
         "https://www.kokuhoken.or.jp/jsdh/news/2023/news_230106.pdf"),
+    "ncchd_unfit": (
+        "授乳中の使用には適さないと考えられる薬（国立成育医療研究センター 妊娠と薬情報センター）",
+        "https://www.ncchd.go.jp/kusuri/lactation/druglist_unfit.html"),
+    "ncchd_sodan": (
+        "授乳中のお薬相談（国立成育医療研究センター 妊娠と薬情報センター）",
+        "https://www.ncchd.go.jp/kusuri/lactation/sodan_junyu.html"),
     "ncchd_lactation": (
         "授乳と薬について知りたい方へ（国立成育医療研究センター 妊娠と薬情報センター）",
         "https://www.ncchd.go.jp/kusuri/lactation/index.html"),
