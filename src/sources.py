@@ -175,7 +175,7 @@ SRC = {
         "https://www.gov-online.go.jp/article/201804/entry-8077.html"),
     "jpeds_doji": (
         "日本小児科学会の予防接種の同時接種に対する考え方（2026年6月3日改訂・日本小児科学会 予防接種・感染症対策委員会）",
-        "https://www.jpeds.or.jp/society-activities/vaccination/opinion/20127.html"),
+        "https://www.jpeds.or.jp/society-activities/20127.html"),
     "jsnc_febrile_2023": (
         "熱性けいれん（熱性発作）診療ガイドライン2023（日本小児神経学会・Minds ガイドラインライブラリ）",
         "https://minds.jcqhc.or.jp/summary/c00763/"),
@@ -498,6 +498,9 @@ SRC = {
     "mhlw_caffeine": (
         "食品に含まれるカフェインの過剰摂取についてQ&A（厚生労働省）",
         "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000170477.html"),
+    "mhlw_mercury_qa": (
+        "妊婦への魚介類の摂食と水銀に関する注意事項について【Q&A】（平成22年6月1日改訂・厚生労働省・PDF）",
+        "https://www.mhlw.go.jp/topics/bukyoku/iyaku/syoku-anzen/suigin/dl/index-b.pdf"),
     "cfa_weaning_guide": (
         "授乳・離乳の支援ガイド（2019年改定版・こども家庭庁・PDF）",
         "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/ff38becb-bbd1-41f3-a95e-3a22ddac09d8/8ad42093/20230401_policies_boshihoken_123.pdf"),

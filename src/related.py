@@ -110,6 +110,7 @@ THEMES = {
         "outdated-m0", "misinformation", "outdated-m4",
         "outdated-m7", "outdated-y6",
         "vaccine-m0", "vaccine-seizure", "toothpaste-7m", "skin-infection",
+        "milk-medicine", "allergy-4m",
     ],
     "遊具と運動": [
         "playground", "play-y3", "trampoline-y6",
