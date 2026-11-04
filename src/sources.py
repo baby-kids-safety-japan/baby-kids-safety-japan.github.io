@@ -492,6 +492,12 @@ SRC = {
     "env_heat_child": (
         "熱中症環境保健マニュアル「高齢者と子どもの注意事項」（環境省・PDF）",
         "https://www.wbgt.env.go.jp/pdf/manual/heatillness_manual_3-2.pdf"),
+    "fsc_caffeine": (
+        "ファクトシート 食品中のカフェイン（内閣府 食品安全委員会・PDF）",
+        "https://www.fsc.go.jp/sonota/factsheets/caffeine.pdf"),
+    "mhlw_caffeine": (
+        "食品に含まれるカフェインの過剰摂取についてQ&A（厚生労働省）",
+        "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000170477.html"),
     "cfa_weaning_guide": (
         "授乳・離乳の支援ガイド（2019年改定版・こども家庭庁・PDF）",
         "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/ff38becb-bbd1-41f3-a95e-3a22ddac09d8/8ad42093/20230401_policies_boshihoken_123.pdf"),
