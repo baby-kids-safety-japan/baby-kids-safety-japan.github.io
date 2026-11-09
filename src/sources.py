@@ -477,6 +477,21 @@ SRC = {
     "ia_babyfood_soy": (
         "傷害速報 No.45 大豆の誤嚥（日本小児科学会・PDF）",
         "https://www.jpeds.or.jp/uploads/files/injuryalert/0045.pdf"),
+    "ia_jelly_cup": (
+        "傷害速報 No.56 ミニカップゼリーのプラスチック容器の誤嚥による窒息疑い（日本小児科学会・PDF）",
+        "https://www.jpeds.or.jp/uploads/files/injuryalert/0056.pdf"),
+    "ia_toothpaste": (
+        "傷害速報 No.113 フッ素入り子ども用歯磨剤の誤食による急性フッ素中毒疑い（日本小児科学会・PDF）",
+        "https://www.jpeds.or.jp/uploads/files/injuryalert/0113.pdf"),
+    "caa_choking_sos": (
+        "食品SOS対応プロジェクト報告 —こんにゃく入りゼリーを含む食品等による窒息事故リスクの低減に向けて—（平成22年7月16日・消費者庁・PDF）",
+        "https://www.cao.go.jp/consumer/doc/100716_shiryou1.pdf"),
+    "jpic_ginkgo": (
+        "ギンナンの食べ過ぎに注意しましょう！（公益財団法人 日本中毒情報センター）",
+        "https://www.j-poison-ic.jp/report/ginkgo202610/"),
+    "otsu_ginkgo": (
+        "食の安全安心情報「ギンナンは食べすぎないで！」（大津市保健所衛生課・PDF）",
+        "https://www.city.otsu.lg.jp/material/files/group/4/230927saaj.pdf"),
     "cfa_teeth": (
         "母子健康手帳 お口と歯の健康（こども家庭庁・PDF）",
         "https://mchbook.cfa.go.jp/pdf/item_1_7.pdf"),

@@ -30,7 +30,7 @@ THEMES = {
     ],
     "口に入れる・誤飲": [
         "baby-chemicals", "swallow-4m", "toys-4m", "poison",
-        "disinfectant-1y", "poison-y3", "od-y10",
+        "disinfectant-1y", "poison-y3", "od-y10", "toothpaste-7m",
     ],
     "転落・落ちる": [
         "carrier", "fall-m0", "fall-bath", "fall-4m", "changing-table",
