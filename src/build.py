@@ -681,8 +681,8 @@ ITEM_PAGE = """<!doctype html>
      ページは明るいままでも、枠だけ落とせる。
      ページ自体のダークモードは持たない（color-scheme: only light）が、
      これは矛盾しない。 -->
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#22262B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFD3BC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#4A3B34" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="%(url)s">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="%(site)s">
@@ -1364,8 +1364,8 @@ def build():
      ページは明るいままでも、枠だけ落とせる。
      ページ自体のダークモードは持たない（color-scheme: only light）が、
      これは矛盾しない。 -->
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#22262B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFD3BC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#4A3B34" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="%(site_url)s">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="%(title)s">
@@ -1388,6 +1388,11 @@ def build():
 <body>
 
 <header class="hero">
+  <div class="hero-blobs" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+  </div>
   <div class="hero-inner">
     <p class="hero-eyebrow">%(tagline)s</p>
     <h1 class="hero-title">赤ちゃんとこどもの<br>安全ノート</h1>

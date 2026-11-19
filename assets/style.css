@@ -34,16 +34,10 @@
 }
 
 :root {
-  /* 地と文字は中性色でそろえる。ベージュの地に茶色の文字という組み合わせは、
-     生成物の既定値として広まってしまい、作り物に見えると受け取られる。
-     色は、月齢タブと項目の分類（ミント・空・レモン・ぶどう・桃・ピーチ）
-     だけに残して、地と文字からは抜く。 */
-  --bg:         #F6F7F9;   /* ページの地 */
-  --bg-sub:     #EEF0F4;   /* 一段沈んだ面。タイル、表の見出し、ホバー */
-  --line:       #E2E6EC;   /* 罫線・枠 */
-  --line-deep:  #CBD1D9;   /* 点線や区切りなど、地の上で見えてほしい線 */
-  --ink:        #22262B;   /* 白上 15.22:1 / 地の上 14.19:1 */
-  --ink-soft:   #5C636B;   /* 白上 6.08:1 / 地の上 5.68:1 */
+  --cream:      #FFFAF2;
+  --cream-deep: #FFF2E2;
+  --ink:        #5B4A42;
+  --ink-soft:   #6E5B51;   /* #8A776D は本文・注記で4.5:1に届かなかった */
   --peach:      #FFD3BC;
   --peach-deep: #FF9E7A;
   --mint:       #BFEBDA;
@@ -58,8 +52,8 @@
   --pink:       #FFD5E0;
   --pink-deep:  #F58CA8;
   --radius:     28px;
-  --shadow:     0 10px 30px rgba(16, 24, 40, .07);
-  --shadow-sm:  0 4px 14px rgba(16, 24, 40, .06);
+  --shadow:     0 10px 30px rgba(180, 140, 120, .14);
+  --shadow-sm:  0 4px 14px rgba(180, 140, 120, .12);
 }
 
 * { box-sizing: border-box; }
@@ -72,12 +66,12 @@ body {
   margin: 0;
   font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
   color: var(--ink);
-  background: var(--bg);
+  background: var(--cream);
   line-height: 1.85;
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: #B04A2E; text-underline-offset: .2em; }   /* 白上 5.43:1、地の上 5.07:1 */
+a { color: #B04A2E; text-underline-offset: .2em; }   /* cream上 5.23:1 */
 a:hover { color: #8A3A20; }                          /* ホバーでさらに濃く */
 
 /* ---------- hero ---------- */
@@ -88,9 +82,28 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
      見えず、12件出ても1〜2件しか読めなかった。
      装飾の円だけを別の入れ物で切り抜く。 */
   padding: 72px 20px 96px;
-  background: #fff;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, #FFF6D9 0%, transparent 60%),
+    linear-gradient(180deg, #FFF1E4 0%, #FDF6FF 55%, var(--cream) 100%);
   text-align: center;
 }
+/* 装飾の円は、この入れ物の中だけで切り抜く。 */
+.hero-blobs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: .55;
+  pointer-events: none;
+}
+.blob-a { width: 240px; height: 240px; background: var(--peach);  top: -60px;  left: -70px; }
+.blob-b { width: 200px; height: 200px; background: var(--mint);   top: 40px;   right: -60px; }
+.blob-c { width: 150px; height: 150px; background: var(--lemon);  bottom: 40px; left: 12%; }
 
 .hero-inner { position: relative; max-width: 740px; margin: 0 auto; }
 
@@ -99,7 +112,8 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
   margin: 0 0 14px;
   padding: 6px 18px;
   border-radius: 999px;
-  background: var(--bg-sub);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
   font-size: .86rem;
   letter-spacing: .04em;
   color: var(--ink-soft);
@@ -110,7 +124,10 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
   font-weight: 900;
   letter-spacing: .02em;
   line-height: 1.25;
-  color: var(--ink);
+  background: linear-gradient(100deg, var(--peach-deep), var(--grape-deep) 45%, var(--sky-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .hero-lead {
   margin: 0 auto 26px;
@@ -141,7 +158,7 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
 
 .hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; line-height: 0; }
 .hero-wave svg { width: 100%; height: 64px; display: block; }
-.hero-wave path { fill: var(--bg); }
+.hero-wave path { fill: var(--cream); }
 
 /* ---------- tabs ---------- */
 .tabs {
@@ -152,8 +169,8 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
      背後をぼかし直すGPUの処理が走る。長い本文を読み続けるあいだずっと
      効き続けるので、中位の端末では滑らかさと電池に出る。
      背景をほぼ不透明にすれば、同じ「下が透けない」結果が0コストで得られる。 */
-  background: rgba(246, 247, 249, .97);
-  border-bottom: 2px dotted var(--line-deep);
+  background: rgba(255, 250, 242, .97);
+  border-bottom: 2px dotted #F0DCC9;
 }
 /* タブは横スクロールにしない。
    スマートフォンでは、横のスワイプがブラウザの「戻る」に取られて誤作動する。
@@ -193,7 +210,7 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  background: var(--bg);
+  background: var(--cream);
 }
 .tab-label { font-size: .95rem; font-weight: 700; }
 .tab-sub   { font-size: .7rem; }
@@ -205,7 +222,7 @@ a:hover { color: #8A3A20; }                          /* ホバーでさらに濃
 .tab[data-tab="3"].is-active { background: var(--pink);  }
 .tab[data-tab="4"].is-active { background: var(--grape); }
 .tab[data-tab="5"].is-active { background: var(--peach); }
-.tab[data-tab="6"].is-active { background: var(--lemon); }
+.tab[data-tab="6"].is-active { background: var(--cream-deep); }
 .tab[data-tab="7"].is-active { background: var(--mint);  }
 /* 背景の色がどれでも「選んでいる」が分かるよう、内側の縁も足す。
    色だけだと、3〜5歳以降は白のままで見分けがつかなかった。 */
@@ -318,7 +335,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   width: 100%;
   height: auto;
   border-radius: 22px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   display: block;
 }
 .figure figcaption {
@@ -340,7 +357,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   font-size: 1rem;
   font-weight: 900;
   color: #fff;
-  box-shadow: 0 3px 10px rgba(16, 24, 40, .22);
+  box-shadow: 0 3px 10px rgba(120, 90, 70, .28);
 }
 .figure-grid .order-1 { top:  4.5%; left:  4.5%; background: var(--peach-deep); }
 .figure-grid .order-2 { top:  4.5%; left: 53.5%; background: var(--lemon-deep); }
@@ -370,7 +387,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin: 0 0 14px;
   padding: 14px 18px 14px 60px;
   border-radius: 20px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
 }
 .steps li::before {
   content: counter(step);
@@ -404,8 +421,8 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   padding: 12px 14px;
   border-radius: 18px;
   margin-bottom: 8px;
-  background: var(--bg);
-  border: 2px solid var(--line);
+  background: #FFFDF8;
+  border: 2px solid #F6E8DA;
 }
 .checklist .ok, .checklist .ng {
   flex: 0 0 auto;
@@ -424,8 +441,8 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin: 26px 0 0;
   padding: 20px 22px;
   border-radius: 22px;
-  background: #EFF6FC;
-  border: 2px dashed #A8C8E4;
+  background: #FFF4E8;
+  border: 2px dashed #FFC9A0;
 }
 .callout h4 { margin: 0 0 8px; font-size: 1.02rem; font-weight: 900; }
 /* 段落のあきは、行送り（1.85 = 約30px）に負けない大きさにする。
@@ -438,7 +455,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .callout p.note {
   margin-top: 14px;
   padding-top: 10px;
-  border-top: 1px dotted rgba(34, 38, 43, .22);
+  border-top: 1px dotted rgba(91, 74, 66, .25);
   font-size: .86rem;
   color: var(--ink-soft);
 }
@@ -491,14 +508,14 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   width: 100%;
   min-height: 64px;
   padding: 12px 16px;
-  border: 2px solid var(--line);
+  border: 2px solid #E3D6C6;
   border-radius: 16px;
   background: #fff;
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
-.card-video-play:hover { border-color: #B04A2E; background: var(--bg-sub); }
+.card-video-play:hover { border-color: #B04A2E; background: var(--cream-deep); }
 .card-video-play:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 /* 再生の三角は、文字ではなくCSSの枠線で描く。
    Zen Maru Gothic には右向きの三角が1つも入っていない（▶ ▷ ► ➤ どれも無い）。
@@ -554,7 +571,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin: 24px 0 0;
   padding: 16px 18px;
   border-radius: 20px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
 }
 .card-related h4 {
   margin: 0 0 6px;
@@ -589,7 +606,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  text-decoration-color: var(--line-deep);
+  text-decoration-color: #C9B9A8;
 }
 .card-related li a:hover { text-decoration-color: currentColor; }
 .card-related li a:focus-visible {
@@ -626,7 +643,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .card-keywords span ~ span:not(:last-child)::after {
   content: "／";
   margin: 0 .1em;
-  color: var(--line-deep);
+  color: #C9BBAE;
 }
 /* 語の途中で行を折らない。「背部叩」で切れると読めない。 */
 .card-keywords span ~ span { white-space: nowrap; }
@@ -636,7 +653,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin: 22px 0 0;
   padding: 12px 16px;
   border-radius: 16px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   font-size: .86rem;
   color: var(--ink-soft);
 }
@@ -645,7 +662,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
 .site-footer {
   margin-top: 40px;
   padding: 54px 20px 64px;
-  background: linear-gradient(180deg, var(--bg) 0%, #ECEEF5 100%);
+  background: linear-gradient(180deg, var(--cream) 0%, #F4EEFB 100%);
 }
 .footer-inner { max-width: 760px; margin: 0 auto; }
 .site-footer h2 { margin: 0 0 14px; font-size: 1.3rem; font-weight: 900; }
@@ -682,7 +699,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   display: inline-block;
   padding: 6px 14px;
   border-radius: 999px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   font-size: .86rem;
   text-decoration: none;
   color: var(--ink);
@@ -704,7 +721,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   flex: 1;
   height: 3px;
   border-radius: 2px;
-  background: repeating-linear-gradient(90deg, var(--line-deep) 0 8px, transparent 8px 14px);
+  background: repeating-linear-gradient(90deg, #F0DCC9 0 8px, transparent 8px 14px);
 }
 
 /* ---------- グッズ枠 ---------- */
@@ -712,8 +729,8 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin: 26px 0 0;
   padding: 20px 22px 18px;
   border-radius: 22px;
-  background: var(--bg);
-  border: 2px solid var(--line);
+  background: linear-gradient(180deg, #FFF8EC 0%, #FFF4F6 100%);
+  border: 2px solid #FFE2CC;
 }
 .goods-head {
   display: flex;
@@ -749,7 +766,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   color: var(--ink);
   text-decoration: none;
 }
-.goods-picks a:hover { background: var(--bg-sub); transform: translateY(-1px); }
+.goods-picks a:hover { background: #FFF6EE; transform: translateY(-1px); }
 .goods-picks .go {
   flex: 0 0 auto;
   padding: 5px 14px;
@@ -766,7 +783,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   margin: -4px 0 14px;
   padding: 10px 16px;
   border-radius: 14px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   font-size: .93rem;
   font-weight: 700;
   line-height: 1.7;
@@ -817,7 +834,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   font-weight: 900;
   line-height: 1;
   color: #fff;
-  box-shadow: 0 3px 12px rgba(16, 24, 40, .24);
+  box-shadow: 0 3px 12px rgba(120, 90, 70, .3);
 }
 .figure-compare .judge-left  { left: 4%;  }
 .figure-compare .judge-right { left: 53%; }
@@ -877,7 +894,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   vertical-align: top;
   padding: 11px 14px;
   border-radius: 14px 0 0 14px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   font-weight: 700;
   line-height: 1.6;
 }
@@ -885,15 +902,15 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   vertical-align: top;
   padding: 11px 14px;
   border-radius: 0 14px 14px 0;
-  background: #fff;
-  border: 2px solid var(--line);
+  background: #FFFDF8;
+  border: 2px solid #F6E8DA;
   border-left: none;
   line-height: 1.7;
 }
 @media (max-width: 560px) {
   .hazard th, .hazard td { display: block; width: auto; border-radius: 0; }
   .hazard th { border-radius: 14px 14px 0 0; }
-  .hazard td { border-radius: 0 0 14px 14px; border-left: 2px solid var(--line); border-top: none; }
+  .hazard td { border-radius: 0 0 14px 14px; border-left: 2px solid #F6E8DA; border-top: none; }
 }
 
 .footer-inner h3[id] { scroll-margin-top: 104px; }
@@ -907,7 +924,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   display: grid; place-items: center;
   border-radius: 50%;
   font-size: .9rem; font-weight: 900; color: #fff;
-  box-shadow: 0 3px 10px rgba(16, 24, 40, .22);
+  box-shadow: 0 3px 10px rgba(120, 90, 70, .28);
 }
 .figure-grid6 .order-1 { top: 5%;  left: 3.5%;  background: var(--peach-deep); }
 .figure-grid6 .order-2 { top: 5%;  left: 36.5%; background: var(--lemon-deep); }
@@ -941,7 +958,7 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   font-weight: 400;
   line-height: 1.7;
   text-align: left;
-  box-shadow: 0 8px 24px rgba(16, 24, 40, .18);
+  box-shadow: 0 8px 24px rgba(90, 74, 66, .3);
   opacity: 0;
   visibility: hidden;
   transition: opacity .15s ease;
@@ -1001,14 +1018,14 @@ main { max-width: 840px; margin: 0 auto; padding: 0 16px 40px; }
   transition: transform .15s ease;
 }
 .toc-group[open] > summary::before { transform: rotate(90deg); }
-.toc-group > summary:hover { background: var(--bg-sub); }
+.toc-group > summary:hover { background: var(--cream-deep); }
 .toc-group > summary:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; }
 .toc-group .toc-name { flex: 1 1 auto; }
 .toc-group > ul { margin-top: 6px; }
 .toc-count {
   padding: 1px 9px;
   border-radius: 999px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   font-size: .72rem;
   font-weight: 700;
   color: var(--ink-soft);
@@ -1069,7 +1086,7 @@ html, body { overflow-x: clip; }
   }
 
   /* 画面のための飾りと、紙では押せないもの */
-  .tabs, .hero-wave, .anchor-mark, .go,
+  .tabs, .blob, .hero-wave, .anchor-mark, .go,
   .hero-badges, .footer-form { display: none !important; }
 
   .hero { padding: 0 0 10mm; }
@@ -1080,7 +1097,7 @@ html, body { overflow-x: clip; }
   .card, .callout, .goods, .checklist li, .figure, .hazard {
     box-shadow: none !important;
   }
-  .card { border: 1px solid var(--line-deep); }
+  .card { border: 1px solid #D8C8BC; }
 
   /* ◯ と ✕、比較図のバッジ、手順の番号は色を残す */
   .ok, .ng, .judge, .order, .chip, .pr {
@@ -1105,12 +1122,12 @@ html, body { overflow-x: clip; }
   .footer-sources a[href^="http"]::after {
     content: " 〈" attr(href) "〉";
     font-size: 8.5pt;
-    color: var(--ink-soft);
+    color: #6B5A50;
     word-break: break-all;
   }
 
   /* 商品名は残すが、ボタンの見た目はやめる */
-  .goods-picks a { border: 1px solid var(--line-deep); box-shadow: none; background: #fff; }
+  .goods-picks a { border: 1px solid #D8C8BC; box-shadow: none; background: #fff; }
 
   a { color: inherit; text-decoration: none; }
   .sources a, .footer-sources a { text-decoration: underline; }
@@ -1125,7 +1142,7 @@ html, body { overflow-x: clip; }
 .figure-grid .order, .figure-grid6 .order,
 .figure-compare .judge,
 .steps li::before,
-.goods-picks .go { color: var(--ink); }
+.goods-picks .go { color: #3E322C; }
 
 /* 5番目だけ、背景の紫が濃くて墨文字が 4.34:1 にしかならない */
 .figure-grid .order-5, .figure-grid6 .order-5,
@@ -1231,9 +1248,9 @@ html, body { overflow-x: clip; }
 .search-input {
   width: 100%;
   padding: 13px 18px;
-  /* 枠が淡すぎると地色との差が 1.3:1 ほどしかなく、
-     「ここに入力できる」という手がかりが暗所で消える。
-     --ink-soft なら地の上で 5.68:1 になる。 */
+  /* 枠が #F0DCC9 だと cream の地色に対して 1.28:1 しかなく、
+     「ここに入力できる」という手がかりが暗所で消えていた。
+     --ink-soft なら cream 上で 6.16:1 になる。 */
   border: 2px solid var(--ink-soft);
   border-radius: 999px;
   background: #fff;
@@ -1254,7 +1271,7 @@ html, body { overflow-x: clip; }
   overflow-y: auto;
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 12px 34px rgba(16, 24, 40, .14);
+  box-shadow: 0 12px 34px rgba(150, 120, 100, .22);
   text-align: left;
 }
 .search-hit {
@@ -1269,14 +1286,14 @@ html, body { overflow-x: clip; }
   text-align: left;
   cursor: pointer;
 }
-.search-hit:hover, .search-hit:focus-visible { background: var(--bg-sub); }
+.search-hit:hover, .search-hit:focus-visible { background: var(--cream-deep); }
 .search-hit:focus-visible { outline: 3px solid #6E4AA8; outline-offset: -3px; }
 .search-tab {
   display: inline-block;
   margin-bottom: 3px;
   padding: 1px 9px;
   border-radius: 999px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   font-size: .72rem;
   font-weight: 700;
 }
@@ -1328,7 +1345,7 @@ html, body { overflow-x: clip; }
   font: inherit;
   font-size: .88rem;
   font-weight: 700;
-  box-shadow: 0 8px 22px rgba(16, 24, 40, .18);
+  box-shadow: 0 8px 22px rgba(150, 120, 100, .28);
   cursor: pointer;
 }
 .to-toc.is-shown { display: inline-flex; }
@@ -1396,7 +1413,7 @@ html, body { overflow-x: clip; }
 /* --bg という変数は存在しなかった。未定義の変数を使った宣言は無効になり、
    body の背景指定にもクラス指定が勝つので、項目ページだけ地色が純白になっていた。
    夜に検索から着地するのはこのページなので、いちばん明るい面になっていた。 */
-.itempage { background: var(--bg); }
+.itempage { background: var(--cream); }
 .itemhead {
   max-width: 760px; margin: 0 auto; padding: 18px 16px 0;
 }
@@ -1426,7 +1443,7 @@ html, body { overflow-x: clip; }
   border-radius: 10px;
   line-height: 1.6;
 }
-.itemnav li a:hover { background: var(--bg-sub); }
+.itemnav li a:hover { background: var(--cream-deep); }
 .itemnav-all { margin: 14px 0 0; font-size: .9rem; font-weight: 700; }
 
 .itemfoot {
@@ -1461,7 +1478,7 @@ html, body { overflow-x: clip; }
   white-space: nowrap;
 }
 .card-permalink::after { content: " →"; }
-.card-permalink:hover { color: var(--ink); background: var(--bg-sub); }
+.card-permalink:hover { color: var(--ink); background: var(--cream-deep); }
 .card-permalink:focus-visible { outline: 3px solid #6E4AA8; outline-offset: 2px; border-radius: 6px; }
 .itemmain .card-permalink { display: none; }
 
@@ -1481,7 +1498,7 @@ html, body { overflow-x: clip; }
   text-underline-offset: 3px;
   border-radius: 6px;
 }
-.emergency a.tel:hover { color: #8A3A20; background: var(--bg-sub); }
+.emergency a.tel:hover { color: #8A3A20; background: var(--cream-deep); }
 .emergency a.tel:focus-visible {
   outline: 3px solid #6E4AA8;
   outline-offset: 2px;
@@ -1513,7 +1530,7 @@ html, body { overflow-x: clip; }
   background: #fff;
   color: #B04A2E;
   text-decoration: none;
-  box-shadow: 0 6px 16px rgba(16, 24, 40, .16);
+  box-shadow: 0 6px 16px rgba(150, 120, 100, .24);
 }
 .to-emergency-icon { font-size: 1.35rem; line-height: 1; }
 .to-emergency:hover { background: #B04A2E; color: #fff; }
@@ -1532,7 +1549,7 @@ html, body { overflow-x: clip; }
   max-width: 760px;
   margin: 28px auto 0;
   padding: 18px 20px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   border-radius: var(--radius);
 }
 .itememergency h2 { margin: 0 0 8px; font-size: 1.1rem; }
@@ -1653,7 +1670,7 @@ html, body { overflow-x: clip; }
 /* 項目ページから、ほかの月齢へ移れるようにする。
    これまでは同じ月齢のほかの項目にしか行けなかった。
    上の子と下の子を同時に見る読者がいる。 */
-.itemnav-tabs { margin-top: 18px; padding-top: 14px; border-top: 2px dotted var(--line-deep); }
+.itemnav-tabs { margin-top: 18px; padding-top: 14px; border-top: 2px dotted #F0DCC9; }
 .itemnav-tabs h3 { margin: 0 0 8px; font-size: .9rem; color: var(--ink-soft); }
 .itemnav-tabs ul {
   display: flex;
@@ -1667,7 +1684,7 @@ html, body { overflow-x: clip; }
   display: inline-block;
   padding: 11px 14px;
   border-radius: 999px;
-  background: var(--bg-sub);
+  background: var(--cream-deep);
   color: var(--ink);
   font-size: .86rem;
   font-weight: 700;
